@@ -1,0 +1,34 @@
+YUR Athletics - Proprietary License
+
+Copyright (c) 2026 YUR AI CORP. All rights reserved.
+
+This repository and everything in it, including the source code, documentation,
+designs, logos, artwork and all other files (together, the "Software"), is the
+proprietary property of YUR AI CORP.
+
+The Software is made publicly visible for viewing only. No license or right is
+granted, by implication, estoppel or otherwise, to use, copy, modify, merge,
+publish, distribute, sublicense, sell, host, offer as a service, or create
+derivative works of the Software, in whole or in part, for any purpose, without
+the prior written permission of YUR AI CORP.
+
+Viewing the Software on GitHub, and forking it within GitHub only as the GitHub
+Terms of Service allow, does not grant any of the rights above.
+
+"YUR", "YUR AI", "YUR Athletics", "SUPER INTELLIGENT ANALYTICS", the YUR
+Athletics logo and related names and marks are trademarks of YUR AI CORP.
+Nothing in this repository grants any right to use them.
+
+Third-party components keep their own licenses. The fonts in
+desktop/src/athletics-brand/fonts and desktop/src/glider-fonts are licensed
+under the SIL Open Font License (see the OFL files beside them), and the npm and
+Python packages named in the package and requirements files are licensed by
+their own authors under their own terms.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL YUR AI CORP BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR ITS USE.
+
+For permission to use the Software, contact YUR AI CORP.

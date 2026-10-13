@@ -129,3 +129,9 @@ fictional samples only. These stay on the machine that builds them and are block
 
 Gridiron builds and runs from the samples (`gridiron/src/data/sample/`, `gridiron/recruit/data/sample/`) until you
 build your own data with the pipeline in [`gridiron/recruit/`](gridiron/recruit/README.md).
+
+## License
+
+Proprietary. Copyright (c) 2026 YUR AI CORP. All rights reserved. This repository is public for viewing only; it is
+not open source, and no right to use, copy, modify or distribute it is granted without written permission. See
+[LICENSE](LICENSE). Third-party fonts and packages keep their own licenses.
