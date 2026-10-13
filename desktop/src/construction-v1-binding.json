@@ -1,0 +1,18 @@
+{
+  "runtime": "IntelliFlow Construction V1",
+  "runtime_id": "master-orcha",
+  "workbench_executable": "@local-app-data/Intelliflow Construction V1/intelliflow-construction-v1.exe",
+  "workbench_sha256": "7fb1c27011211722c7bb30b6e776ec3cae7ea2b2f37306a0ef14f218d10583f3",
+  "executable": "@local-app-data/Intelliflow Construction V1/resources/gateway-runtime-v11/yur-gateway.exe",
+  "sha256": "c5ca2b75443295b3697faf475a068aa3dab86c69eb26cb21bc1b2c5494b240bd",
+  "profile": "@user-data/construction-v1/master-orcha",
+  "authority": "Construction V1 bundled authority",
+  "scope": "construction-master",
+  "source_identity": "Installed Construction V1 gateway V11; standalone shell and installed user state remain separate",
+  "manifest": "@local-app-data/Intelliflow Construction V1/resources/gateway-runtime-v11.manifest.json",
+  "source_receipt": "construction-evidence-v11/FROZEN_GATEWAY_V11_BUILD_RECEIPT.json",
+  "limitations": [
+    "Single master gateway capability access; no six-department mission transport",
+    "External service readiness is determined by the runtime health response"
+  ]
+}

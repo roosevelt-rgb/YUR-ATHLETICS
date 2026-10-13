@@ -1,0 +1,167 @@
+/* Product edition layout (YUR_EDITION). edition-shell.js loads this only for an edition, so the
+   Desktop never sees these rules. Franklin is the main page; Chat, Work and Code stay one Pages
+   menu entry away. The edition's brand finish (e.g. athletics-brand/athletics.css) loads after. */
+#yur-conversation .yc-franklin-main { position: relative; display: none; flex: 1 1 0; min-width: 0; min-height: 0; overflow: hidden; }
+#yur-conversation[data-edition-page="franklin"] .yc-main:not(.section-open) .yc-franklin-main:has(> .yur-franklin) { display: flex; }
+/* Only once Franklin has mounted does his page replace the conversation; without him it stays. */
+#yur-conversation[data-edition-page="franklin"] .yc-main:not(.section-open):has(.yc-franklin-main > .yur-franklin) :is(#yc-scroll, .yc-composer-area, .yc-thread-title, #yc-conversation-actions, #yc-mode-switch) { display: none; }
+#yur-conversation[data-edition-page="franklin"] .yc-sidebar :is(.yc-new-chat, .yc-sidebar-projects, .yc-history-heading, #yc-history-search, .yc-history-filter, .yc-history) { display: none; }
+/* The Desktop's own pages live in the Pages menu while it exists (glider frame). */
+body.glider-enabled #yur-conversation[data-edition] .yc-sidebar .yc-nav:not(.yc-edition-nav) { display: none; }
+/* While Franklin's page shows beside the side browser he keeps a column of at least 360px, so his
+   status, Stop and input stay visible: the pane never overlays him (the Desktop's 1100px-and-below
+   rule drops that reservation) and Full view takes the rest of the page instead of all of it. The
+   native browser view, which draws above HTML, follows the pane; franklin-bootstrap.js clamps it to
+   his column's edge as well. */
+#yur-conversation[data-edition-page="franklin"] .yc-main.details-open:not(.section-open):has(.yc-franklin-main > .yur-franklin) {
+  --yc-edition-pane: min(var(--yc-detail-width, 480px), max(280px, calc(100% - 360px)));
+  padding-right: var(--yc-edition-pane);
+}
+#yur-conversation[data-edition-page="franklin"] .yc-main.details-open.browser-full-view:not(.section-open):has(.yc-franklin-main > .yur-franklin) {
+  --yc-edition-pane: max(280px, calc(100% - 360px));
+}
+#yur-conversation[data-edition-page="franklin"] .yc-main.details-open:not(.section-open):has(.yc-franklin-main > .yur-franklin) .yc-detail-panel {
+  left: auto; right: 0; width: var(--yc-edition-pane);
+}
+/* The ghost position canvas (edition-shell.js renderGhost): decorative, behind Franklin's chat, which
+   flows over it. Its size comes from the column width; the brand finish sets its face and stroke. */
+#yur-conversation .yc-franklin-main > .yur-franklin { position: relative; z-index: 1; }
+/* Closed side browser (Welcome): the ghost sits in the free band under his header; open beside the
+   browser (Main) it is centered in his column. */
+#yur-conversation .yc-edition-ghost {
+  position: absolute; top: 50%; right: 0; left: 24px; z-index: 0; overflow: hidden; transform: translateY(-50%);
+  line-height: .9; white-space: nowrap; pointer-events: none; user-select: none;
+}
+#yur-conversation .yc-main:not(.details-open) .yc-edition-ghost { top: 58px; left: 32px; transform: none; line-height: .88; }
+/* Beside the browser while his page is still empty, the greeting and start cards fill the lower column,
+   so the ghost keeps to the free band under his header there too; once he is talking it is centered. */
+#yur-conversation .yc-main.details-open .yc-franklin-main:has(> .yur-franklin[data-empty="true"]) > .yc-edition-ghost { top: 58px; left: 32px; transform: none; line-height: .88; }
+#yur-conversation .yc-edition-ghost[hidden] { display: none; }
+#yur-conversation .yc-edition-ghost > span { display: block; }
+
+/* ─── The edition frame (Welcome/Main): a 12px black margin and one hairline around a single 44px
+   title row and the app. The native browser view follows its viewport element, so it sits inside too. */
+html[data-yur-edition] { --yc-edition-inset: 12px; --yc-edition-title: 44px; --yc-edition-top: calc(var(--yc-edition-inset) + var(--yc-edition-title) + 2px); }
+html[data-yur-edition] body.glider-enabled { padding-top: 0; background: #000000; }
+html[data-yur-edition] body.glider-enabled #glider-frame {
+  top: var(--yc-edition-inset); right: var(--yc-edition-inset); left: var(--yc-edition-inset); height: calc(var(--yc-edition-title) + 2px);
+  box-sizing: border-box; border: 1px solid rgba(228, 228, 231, .18); border-bottom-color: rgba(228, 228, 231, .12);
+}
+html[data-yur-edition] body.glider-enabled #glider-frame header { height: var(--yc-edition-title); gap: 12px; padding: 0 0 0 4px; }
+/* The glider tab row (Coding, Marketplace, Foundry, Production, Pages) is the owner's Desktop; the
+   edition's sections are its left nav. */
+html[data-yur-edition] body.glider-enabled #glider-frame nav { display: none; }
+html[data-yur-edition] body.glider-enabled #glider-frame header > span[style] { flex: 1 1 auto; }
+html[data-yur-edition] body.glider-enabled #yur-conversation {
+  top: var(--yc-edition-top); right: var(--yc-edition-inset); bottom: var(--yc-edition-inset); left: var(--yc-edition-inset);
+  border: 1px solid rgba(228, 228, 231, .18); border-top: 0;
+}
+html[data-yur-edition] body.glider-enabled #rc6-panel { inset: var(--yc-edition-top) var(--yc-edition-inset) var(--yc-edition-inset); }
+/* One title row: the Desktop's File/Edit/View/Help row and its top bar (Browser, Work details,
+   Terminal) are not part of the edition; Franklin's header and the side browser's toolbar replace them. */
+html[data-yur-edition] body.glider-enabled #yur-conversation { grid-template: 0 minmax(0, 1fr) / 228px minmax(0, 1fr); }
+html[data-yur-edition] body.glider-enabled #yur-conversation .yc-titlebar { display: none; }
+html[data-yur-edition] #yur-conversation[data-edition] .yc-topbar { display: none; }
+html[data-yur-edition] #yur-conversation[data-edition] .yc-sidebar :is(.yc-sidebar-brand, .yc-profile) { display: none; }
+html[data-yur-edition] #yur-conversation[data-edition] .yc-sidebar { padding: 14px 10px; }
+@media (max-width: 850px) {
+  html[data-yur-edition] body.glider-enabled #yur-conversation { grid-template-columns: 228px minmax(0, 1fr); }
+  html[data-yur-edition] #yur-conversation[data-edition] .yc-sidebar { position: static; width: auto; visibility: visible; transform: none; pointer-events: auto; box-shadow: none; }
+}
+/* Settings keeps the edition's left nav beside its own page list. */
+html[data-yur-edition] body.glider-enabled #yur-conversation.yc-settings-mode { grid-template-columns: 228px minmax(0, 1fr); }
+html[data-yur-edition] #yur-conversation.yc-settings-mode > .yc-sidebar { display: flex; }
+html[data-yur-edition] #yur-conversation.yc-settings-mode .yc-main { grid-area: 2 / 2 / -1 / -1; }
+
+/* The title row: the lockup (home), the athlete chip, Franklin's status and the window controls. */
+#glider-frame .yc-edition-home { display: flex; align-items: center; height: var(--yc-edition-title, 44px); padding: 0; border: 0; background: transparent; cursor: pointer; }
+#glider-frame .yc-edition-chip { display: inline-flex; align-items: center; gap: 10px; height: 32px; padding: 0 12px; white-space: nowrap; }
+#glider-frame .yc-edition-status { display: inline-flex; align-items: center; gap: 8px; padding-right: 8px; white-space: nowrap; }
+#glider-frame .yc-edition-status > i { display: block; width: 8px; height: 8px; }
+
+/* Left nav: 40px rows, a 6px intensity square, the open marker and the badge. */
+#yur-conversation .yc-edition-nav { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+#yur-conversation .yc-edition-group { margin: 10px 0 0; padding: 4px 10px 6px; font-size: 11px; }
+#yur-conversation .yc-edition-divider { width: 100%; margin: 10px 0 6px; border: 0; border-top: 1px solid var(--dt-border); }
+#yur-conversation .yc-edition-tab { position: relative; display: flex; align-items: center; gap: 10px; height: 40px; min-height: 40px; padding: 0 10px; text-align: left; }
+#yur-conversation .yc-edition-dot { display: block; flex: none; width: 6px; height: 6px; }
+#yur-conversation .yc-edition-tab-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#yur-conversation .yc-edition-open { flex: none; font-size: 10px; }
+#yur-conversation .yc-edition-open[hidden] { display: none; }
+#yur-conversation .yc-edition-badge { display: flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; margin-left: auto; padding: 0 5px; }
+#yur-conversation .yc-edition-badge[hidden] { display: none; }
+
+/* The closed side browser: a 48px rail at the right edge of Franklin's page. */
+#yur-conversation .yc-edition-rail { display: none; }
+#yur-conversation[data-edition-page="franklin"] .yc-main:not(.details-open):not(.section-open) .yc-edition-rail {
+  position: absolute; top: 0; right: 0; bottom: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 14px; width: 48px; padding-top: 14px; box-sizing: border-box;
+}
+#yur-conversation[data-edition-page="franklin"] .yc-main:not(.details-open):not(.section-open):has(.yc-franklin-main > .yur-franklin) { padding-right: 48px; }
+#yur-conversation .yc-edition-rail > button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; cursor: pointer; }
+#yur-conversation .yc-edition-rail > span { writing-mode: vertical-rl; font-size: 11px; letter-spacing: .08em; }
+
+/* The side browser (Main): the edition's 52px toolbar, the page, a footer note. The Desktop's browser
+   heading, address form, controls, Work note and status line are not shown; its tab header is hidden
+   while the browser is the pane's page (Work details and Artifact keep it). */
+html[data-yur-edition] #yur-conversation .yc-detail-panel:has(> #yc-browser-host:not(.yc-hidden)) > .yc-detail-header { display: none; }
+html[data-yur-edition] #yur-conversation .yc-browser-host { flex-direction: column; padding: 0; }
+html[data-yur-edition] #yur-conversation .yc-browser-pane { order: 2; gap: 0; }
+html[data-yur-edition] #yur-conversation .yc-browser-pane > :is(.yc-browser-heading, .yc-browser-address-form, .yc-browser-controls, .yc-browser-work-note, .yc-browser-status) { display: none; }
+html[data-yur-edition] #yur-conversation .yc-browser-viewport { min-height: 80px; margin: 0; border: 0; }
+#yur-conversation .yc-edition-browserbar { order: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 52px; padding: 8px 10px; box-sizing: border-box; }
+#yur-conversation .yc-edition-browserbar > button { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; cursor: pointer; }
+#yur-conversation .yc-edition-browserbar > button:disabled { cursor: default; }
+#yur-conversation .yc-edition-address { display: flex; flex: 1 1 200px; align-items: center; gap: 8px; min-width: 0; height: 32px; padding: 0 10px; box-sizing: border-box; overflow: hidden; white-space: nowrap; font-size: 12px; }
+#yur-conversation .yc-edition-address > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+#yur-conversation .yc-edition-driving { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; box-sizing: border-box; white-space: nowrap; font-size: 12px; }
+#yur-conversation .yc-edition-driving > i { display: block; width: 8px; height: 8px; }
+#yur-conversation .yc-edition-browserbar > .yc-edition-takeover { width: auto; padding: 0 12px; }
+#yur-conversation .yc-edition-browserbar [hidden] { display: none; }
+#yur-conversation .yc-edition-browser-notice { order: 1; margin: 0; padding: 6px 12px; font-size: 11px; line-height: 1.4; overflow-wrap: anywhere; }
+#yur-conversation .yc-edition-browser-notice[hidden] { display: none; }
+#yur-conversation .yc-edition-browser-footer { order: 3; display: flex; align-items: center; gap: 8px; min-height: 34px; margin: 0; padding: 0 12px; box-sizing: border-box; font-size: 11px; }
+
+/* Franklin's edition page (franklin-view.js intro): a 52px header with Activity, the conversation
+   anchored at the bottom (greeting and start cards while it is empty) and the composer. Activity
+   holds his status line, model, context, receipts and storage note; a problem always shows. */
+.yur-franklin[data-intro] .yur-franklin-panel { padding: 0; overflow: hidden; }
+.yur-franklin[data-intro] header { position: relative; flex: 0 0 52px; gap: 12px; height: 52px; padding: 0 24px; box-sizing: border-box; }
+.yur-franklin[data-intro] header > div { display: flex; flex: 1 1 auto; align-items: baseline; gap: 12px; min-width: 0; overflow: hidden; }
+.yur-franklin[data-intro] header :is(h2, p) { margin: 0; white-space: nowrap; }
+/* In a narrow column his line gives way (ellipsis) before it would run under Activity. */
+.yur-franklin[data-intro] header h2 { flex: none; }
+.yur-franklin[data-intro] header p { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.yur-franklin[data-intro] header button { flex: none; }
+.yur-franklin[data-intro] header button { height: 30px; min-height: 30px; padding: 0 10px; }
+.yur-franklin[data-intro][data-activity="closed"] :is(.yur-franklin-observation, .yur-franklin-context, .yur-franklin-timeline, .yur-franklin-persistence, #franklin-refresh) { display: none; }
+.yur-franklin[data-intro][data-activity="closed"][data-model-ready="true"] .yur-franklin-model { display: none; }
+.yur-franklin[data-intro][data-activity="closed"]:is([data-phase="ready"], [data-phase="idle"], [data-phase="watching"], [data-phase="connecting"]) #franklin-status { display: none; }
+.yur-franklin[data-intro] :is(.yur-franklin-status, .yur-franklin-error, .yur-franklin-observation, .yur-franklin-model, .yur-franklin-context, .yur-franklin-timeline, .yur-franklin-persistence, .yur-franklin-actions:not(.yur-franklin-form .yur-franklin-actions)) { margin-inline: 24px; }
+.yur-franklin[data-intro] .yur-franklin-log { display: flex; flex-direction: column; gap: 22px; margin: 0; padding: 28px 28px 18px; border: 0; }
+.yur-franklin[data-intro] .yur-franklin-log > :first-child { margin-top: auto; }
+.yur-franklin[data-intro] .yur-franklin-message { max-width: 64ch; margin: 0; }
+.yur-franklin[data-intro] .yur-franklin-message[data-role="user"] { align-self: flex-end; max-width: 46ch; }
+.yur-franklin[data-intro] .yur-franklin-welcome { display: flex; flex-direction: column; gap: 28px; container-type: inline-size; }
+.yur-franklin[data-intro] .yur-franklin-greeting { display: flex; gap: 14px; max-width: 66ch; }
+.yur-franklin[data-intro] .yur-franklin-greeting > div { display: flex; flex-direction: column; gap: 10px; }
+.yur-franklin[data-intro] .yur-franklin-greeting p { margin: 0; font-size: 16px; line-height: 1.65; }
+.yur-franklin[data-intro] .yur-franklin-figure { flex: none; width: 40px; height: 40px; box-sizing: border-box; }
+/* The four start cards: one row when his column is wide (Welcome), two by two beside the side browser. */
+.yur-franklin[data-intro] .yur-franklin-starts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@container (min-width: 700px) { .yur-franklin[data-intro] .yur-franklin-starts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.yur-franklin[data-intro] .yur-franklin-start { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-height: 112px; padding: 14px; text-align: left; white-space: normal; }
+.yur-franklin[data-intro] .yur-franklin-start small { margin-top: auto; }
+.yur-franklin[data-intro] .yur-franklin-form { position: relative; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 8px; margin: 0 20px 20px; padding: 10px; }
+.yur-franklin[data-intro] .yur-franklin-form > label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.yur-franklin[data-intro] .yur-franklin-form textarea { flex: 1 1 200px; min-height: 48px; max-height: 160px; padding: 4px; border: 0; resize: none; }
+.yur-franklin[data-intro] .yur-franklin-form .yur-franklin-actions { margin: 0; }
+.yur-franklin[data-intro] .yur-franklin-form .yur-franklin-actions button { height: 40px; min-height: 40px; padding: 0 18px; }
+
+/* A logo with its wordmark fallback (edition-shell.js logo()). */
+.yc-edition-logo { display: inline-flex; align-items: center; min-width: 0; max-width: 100%; }
+.yc-edition-logo img { display: block; height: 26px; width: auto; max-width: 100%; }
+.yc-edition-logo :is(img, .yc-edition-wordmark)[hidden] { display: none; }
+.yc-edition-wordmark { overflow: hidden; font-weight: 700; letter-spacing: .14em; text-overflow: ellipsis; white-space: nowrap; }
+/* The title-bar lockup: its 44px art in the 44px title row. */
+#glider-frame .yc-edition-frame-logo img { height: 44px; }
+#yur-conversation .yc-edition-mark img { height: 14px; }

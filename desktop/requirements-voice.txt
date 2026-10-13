@@ -1,0 +1,2 @@
+# Optional local speech-to-text; installed only by explicit voice setup.
+vosk==0.3.45

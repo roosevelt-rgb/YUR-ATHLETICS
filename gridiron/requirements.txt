@@ -1,0 +1,12 @@
+# Gridiron Scout Python tools (recruit/ pipeline, agent_runtime/). Minimums are the versions this was built with.
+pymongo>=4.6
+httpx>=0.28
+beautifulsoup4>=4.14
+pdfplumber>=0.11
+mcp>=1.28
+# optional: headless-browser fallback for JS-only roster sites (then: python -m playwright install chromium)
+playwright>=1.59
+# optional: Anthropic engine in recruit/llm.py; uvicorn for agent_runtime/scout_harness.py
+anthropic>=0.96
+uvicorn>=0.49
+# recruit/agent/frames.py runs on a pod and needs opencv-python there

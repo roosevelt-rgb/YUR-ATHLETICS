@@ -1,0 +1,152 @@
+# ---- build / tooling ----
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+__pycache__/
+*.pyc
+.venv/
+
+# ---- env and secrets (never commit) ----
+.env*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*.secret
+anthropic-env-backup.txt
+.yur_data/
+.yur-runtime/
+*.local.json
+# the Firebase web config of a real project; firebase-applet-config.example.json ships
+firebase-applet-config.json
+
+# ---- credential files, key stores and saved logins (any folder) ----
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+.ssh/
+.gnupg/
+.aws/
+.azure/
+.kube/
+.npmrc
+.yarnrc.yml
+.pypirc
+.netrc
+_netrc
+.git-credentials
+client_secret*.json
+token.json
+token.pickle
+*.token
+service-account*.json
+serviceAccountKey*.json
+*storage_state*.json
+*storageState*.json
+.auth/
+cookies*.txt
+*.har
+*.jks
+*.keystore
+*.p8
+*.ppk
+*.kdbx
+secrets.*
+.firebaserc
+# browser login profiles (cookies, saved passwords and the key that unlocks them)
+**/browser_profile/
+**/runtime/browser/
+Local State
+Login Data
+Login Data For Account
+Cookies
+
+# ---- recruit engine local state ----
+recruit/cache/
+recruit/cache_hist/
+recruit/*.db
+*.db
+*.db-journal
+*.sqlite3
+backups/
+*.bak-*
+
+# ---- private data: only the README and the fictional samples are public ----
+recruit/data/*
+!recruit/data/README.md
+!recruit/data/sample/
+# inside sample/ only the named fictional files ship; anything else put there stays out
+recruit/data/sample/**
+!recruit/data/sample/athletes/
+!recruit/data/sample/athletes/quinn-placeholder.json
+!recruit/data/sample/athletes/quinn-placeholder.package.json
+# reports, cards, briefs and spreadsheets written anywhere else under recruit/
+recruit/**/*.html
+recruit/**/*.csv
+recruit/**/*.xlsx
+recruit/**/*.xls
+
+# real seed exports from ledger.db (coach emails and phones, outreach state); the committed seeds are in src/data/sample/
+src/data/*.seed.json
+
+# film, frames, video and audio never ship
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.avi
+*.webm
+*.wav
+*.mp3
+**/frames/
+**/reel/
+**/film/
+**/sheets/
+# film frames, photos and documents (cards, briefs, resumes)
+*.jpg
+*.jpeg
+*.pdf
+
+# usage / billing ledgers, film-study workspace, private plans, usage screenshots
+recruit/billing/
+recruit/usage_ledger.py
+recruit/film_study/
+recruit/QB_TRAITS_PLAN.md
+*USAGE*.png
+
+# team and family film study (the team's playbook, game data and the athlete's reports; kept out of the public build)
+recruit/season_report.py
+recruit/season_report_full.py
+recruit/coach_scout.py
+recruit/coach_history.py
+recruit/game_pbp.py
+recruit/merge_season.py
+recruit/merge_coverage.py
+recruit/merge_alignment.py
+recruit/merge_txf.py
+recruit/recap_merge.py
+recruit/highlight_order.py
+recruit/athletic_resume.py
+recruit/coach_brief.py
+recruit/pod/
+recruit/DESIGN.md
+recruit/CARD_BUILD_BRIEF.md
+recruit/MATCH_V1_DESIGN.md
+recruit/RANKING_ENGINE_DESIGN.md
+recruit/ATHLETICS_DESKTOP_PLAN.md
+recruit/PLAYER_AGENT_DESIGN.md
+recruit/PORTAL_DESIGN.md
+
+# ---- agent runtime state and machine paths ----
+agent_runtime/.harness_data/
+agent_runtime/browser_profile/
+agent_runtime/live/
+agent_runtime/yur_desktop/state/
+agent_runtime/yur_desktop/mcp_servers.json
+agent_runtime/yur_desktop/shell-config.json

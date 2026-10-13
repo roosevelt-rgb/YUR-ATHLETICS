@@ -1,0 +1,82 @@
+{
+  "format": "yur.behavior-promotion.v1",
+  "capability_id": "workforce.hatch.quantity",
+  "source": {
+    "source_id": "yur-unified/workforce",
+    "observed_path": "<unified-root>\\agents\\workforce\\agents\\hatch_quantity.py",
+    "relative_path": "agents/hatch_quantity.py",
+    "bytes": 6204,
+    "sha256": "da68288a6d51def386e6cd909e46fa3b3a72c331cdddda05fb666a2e9de10477",
+    "acquisition": "Complete source file read and parsed as text; no donor imports or execution",
+    "function_hash_method": "SHA-256 of UTF-8 ast.get_source_segment function definition after CRLF-to-LF normalization, without trailing newline",
+    "functions": {
+      "_nearest_division": {
+        "start_line": 39,
+        "end_line": 49,
+        "sha256": "c21586fcf3745dbae3ce12bf4a68d0bfbfe57a5a27193a56a2bb7c5e5182b696"
+      },
+      "_survey": {
+        "start_line": 52,
+        "end_line": 110,
+        "sha256": "24d7e2e6f3d7cef002882c3b429d5708e4104f0d2d04167589820b0ef45fd6a1"
+      }
+    }
+  },
+  "target": {
+    "relative_path": "foundry/specialists.py",
+    "runtime": "Self-contained Python standard-library module, included verbatim in deterministic agent packages",
+    "functions": {
+      "_hatch_nearest_division": {
+        "derived_from": "_nearest_division",
+        "sha256": "acaf7997481000b2c71bacdeb072fc178a0d16887c42699f55f2cc61119f5ee0"
+      },
+      "hatch_quantity": {
+        "derived_from": "_survey",
+        "sha256": "9f182c80a27c793c5a1c40fb15f0fa027167fa0ae59a726dda45879c73c544f8"
+      }
+    },
+    "runtime_catalog_provenance": "capabilities[].runtime.provenance",
+    "package_integrity": "Existing manifest bindings, runtime reconstruction, outcome validation and build attestation"
+  },
+  "preserved_behavior": [
+    "Extract explicit quantity/unit tokens from plans and specifications text.",
+    "Normalize SF, GSF, sqft, sq ft and sq. ft to SF; TONS to TON; retain CY, CF, LF, EA, GAL and LBS.",
+    "Find a governing CSI section or Division heading on the quantity line or preceding eleven lines.",
+    "Retain the first source for duplicate quantity lines and group quantities by division and unit.",
+    "Return line items, division totals and an area total in square feet."
+  ],
+  "reconciliations": [
+    "Input accepts only bounded plans_text and specs_text strings; scope_manifest, precomputed areas and area_total_sf cannot bypass source extraction.",
+    "Plans and specifications use separate heading scopes, preventing a plans heading from assigning a specifications quantity.",
+    "Source evidence records input field, one-based line, zero-based half-open character offsets and the exact matched token; the display snippet remains bounded to 140 characters.",
+    "Reject nonpositive quantities, malformed thousands separators, scientific notation fragments, obvious ranges, word-embedded fragments and nonfinite numeric conversions; leading decimal quantities retain their true value.",
+    "A six-digit number immediately followed by a recognized quantity unit is not promoted as its own CSI heading.",
+    "Deduplication compares exact numeric quantity and the complete source line instead of two-decimal rounding and a forty-character prefix, preventing distinct source quantities from collapsing.",
+    "At most 1000 line items are retained. line_count and all totals describe only returned line items. Additional distinct positive quantities set truncated=true and never silently inflate totals.",
+    "Reject any candidate whose addition would overflow a division total or the square-foot total; excluded_quantities counts recognized candidates rejected by numeric or lexical checks.",
+    "Lookup work uses source line iteration and an eighty-character prefix window rather than repeatedly scanning the entire document prefix.",
+    "Balanced and precision use the same deterministic quantity extraction behavior; no artificial accuracy distinction or market-quality metric is introduced."
+  ],
+  "contract": {
+    "required_input_fields": ["plans_text", "specs_text"],
+    "input_character_limit_per_field": 30000,
+    "line_item_limit": 1000,
+    "source_records_per_item": 1,
+    "empty_and_zero_behavior": "Return no extracted items, zero totals and line_count=0; never synthesize a positive quantity.",
+    "totals_scope": "returned_line_items",
+    "method": "source_quantity_tokens"
+  },
+  "authority": {
+    "authority_promoted": false,
+    "excluded_donor_components": ["HatchQuantity(Superagent)", "Genome", "Authority", "Scope", "EndpointAffinity", "gated_handle", "register_me", "default_register"],
+    "execution": "Existing OrchestrationManager invokes the registered pure capability under the existing mission authority envelope.",
+    "persistence": "Existing CommitService records mission, validation, publication and execution provenance; the quantity handler performs no durable mutations.",
+    "permissions": []
+  },
+  "acceptance": {
+    "tests": "tests/test_workforce_quantity.py",
+    "command": "python -B -m unittest discover -s tests -p test_workforce_quantity.py -v",
+    "coverage": ["Fixed source quantities and source spans", "Unit normalization", "Zero and negative rejection", "Malformed and overflow quantities", "Independent heading scopes", "Duplicate handling", "1000-item total consistency", "Typed source-only contract", "Donor provenance in package manifest", "OrchestrationManager submit/process/run", "CommitService integrity", "Exported standalone agent execution"],
+    "evidence_limit": "Deterministic explicit text extraction and fixed expected outcomes only; this does not establish drawing takeoff accuracy, prices, industry superiority or production estimating completeness."
+  }
+}

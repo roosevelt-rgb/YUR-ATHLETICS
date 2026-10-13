@@ -1,0 +1,103 @@
+# Local configuration, authority material and operational state
+.env
+.env.*
+*.key
+*.pem
+*.pfx
+*.p12
+.keys/
+credentials/
+secrets/
+.factory-sources.local.json
+.factory-state/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.log
+*.jsonl
+# Credential files, key stores and saved logins
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+.ssh/
+.gnupg/
+.aws/
+.azure/
+.kube/
+.npmrc
+.yarnrc.yml
+.pypirc
+.netrc
+_netrc
+.git-credentials
+client_secret*.json
+token.json
+token.pickle
+*.token
+service-account*.json
+serviceAccountKey*.json
+*storage_state*.json
+*storageState*.json
+.auth/
+cookies*.txt
+*.har
+*.jks
+*.keystore
+*.p8
+*.ppk
+*.kdbx
+secrets.*
+.firebaserc
+# browser login profiles (cookies, saved passwords and the key that unlocks them)
+**/browser_profile/
+**/runtime/browser/
+Local State
+Login Data
+Login Data For Account
+Cookies
+# Dependencies and generated build/cache output
+node_modules/
+.desktop-python/
+.desktop-models/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage/
+dist/
+build/
+release/
+*.zip
+
+# YUR Athletics public repository
+# The athlete manifest is each owner's own file; the repo ships editions/athletics.example.json
+/editions/*
+!/editions/athletics.example.json
+# The Hermes skill snapshot is imported locally (scripts/import_hermes_skills.py) and not published
+/integrations/hermes_skills/
+# Local run evidence and notes
+/.forge-*.txt
+/.specialist-forge-*.txt
+*.err
+/In my ecosystem*.md
+/Paste-ready prompt*.md
+# Film, video and audio never ship
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.wav
+*.mp3
+*.jpg
+*.jpeg
+*.pdf
+# Editor, OS and npm residue
+npm-debug.log*
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store

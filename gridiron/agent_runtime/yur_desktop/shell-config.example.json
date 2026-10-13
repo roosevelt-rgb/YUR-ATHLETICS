@@ -1,0 +1,18 @@
+{
+  "_comment": "YUR AI Desktop, athletics profile (Gridiron Scout): Franklin with Gridiron's scout tools. Launched by 'Start YUR AI Athletics.cmd' via YUR_SHELL_CONFIG; own agent home and workspace, separate from the main YUR AI Desktop.",
+  "agent": {
+    "runtime_root": "",
+    "home": "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\yur_desktop\\state\\yur-home",
+    "python": "python",
+    "workspace_root": "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\yur_desktop\\state\\workspace",
+    "ollama_base_url": "http://127.0.0.1:11434/v1",
+    "default_model": "deepseek-v4-pro:cloud",
+    "inference_resources": [],
+    "auto_start": true,
+    "mcp_config_paths": [
+      "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\yur_desktop\\mcp_servers.json"
+    ],
+    "skill_roots": [],
+    "capability_roots": []
+  }
+}

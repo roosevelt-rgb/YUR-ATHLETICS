@@ -1,0 +1,130 @@
+{
+  "$schema": "yur/desktop-edition/v1",
+  "edition_id": "athletics",
+  "brand": {
+    "title": "YUR Athletics",
+    "product_id": "yur-ai-athletics",
+    "user_data": "yur-ai-athletics",
+    "launch_page": "athletics-launch.html",
+    "icon": "athletics-brand/brand/icon.ico"
+  },
+  "athlete": {
+    "id": "quinn-placeholder",
+    "sport": "football",
+    "display_name": "Quinn Placeholder",
+    "position": "Quarterback",
+    "position_code": "QB",
+    "throws": "right",
+    "class_of": 2028
+  },
+  "gridiron": {
+    "origin": "http://127.0.0.1:3000",
+    "embed_param": "embed=1"
+  },
+  "gridiron_mcp": {
+    "config_path": "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\yur_desktop\\mcp_servers.json",
+    "server": "gridiron-scout",
+    "command": "C:\\Python314\\python.exe",
+    "args": [
+      "-P",
+      "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\gridiron_mcp.py"
+    ]
+  },
+  "tabs": [
+    {
+      "id": "franklin",
+      "label": "Franklin",
+      "kind": "franklin"
+    },
+    {
+      "id": "my-card",
+      "label": "My card",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder",
+      "group": "athlete"
+    },
+    {
+      "id": "film-study",
+      "label": "Film study",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=film",
+      "group": "athlete"
+    },
+    {
+      "id": "highlights",
+      "label": "Highlights",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=highlights",
+      "group": "athlete"
+    },
+    {
+      "id": "stats-maxpreps",
+      "label": "Stats and MaxPreps",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=stats",
+      "group": "athlete"
+    },
+    {
+      "id": "camps-schedule",
+      "label": "Camps and schedule",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=camps",
+      "group": "athlete"
+    },
+    {
+      "id": "resume-report",
+      "label": "Resume and report",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=resume",
+      "group": "athlete"
+    },
+    {
+      "id": "college-board",
+      "label": "College board",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=board",
+      "group": "recruiting"
+    },
+    {
+      "id": "coaches",
+      "label": "Coaches",
+      "kind": "gridiron",
+      "path": "/coaches",
+      "group": "recruiting"
+    },
+    {
+      "id": "outreach-drafts",
+      "label": "Outreach and drafts",
+      "kind": "gridiron",
+      "path": "/player/quinn-placeholder?tab=outreach",
+      "group": "recruiting"
+    },
+    {
+      "id": "approvals",
+      "label": "Approvals",
+      "kind": "native",
+      "badge": "pending-approvals",
+      "group": "desk"
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "kind": "native",
+      "group": "desk"
+    }
+  ],
+  "tab_groups": [
+    {
+      "id": "athlete",
+      "label": "Athlete"
+    },
+    {
+      "id": "recruiting",
+      "label": "Recruiting"
+    },
+    {
+      "id": "desk",
+      "label": "Desk"
+    }
+  ]
+}

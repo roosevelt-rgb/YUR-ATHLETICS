@@ -1,0 +1,3079 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YUR AI Desktop</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100vh;
+        overflow: hidden;
+        background: var(--dt-bg);
+        color: var(--dt-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+      }
+      button,
+      select {
+        background: none;
+        border: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+        padding: 0;
+        outline: none;
+      }
+      .hidden {
+        display: none !important;
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: color-mix(in srgb, var(--dt-active) 35.0%, transparent);
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      /* ═══════════════════ SHELL LAYOUT ═══════════════════ */
+      .ide-shell {
+        height: 100vh;
+        display: grid;
+        grid-template-rows: 30px 1fr 22px;
+        grid-template-columns: 48px 260px 1fr 0;
+      }
+      .ide-shell.chat-open {
+        grid-template-columns: 48px 260px 1fr 320px;
+      }
+      .ide-shell.no-sidebar {
+        grid-template-columns: 48px 0 1fr auto;
+      }
+      .ide-shell.panel-open {
+        grid-template-rows: 30px 1fr 240px 22px;
+      }
+
+      /* ═══════════════════ TITLE BAR ═══════════════════ */
+      .title-bar {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 0;
+        background: var(--dt-bg);
+        border-bottom: 1px solid var(--dt-border);
+        user-select: none;
+        overflow: hidden;
+      }
+      .tb-brand {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 0 14px;
+        height: 100%;
+      }
+      .tb-brand .dot {
+        width: 6px;
+        height: 6px;
+        background: var(--dt-active);
+        box-shadow: 0 0 6px rgba(204, 34, 51, 0.7);
+      }
+      .tb-brand .name {
+        font-family: "Orbitron", sans-serif;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.25em;
+        color: var(--dt-text);
+      }
+      .tb-brand .tm {
+        font-size: 7px;
+        color: color-mix(in srgb, var(--dt-text) 42.0%, transparent);
+        position: relative;
+        top: -3px;
+        font-weight: 400;
+        margin-left: -2px;
+      }
+      .tb-menu {
+        display: flex;
+        height: 100%;
+      }
+      .tb-menu button {
+        padding: 0 10px;
+        font-size: 11px;
+        color: var(--dt-secondary);
+        transition: background 0.12s;
+      }
+      .tb-menu button:hover {
+        background: color-mix(in srgb, var(--dt-active) 4.0%, transparent);
+        color: var(--dt-text);
+      }
+      .tb-search {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        padding: 0 16px;
+      }
+      .tb-search input {
+        width: 420px;
+        max-width: 100%;
+        background: color-mix(in srgb, var(--dt-surface) 4.0%, transparent);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-secondary);
+        padding: 4px 12px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        outline: none;
+      }
+      .tb-search input::placeholder {
+        color: var(--dt-muted);
+      }
+      .tb-search input:focus {
+        border-color: color-mix(in srgb, var(--dt-focus) 50.0%, transparent);
+      }
+      .tb-controls {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        height: 100%;
+        padding-right: 6px;
+      }
+      .tb-controls button,
+      .tb-controls a {
+        padding: 0 10px;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: var(--dt-secondary);
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: color 0.15s;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+      .tb-controls button:hover,
+      .tb-controls a:hover {
+        color: var(--dt-text);
+      }
+
+      /* ═══════════════════ ACTIVITY BAR ═══════════════════ */
+      .activity-bar {
+        grid-row: 2;
+        grid-column: 1;
+        background: var(--dt-bg);
+        border-right: 1px solid var(--dt-border);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4px 0;
+        gap: 0;
+        user-select: none;
+        overflow-y: auto;
+      }
+      .activity-bar::-webkit-scrollbar {
+        display: none;
+      }
+      .activity-bar button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dt-secondary);
+        transition: all 0.15s;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .activity-bar button svg {
+        width: 18px;
+        height: 18px;
+      }
+      .activity-bar button:hover {
+        color: var(--dt-text);
+      }
+      .activity-bar button.active {
+        color: var(--dt-text);
+      }
+      .activity-bar button.active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 4px;
+        bottom: 4px;
+        width: 2px;
+        background: var(--dt-active);
+        box-shadow: 0 0 6px rgba(204, 34, 51, 0.7);
+      }
+      .activity-bar button.stub {
+        color: var(--dt-secondary);
+      }
+      .activity-bar button.stub:hover {
+        color: var(--dt-secondary);
+      }
+      .activity-bar .spacer {
+        flex: 1;
+      }
+      .activity-bar .tooltip {
+        position: absolute;
+        left: 48px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--dt-bg);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-text);
+        padding: 3px 8px;
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.15s;
+        z-index: 200;
+      }
+      .activity-bar button:hover .tooltip {
+        opacity: 1;
+      }
+
+      /* ═══════════════════ SIDEBAR ═══════════════════ */
+      .sidebar {
+        grid-row: 2;
+        grid-column: 2;
+        background: var(--dt-bg);
+        border-right: 1px solid var(--dt-border);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .sidebar-header {
+        padding: 6px 12px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--dt-secondary);
+        border-bottom: 1px solid var(--dt-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .sidebar-header .actions {
+        display: flex;
+        gap: 2px;
+      }
+      .sidebar-header .actions button {
+        color: var(--dt-secondary);
+        padding: 2px 6px;
+        font-size: 12px;
+      }
+      .sidebar-header .actions button:hover {
+        color: var(--dt-text);
+      }
+      .sidebar-panel {
+        display: none;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 0;
+        flex-direction: column;
+      }
+      .sidebar-panel.active {
+        display: flex;
+      }
+
+      /* Generic sidebar list item */
+      .sb-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px;
+        cursor: pointer;
+        user-select: none;
+        color: var(--dt-secondary);
+        font-size: 11px;
+        border-left: 2px solid transparent;
+        transition: all 0.12s;
+      }
+      .sb-row:hover {
+        background: color-mix(in srgb, var(--dt-active) 4.0%, transparent);
+        color: var(--dt-text);
+        border-left-color: color-mix(in srgb, var(--dt-border) 40.0%, transparent);
+      }
+      .sb-row.active {
+        background: color-mix(in srgb, var(--dt-active) 8.0%, transparent);
+        color: var(--dt-text);
+        border-left-color: var(--dt-border);
+      }
+      .sb-row .name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .sb-row .badge {
+        font-size: 9px;
+        color: var(--dt-secondary);
+        letter-spacing: 0.15em;
+      }
+      .sb-row .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .sb-row .dot.on {
+        background: var(--dt-success-bg);
+        box-shadow: 0 0 4px #4ade80;
+      }
+      .sb-row .dot.warn {
+        background: var(--dt-warning-bg);
+      }
+      .sb-row .dot.off {
+        background: var(--dt-active);
+      }
+
+      .sb-section-label {
+        padding: 8px 12px 4px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 8.5px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--dt-secondary);
+        border-top: 1px solid var(--dt-border);
+      }
+      .sb-section-label:first-child {
+        border-top: none;
+      }
+
+      .sb-stub {
+        margin: 10px 12px;
+        padding: 8px 10px;
+        background: color-mix(in srgb, var(--dt-active) 4.0%, transparent);
+        border: 1px dashed color-mix(in srgb, var(--dt-border) 30.0%, transparent);
+        color: var(--dt-secondary);
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        line-height: 1.5;
+      }
+
+      .sb-tree-node {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 8px;
+        cursor: pointer;
+        user-select: none;
+        color: var(--dt-secondary);
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .sb-tree-node:hover {
+        background: color-mix(in srgb, var(--dt-active) 6.0%, transparent);
+        color: var(--dt-text);
+      }
+      .sb-tree-node.active {
+        background: color-mix(in srgb, var(--dt-active) 10.0%, transparent);
+        color: var(--dt-text);
+        border-left: 2px solid var(--dt-border);
+        padding-left: 6px;
+      }
+      .sb-tree-node .chev {
+        color: var(--dt-secondary);
+        width: 10px;
+        font-size: 8px;
+        flex-shrink: 0;
+      }
+      .sb-tree-node .icon {
+        color: var(--dt-secondary);
+        font-size: 10px;
+        flex-shrink: 0;
+        width: 12px;
+        text-align: center;
+      }
+
+      .sb-empty {
+        padding: 12px;
+        color: var(--dt-secondary);
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        line-height: 1.5;
+      }
+      .sb-empty button {
+        display: block;
+        margin-top: 10px;
+        background: color-mix(in srgb, var(--dt-active) 8.0%, transparent);
+        border: 1px solid color-mix(in srgb, var(--dt-border) 40.0%, transparent);
+        color: var(--dt-secondary);
+        padding: 5px 10px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        transition: all 0.15s;
+      }
+      .sb-empty button:hover {
+        background: color-mix(in srgb, var(--dt-active) 15.0%, transparent);
+        color: var(--dt-text);
+      }
+
+      .sb-search-input {
+        margin: 8px 12px;
+        background: color-mix(in srgb, var(--dt-bg) 50.0%, transparent);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-text);
+        padding: 5px 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        outline: none;
+      }
+      .sb-search-input:focus {
+        border-color: color-mix(in srgb, var(--dt-focus) 50.0%, transparent);
+      }
+
+      /* ═══════════════════ EDITOR AREA ═══════════════════ */
+      .editor-area {
+        grid-row: 2;
+        grid-column: 3;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        min-height: 0;
+        background: var(--dt-bg);
+        overflow: hidden;
+      }
+      .editor-tabs {
+        display: flex;
+        background: var(--dt-bg);
+        border-bottom: 1px solid var(--dt-border);
+        overflow-x: auto;
+        flex-shrink: 0;
+        min-height: 28px;
+      }
+      .editor-tab {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+        height: 28px;
+        background: var(--dt-bg);
+        border-right: 1px solid var(--dt-border);
+        color: var(--dt-secondary);
+        font-size: 11px;
+        cursor: pointer;
+        user-select: none;
+        transition:
+          color 0.15s,
+          background 0.15s;
+        white-space: nowrap;
+      }
+      .editor-tab:hover {
+        color: var(--dt-secondary);
+      }
+      .editor-tab.active {
+        background: var(--dt-active);
+        color: var(--dt-text);
+        border-bottom: 1px solid var(--dt-border);
+      }
+      .editor-tab .dirty-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.5;
+      }
+      .editor-tab .close {
+        width: 14px;
+        height: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dt-secondary);
+        font-size: 11px;
+        margin-left: 4px;
+      }
+      .editor-tab .close:hover {
+        color: var(--dt-secondary);
+        background: color-mix(in srgb, var(--dt-active) 10.0%, transparent);
+      }
+      .editor-tab .type-icon {
+        font-size: 9px;
+        color: var(--dt-secondary);
+      }
+
+      .editor-body {
+        flex: 1;
+        min-height: 0;
+        position: relative;
+      }
+      .editor-view {
+        position: absolute;
+        inset: 0;
+        display: none;
+      }
+      .editor-view.active {
+        display: block;
+      }
+      #monaco-host {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Mermaid view */
+      #mermaid-view,
+      #html-view,
+      #browser-view,
+      #chat-view {
+        display: flex;
+      }
+      .split {
+        display: flex;
+        height: 100%;
+      }
+      .split .left {
+        width: 50%;
+        height: 100%;
+        border-right: 1px solid var(--dt-border);
+      }
+      .split .right {
+        flex: 1;
+        height: 100%;
+        padding: 14px;
+        overflow: auto;
+        background: var(--dt-bg);
+      }
+      .split .right.preview-iframe {
+        padding: 0;
+        background: var(--dt-surface);
+      }
+      .split .right.mermaid-render {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--dt-bg);
+      }
+      #mermaid-render-target {
+        padding: 24px;
+      }
+      #mermaid-render-target svg {
+        max-width: 100%;
+      }
+      .preview-iframe iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        background: var(--dt-bg);
+        border-bottom: 1px solid var(--dt-border);
+      }
+      .browser-bar button {
+        color: var(--dt-secondary);
+        font-size: 12px;
+        padding: 2px 8px;
+        border: 1px solid var(--dt-border);
+        transition: all 0.12s;
+      }
+      .browser-bar button:hover {
+        color: var(--dt-text);
+        border-color: color-mix(in srgb, var(--dt-border) 50.0%, transparent);
+      }
+      .browser-bar input {
+        flex: 1;
+        background: var(--dt-bg);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-text);
+        padding: 4px 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        outline: none;
+      }
+      .browser-bar input:focus {
+        border-color: color-mix(in srgb, var(--dt-focus) 50.0%, transparent);
+      }
+
+      .editor-welcome {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dt-secondary);
+        font-family: system-ui, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        text-align: center;
+        padding: 32px;
+        user-select: none;
+        pointer-events: auto;
+      }
+      .editor-welcome span {
+        color: transparent;
+        -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.04);
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+      }
+
+      /* ═══════════════════ RIGHT RAIL: MULTI-CHAT ═══════════════════ */
+      .right-rail {
+        grid-row: 2;
+        grid-column: 4;
+        background: var(--dt-bg);
+        border-left: 1px solid var(--dt-border);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .ide-shell.chat-open .right-rail {
+        display: flex;
+      }
+      .rr-header {
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--dt-border);
+        font-family: "Orbitron", sans-serif;
+        font-size: 10px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--dt-secondary);
+      }
+      .rr-header .title {
+        flex: 1;
+      }
+      .rr-header .close {
+        color: var(--dt-secondary);
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .rr-header .close:hover {
+        color: var(--dt-secondary);
+      }
+      .rr-tabs {
+        display: flex;
+        gap: 0;
+        border-bottom: 1px solid var(--dt-border);
+        background: var(--dt-bg);
+        overflow-x: auto;
+      }
+      .rr-tab {
+        padding: 5px 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--dt-secondary);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.12s;
+        white-space: nowrap;
+      }
+      .rr-tab:hover {
+        color: var(--dt-secondary);
+      }
+      .rr-tab.active {
+        color: var(--dt-text);
+        border-bottom-color: var(--dt-border);
+      }
+      .rr-tab .model-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        margin-right: 4px;
+      }
+      .rr-body {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 10px 12px;
+        background: var(--dt-bg);
+      }
+      .chat-msg {
+        margin-bottom: 12px;
+      }
+      .chat-msg .who {
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        color: var(--dt-secondary);
+        margin-bottom: 3px;
+      }
+      .chat-msg.user .who {
+        color: var(--dt-secondary);
+      }
+      .chat-msg.system .who {
+        color: var(--dt-secondary);
+      }
+      .chat-msg .text {
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--dt-text);
+        white-space: pre-wrap;
+      }
+      .chat-msg.system .text {
+        color: var(--dt-secondary);
+        font-style: italic;
+      }
+      .rr-input {
+        border-top: 1px solid var(--dt-border);
+        padding: 8px 12px;
+        background: var(--dt-bg);
+        display: flex;
+        gap: 6px;
+      }
+      .rr-input textarea {
+        flex: 1;
+        background: color-mix(in srgb, var(--dt-bg) 50.0%, transparent);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-text);
+        padding: 6px 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        outline: none;
+        resize: none;
+        min-height: 32px;
+        max-height: 100px;
+      }
+      .rr-input textarea:focus {
+        border-color: color-mix(in srgb, var(--dt-focus) 50.0%, transparent);
+      }
+      .rr-input button {
+        background: linear-gradient(135deg, var(--dt-surface), var(--dt-active));
+        color: var(--dt-text);
+        padding: 4px 14px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+      .rr-input button:hover {
+        box-shadow: 0 0 12px rgba(204, 34, 51, 0.4);
+      }
+
+      /* ═══════════════════ BOTTOM PANEL (terminal) ═══════════════════ */
+      .panel {
+        grid-column: 2 / -1;
+        grid-row: 3;
+        display: none;
+        flex-direction: column;
+        background: var(--dt-bg);
+        border-top: 1px solid var(--dt-border);
+        overflow: hidden;
+      }
+      .ide-shell.panel-open .panel {
+        display: flex;
+        grid-row: 3;
+      }
+      .ide-shell.panel-open .status-bar {
+        grid-row: 4;
+      }
+      .panel-tabs {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid var(--dt-border);
+        background: var(--dt-bg);
+        flex-shrink: 0;
+      }
+      .panel-tab {
+        padding: 5px 12px;
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--dt-secondary);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.12s;
+      }
+      .panel-tab:hover {
+        color: var(--dt-secondary);
+      }
+      .panel-tab.active {
+        color: var(--dt-text);
+        border-bottom-color: var(--dt-border);
+      }
+      .panel-tab.disabled {
+        color: var(--dt-secondary);
+        cursor: not-allowed;
+      }
+      .panel-shell-picker {
+        margin-left: 12px;
+        background: var(--dt-bg);
+        border: 1px solid var(--dt-border);
+        color: var(--dt-secondary);
+        padding: 3px 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        cursor: pointer;
+        outline: none;
+      }
+      .panel-shell-picker:focus {
+        border-color: color-mix(in srgb, var(--dt-focus) 50.0%, transparent);
+      }
+      .panel-actions {
+        margin-left: auto;
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .panel-actions button {
+        color: var(--dt-secondary);
+        padding: 3px 8px;
+        font-size: 11px;
+        transition: color 0.15s;
+      }
+      .panel-actions button:hover {
+        color: var(--dt-text);
+      }
+      .panel-body {
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        padding: 4px 6px;
+      }
+      #terminal-host {
+        width: 100%;
+        height: 100%;
+      }
+
+      /* ═══════════════════ STATUS BAR ═══════════════════ */
+      .status-bar {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        background: var(--dt-bg);
+        border-top: 1px solid var(--dt-border);
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        gap: 14px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9.5px;
+        color: var(--dt-secondary);
+        letter-spacing: 0.08em;
+        user-select: none;
+      }
+      .sb-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: default;
+      }
+      .sb-item.brand {
+        color: var(--dt-secondary);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.25em;
+      }
+      .sb-item.clickable {
+        cursor: pointer;
+      }
+      .sb-item.clickable:hover {
+        color: var(--dt-text);
+      }
+      .sb-item .d {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+      .sb-substrate {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-size: 8px;
+        letter-spacing: 0.1em;
+        color: var(--dt-secondary);
+      }
+      .sb-substrate .blip {
+        width: 7px;
+        height: 4px;
+        background: var(--dt-active);
+        box-shadow: 0 0 4px rgba(74, 222, 128, 0.6);
+      }
+      .sb-substrate .blip.off {
+        background: var(--dt-surface);
+        box-shadow: none;
+      }
+      .sb-substrate .label {
+        color: var(--dt-secondary);
+        margin: 0 4px;
+      }
+      .sb-spacer {
+        flex: 1;
+      }
+      .sb-model {
+        background: color-mix(in srgb, var(--dt-active) 6.0%, transparent);
+        border: 1px solid color-mix(in srgb, var(--dt-border) 30.0%, transparent);
+        color: var(--dt-secondary);
+        padding: 2px 8px;
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+      }
+      .sb-model:hover {
+        background: color-mix(in srgb, var(--dt-active) 12.0%, transparent);
+      }
+
+      /* ═══════════════════ COMMAND PALETTE ═══════════════════ */
+      .palette-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        background: color-mix(in srgb, var(--dt-bg) 60.0%, transparent);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 100px;
+      }
+      .palette {
+        width: 620px;
+        max-width: 90vw;
+        background: var(--dt-bg);
+        border: 1px solid color-mix(in srgb, var(--dt-border) 40.0%, transparent);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        overflow: hidden;
+      }
+      .palette input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--dt-border);
+        color: var(--dt-text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        padding: 12px 16px;
+        outline: none;
+        letter-spacing: 0.05em;
+      }
+      .palette input::placeholder {
+        color: var(--dt-muted);
+        letter-spacing: 0.1em;
+      }
+      .palette .results {
+        max-height: 360px;
+        overflow-y: auto;
+      }
+      .palette .result {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 16px;
+        color: var(--dt-secondary);
+        font-size: 12px;
+        cursor: pointer;
+        border-left: 2px solid transparent;
+      }
+      .palette .result:hover,
+      .palette .result.selected {
+        background: color-mix(in srgb, var(--dt-active) 8.0%, transparent);
+        color: var(--dt-text);
+        border-left-color: var(--dt-border);
+      }
+      .palette .result .kind {
+        font-family: "Orbitron", sans-serif;
+        font-size: 8px;
+        color: var(--dt-secondary);
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        flex-shrink: 0;
+        min-width: 70px;
+      }
+      .palette .result .name {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .palette .result .kbd {
+        font-size: 9px;
+        color: var(--dt-secondary);
+        letter-spacing: 0.1em;
+      }
+      .palette .empty {
+        padding: 16px;
+        color: var(--dt-secondary);
+        font-size: 11px;
+        text-align: center;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+      }
+    </style>
+    <link rel="stylesheet" href="conversation.css" />
+    <link rel="stylesheet" href="specialist-forge.css" />
+    <link rel="stylesheet" href="model-setup.css" />
+    <link rel="stylesheet" href="recent-work.css" />
+    <link rel="stylesheet" href="activity-view.css" />
+    <link rel="stylesheet" href="project-files-view.css" />
+    <link rel="stylesheet" href="desktop-shell.css" />
+    <link rel="stylesheet" href="settings.css" />
+    <link rel="stylesheet" href="unified-views.css" />
+    <link rel="stylesheet" href="music.css" />
+    <link rel="stylesheet" href="unreal-view.css" />
+    <script src="model-setup.js" defer></script>
+    <script src="recent-work.js" defer></script>
+    <script src="activity-view.js" defer></script>
+    <script src="transcript-position.js" defer></script>
+    <script src="project-files-view.js" defer></script>
+    <script src="chat-renderer.js" defer></script>
+    <script src="composer-intake.js" defer></script>
+  <script src="source-context.js" defer></script>
+  <script src="concept-view.js" defer></script>
+  <script src="work-view.js" defer></script>
+  <script src="browser-view.js" defer></script>
+  <script src="artifact-view.js" defer></script>
+  <script src="voice-view.js" defer></script>
+  <script src="schedules-view.js" defer></script>
+   <script src="lifecycles-view.js" defer></script>
+   <link rel="stylesheet" href="production-view.css"><script src="production-view.js" defer></script>
+  <script src="organism-view.js" defer></script>
+  <script src="marketplace-view.js" defer></script>
+  <script src="media-view.js" defer></script>
+  <script src="music-view.js" defer></script>
+  <script src="unreal-view.js" defer></script>
+  <script src="intelliflow-view.js" defer></script>
+  <script src="execution-runtime-view.js" defer></script>
+    <script src="specialist-forge-view.js" defer></script>
+    <script src="settings-view.js" defer></script>
+    <script src="edition-shell.js" defer></script>
+    <script src="conversation-view.js" defer></script>
+    <link rel="stylesheet" href="franklin-view.css"><script src="franklin-view.js" defer></script><script src="franklin-bootstrap.js" defer></script>
+  <link rel="stylesheet" href="glider-frame.css"><link rel="stylesheet" href="glider-theme.css"><link rel="stylesheet" href="rc6-observer-view.css"><script defer src="rc6-observer-view.js"></script><script defer src="glider-frame.js"></script>
+    <link rel="stylesheet" href="desktop-theme.css">
+  </head>
+  <body class="yur-conversation-mode yur-theme">
+    <div class="ide-shell" id="shell">
+      <!-- ════════ TITLE BAR ════════ -->
+      <header class="title-bar">
+        <div class="tb-brand">
+          <span class="dot"></span>
+          <span class="name">STUDIO<span class="tm">™</span></span>
+        </div>
+        <div class="tb-menu">
+          <button>File</button>
+          <button>Edit</button>
+          <button>Selection</button>
+          <button>View</button>
+          <button>Go</button>
+          <button>Run</button>
+          <button>Terminal</button>
+          <button>Help</button>
+        </div>
+        <div class="tb-search">
+          <input
+            type="text"
+            placeholder="// search files · symbols · agents · commands"
+          />
+        </div>
+        <div class="tb-controls">
+          <button onclick="window.yurWorkspace.home()" title="Return to your conversation">← CHAT</button>
+          <button onclick="openFolder()">OPEN FOLDER</button>
+          <button onclick="newFile()">NEW</button>
+          <button onclick="togglePalette()">⌘+⇧+P</button>
+          <button onclick="toggleChat()">CHAT</button>
+          <button onclick="window.yurWorkspace.home()">Return to chat</button>
+        </div>
+      </header>
+
+      <!-- ════════ ACTIVITY BAR ════════ -->
+      <aside class="activity-bar">
+        <button class="active" data-panel="files" title="Explorer">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M3 6h7l2 2h9v11H3z" />
+          </svg>
+          <span class="tooltip">EXPLORER</span>
+        </button>
+        <button data-panel="search" title="Search">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <span class="tooltip">SEARCH</span>
+        </button>
+        <button data-panel="git" title="Source Control · GET">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="6" cy="6" r="3" />
+            <circle cx="18" cy="18" r="3" />
+            <path d="M6 9v6a3 3 0 0 0 3 3h6" />
+          </svg>
+          <span class="tooltip">GIT · LENS · TREE-SITTER</span>
+        </button>
+        <button data-panel="agents" title="Agents">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" />
+          </svg>
+          <span class="tooltip">AGENTS</span>
+        </button>
+        <button data-panel="tools" title="Tools">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"
+            />
+          </svg>
+          <span class="tooltip">TOOLS</span>
+        </button>
+        <button data-panel="workflows" title="Workflows">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <rect x="3" y="3" width="6" height="6" />
+            <rect x="15" y="3" width="6" height="6" />
+            <rect x="9" y="15" width="6" height="6" />
+            <path d="M6 9v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9" />
+          </svg>
+          <span class="tooltip">WORKFLOWS</span>
+        </button>
+        <button data-panel="skills" title="Skills">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+          </svg>
+          <span class="tooltip">SKILLS</span>
+        </button>
+        <button data-panel="mermaid" title="Mermaid Wireframes">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <polygon points="12 2 22 12 12 22 2 12 12 2" />
+          </svg>
+          <span class="tooltip">MERMAID</span>
+        </button>
+        <button data-panel="html" title="HTML Studio">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          <span class="tooltip">HTML STUDIO</span>
+        </button>
+        <button data-panel="vault" title="Cognitive Vault">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          <span class="tooltip">COGNITIVE VAULT</span>
+        </button>
+        <button data-panel="browser" title="Browser">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polygon
+              points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+            />
+          </svg>
+          <span class="tooltip">BROWSER</span>
+        </button>
+        <button
+          data-panel="extensions"
+          class="stub"
+          title="Extensions (intentionally sovereign)"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              d="M20 11h-2a1.5 1.5 0 0 1 0-3h2v-3a2 2 0 0 0-2-2h-3v2a1.5 1.5 0 0 1-3 0V3H5a2 2 0 0 0-2 2v4h2a1.5 1.5 0 0 1 0 3H3v7a2 2 0 0 0 2 2h7v-2a1.5 1.5 0 0 1 3 0V21h3a2 2 0 0 0 2-2v-3"
+            />
+          </svg>
+          <span class="tooltip">EXTENSIONS · SOVEREIGN ONLY</span>
+        </button>
+        <button id="franklin-rail-toggle" data-franklin-open title="Open Franklin overwatch" aria-controls="franklin-panel" aria-pressed="false">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path d="M12 3 20 7.5v9L12 21l-8-4.5v-9z" />
+            <circle cx="12" cy="12" r="2.5" />
+            <path d="M8 12h1.5M14.5 12H16" />
+          </svg>
+          <span class="tooltip">FRANKLIN · OVERWATCH</span>
+        </button>
+        <div class="spacer"></div>
+        <button onclick="togglePanel()" title="Toggle Terminal">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>
+        </button>
+        <button onclick="toggleChat()" title="Toggle Chat">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            />
+          </svg>
+        </button>
+        <button title="Account · Sovereign">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2" />
+          </svg>
+        </button>
+        <button title="Settings">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+            />
+          </svg>
+        </button>
+      </aside>
+
+      <!-- ════════ SIDEBAR (multi-panel) ════════ -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <span id="sb-title">EXPLORER</span>
+          <div class="actions">
+            <button onclick="openFolder()" title="Open">⌂</button>
+            <button onclick="refreshActive()" title="Refresh">↻</button>
+          </div>
+        </div>
+
+        <!-- FILES -->
+        <div class="sidebar-panel active" data-panel="files">
+          <div class="file-tree" id="file-tree">
+            <div class="sb-empty">
+              // NO FOLDER OPEN
+              <br /><br />
+              Click "OPEN FOLDER" or use the button below.
+              <button onclick="openFolder()">OPEN FOLDER</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="sidebar-panel" data-panel="search">
+          <input
+            type="text"
+            class="sb-search-input"
+            placeholder="search across open files..."
+          />
+          <div class="sb-stub">
+            // WIRE TO RIPGREP / R2 GATEWAY (:6002) FOR FULL-FOLDER SEARCH
+          </div>
+        </div>
+
+        <!-- GIT / LENS / TREE-SITTER -->
+        <div class="sidebar-panel" data-panel="git">
+          <div class="sb-section-label">GIT (GET)</div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">main</span
+            ><span class="badge">CLEAN</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">Working tree: 0 modified</span>
+          </div>
+          <div class="sb-section-label">LENS · BLAME</div>
+          <div class="sb-stub">
+            // SHOWS LINE-LEVEL BLAME WHEN EDITOR HAS FOCUS · WIRE TO `git
+            blame` VIA R2
+          </div>
+          <div class="sb-section-label">TREE-SITTER · STRUCTURE</div>
+          <div class="sb-stub">
+            // PARSE TREE OF ACTIVE FILE · LOAD tree-sitter-wasm BINDINGS
+          </div>
+        </div>
+
+        <!-- AGENTS -->
+        <div class="sidebar-panel" data-panel="agents">
+          <div class="sb-section-label">SOVEREIGN SWARM · 10 AVATARS</div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">SOVEREIGN</span
+            ><span class="badge">orchestrator</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">FORGE</span
+            ><span class="badge">α compile</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">CRUCIBLE</span
+            ><span class="badge">β compile</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">MERIDIAN</span
+            ><span class="badge">α chunk</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">PARALLAX</span
+            ><span class="badge">β chunk</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">COLOSSUS</span
+            ><span class="badge">α code</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">PROMETHEUS</span
+            ><span class="badge">β code</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span><span class="name">ARBITER</span
+            ><span class="badge">verify</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">SENTINEL</span
+            ><span class="badge">watch</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">ORACLE</span
+            ><span class="badge">merge</span>
+          </div>
+          <div class="sb-section-label">ZONE AGENTS · 9 (Foundry)</div>
+          <div class="sb-row">
+            <span class="dot off"></span><span class="name">bid_pro :8088</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span
+            ><span class="name">land_development_pro</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span
+            ><span class="name">accounting_pro</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span><span class="name">safety_pro</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span
+            ><span class="name">sales_marketing_pro</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span><span class="name">+ 4 more</span>
+          </div>
+          <div class="sb-section-label">CONSOLES · 300 (registry)</div>
+          <div class="sb-stub">
+            // LOAD vault/big_load/consoles_registry.json VIA R3 (:6003)
+          </div>
+        </div>
+
+        <!-- TOOLS -->
+        <div class="sidebar-panel" data-panel="tools">
+          <div class="sb-section-label">YUR-NATIVE TOOLS</div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">forensic-ledger</span
+            ><span class="badge">sign</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">franklin-arbiter</span
+            ><span class="badge">govern</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">blake-birthmark</span
+            ><span class="badge">hash</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">spine-write</span
+            ><span class="badge">persist</span>
+          </div>
+          <div class="sb-section-label">EXTERNAL TOOLS</div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">mcp-filesystem</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span><span class="name">tree-sitter</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">accelerate (HF)</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">langgraph-sdk</span>
+          </div>
+        </div>
+
+        <!-- WORKFLOWS -->
+        <div class="sidebar-panel" data-panel="workflows">
+          <div class="sb-section-label">WORKFLOWS</div>
+          <button class="sb-row" onclick="window.studio.factory.open()" style="width:100%;background:transparent;color:inherit;border:0;text-align:left;cursor:pointer">
+            <span class="dot on"></span><span class="name">Specialist Factory ↗</span>
+          </button>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">forge_agent</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">deploy_zone</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">ingest_doc → dna</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot off"></span
+            ><span class="name">+ new workflow</span>
+          </div>
+          <div class="sb-stub">
+            // OPEN SPECIALIST FACTORY TO CREATE MISSIONS, VALIDATE OUTCOMES AND COMMIT AGENTS
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div class="sidebar-panel" data-panel="skills">
+          <input
+            type="text"
+            class="sb-search-input"
+            placeholder="search skills..."
+          />
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">vector-database</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">csi-masterformat</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">frontend-design</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">bayesian-pricer</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">pgvector</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">react-three-fiber</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span
+            ><span class="name">monaco-editor</span>
+          </div>
+          <div class="sb-stub">
+            // LOAD catalog/_global/index.json · WIRE TO R2
+            SEARCH
+          </div>
+        </div>
+
+        <!-- MERMAID -->
+        <div class="sidebar-panel" data-panel="mermaid">
+          <div class="sb-section-label">DIAGRAMS</div>
+          <div class="sb-row" onclick="openMermaid('graph')">
+            <span class="dot on"></span
+            ><span class="name">graph (flowchart)</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('seq')">
+            <span class="dot on"></span
+            ><span class="name">sequence diagram</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('class')">
+            <span class="dot on"></span><span class="name">class diagram</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('state')">
+            <span class="dot on"></span><span class="name">state diagram</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('er')">
+            <span class="dot on"></span><span class="name">ER diagram</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('mindmap')">
+            <span class="dot on"></span><span class="name">mindmap</span>
+          </div>
+          <div class="sb-row" onclick="openMermaid('gantt')">
+            <span class="dot on"></span><span class="name">gantt chart</span>
+          </div>
+        </div>
+
+        <!-- HTML STUDIO -->
+        <div class="sidebar-panel" data-panel="html">
+          <div class="sb-section-label">HTML STUDIO</div>
+          <div class="sb-row" onclick="openHtmlStudio('blank')">
+            <span class="dot on"></span><span class="name">+ blank HTML</span>
+          </div>
+          <div class="sb-row" onclick="openHtmlStudio('brand')">
+            <span class="dot on"></span
+            ><span class="name">brand-card template</span>
+          </div>
+          <div class="sb-row" onclick="openHtmlStudio('webflow')">
+            <span class="dot on"></span
+            ><span class="name">webflow-style layout</span>
+          </div>
+          <div class="sb-stub">
+            // LIVE PREVIEW IN SPLIT VIEW · MONACO LEFT, IFRAME RIGHT
+          </div>
+        </div>
+
+        <!-- COGNITIVE VAULT -->
+        <div class="sidebar-panel" data-panel="vault">
+          <div class="sb-section-label">VAULT · big_load</div>
+          <div class="sb-row">
+            <span class="dot on"></span
+            ><span class="name">consoles_registry.json</span
+            ><span class="badge">300</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot on"></span><span class="name">forensic.ledger</span
+            ><span class="badge">signed</span>
+          </div>
+          <div class="sb-row">
+            <span class="dot warn"></span><span class="name">forge_events</span>
+          </div>
+          <div class="sb-section-label">DNA SEARCH</div>
+          <input
+            type="text"
+            class="sb-search-input"
+            placeholder="grep console DNA by tag..."
+          />
+          <div class="sb-stub">
+            // WIRE TO sovereign_console_router.py REGISTRY LOADER
+          </div>
+        </div>
+
+        <!-- BROWSER -->
+        <div class="sidebar-panel" data-panel="browser">
+          <div class="sb-section-label">BOOKMARKS</div>
+          <div class="sb-row" onclick="openBrowser('https://yur-ai.com')">
+            <span class="dot on"></span><span class="name">yur-ai.com</span>
+          </div>
+          <div class="sb-row" onclick="openBrowser('https://franklin-os.com')">
+            <span class="dot warn"></span
+            ><span class="name">franklin-os.com</span>
+          </div>
+          <div class="sb-row" onclick="openBrowser('http://localhost:3010')">
+            <span class="dot on"></span
+            ><span class="name">monaco-core :3010</span>
+          </div>
+          <div class="sb-row" onclick="openBrowser('http://localhost:3000')">
+            <span class="dot on"></span><span class="name">face :3000</span>
+          </div>
+          <div class="sb-row" onclick="openBrowser('https://ai.google.dev')">
+            <span class="dot on"></span
+            ><span class="name">google ai studio</span>
+          </div>
+          <div
+            class="sb-row"
+            onclick="openBrowser('https://platform.openai.com')"
+          >
+            <span class="dot on"></span
+            ><span class="name">openai platform</span>
+          </div>
+          <div class="sb-row" onclick="openBrowser('about:blank')">
+            <span class="dot off"></span><span class="name">+ new tab</span>
+          </div>
+        </div>
+
+        <!-- EXTENSIONS -->
+        <div class="sidebar-panel" data-panel="extensions">
+          <div class="sb-stub">
+            // NO MARKETPLACE BY DESIGN.<br />
+            Sovereign extensions are skill files in the YUR catalog.<br />
+            Browse the SKILLS portal instead.
+          </div>
+        </div>
+      </aside>
+
+      <!-- ════════ EDITOR AREA ════════ -->
+      <main class="editor-area">
+        <div class="editor-tabs" id="editor-tabs"></div>
+        <div class="editor-body">
+          <div class="editor-view active" data-view="monaco">
+            <div id="monaco-host"></div>
+          </div>
+          <div class="editor-view" data-view="mermaid" id="mermaid-view">
+            <div class="split">
+              <div class="left" id="mermaid-editor-host"></div>
+              <div class="right mermaid-render">
+                <div id="mermaid-render-target"></div>
+              </div>
+            </div>
+          </div>
+          <div class="editor-view" data-view="html" id="html-view">
+            <div class="split">
+              <div class="left" id="html-editor-host"></div>
+              <div class="right preview-iframe">
+                <iframe
+                  id="html-preview"
+                  sandbox="allow-scripts"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+          <div
+            class="editor-view"
+            data-view="browser"
+            id="browser-view"
+            style="flex-direction: column"
+          >
+            <div class="browser-bar">
+              <button
+                onclick="
+                  document
+                    .getElementById('browser-frame')
+                    .contentWindow.history.back()
+                "
+              >
+                ←
+              </button>
+              <button
+                onclick="
+                  document
+                    .getElementById('browser-frame')
+                    .contentWindow.history.forward()
+                "
+              >
+                →
+              </button>
+              <button
+                onclick="
+                  document.getElementById('browser-frame').src =
+                    document.getElementById('browser-url').value
+                "
+              >
+                ↻
+              </button>
+              <input type="text" id="browser-url" placeholder="https://..." />
+              <button
+                onclick="
+                  document.getElementById('browser-frame').src =
+                    document.getElementById('browser-url').value
+                "
+              >
+                GO
+              </button>
+            </div>
+            <iframe
+              id="browser-frame"
+              sandbox="allow-scripts allow-forms"
+              style="flex: 1; width: 100%; border: none; background: #fff"
+            ></iframe>
+          </div>
+          <div class="editor-welcome" id="welcome"><div><h2>Your work, in one place.</h2><p>Open a folder, edit a file, or start something new.</p><div style="display:flex;justify-content:center;gap:16px;margin-top:18px"><button onclick="window.yurWorkspace.command('open-folder').catch(() => {})">Open folder</button><button onclick="window.yurWorkspace.command('new-file').catch(() => {})">New file</button></div></div></div>
+        </div>
+      </main>
+
+      <!-- ════════ RIGHT RAIL: MULTI-CHAT ════════ -->
+      <aside class="right-rail">
+        <div class="rr-header">
+          <span class="title">MULTI-CHAT</span>
+          <span class="close" onclick="toggleChat()">✕</span>
+        </div>
+        <div class="rr-tabs" id="rr-tabs">
+          <div class="rr-tab active" data-bot="claude">
+            <span class="model-dot" style="background: #cc2233"></span>CLAUDE
+          </div>
+          <div class="rr-tab" data-bot="gemini">
+            <span class="model-dot" style="background: #4ade80"></span>GEMINI
+          </div>
+          <div class="rr-tab" data-bot="gpt">
+            <span class="model-dot" style="background: #67e8f9"></span>GPT
+          </div>
+          <div class="rr-tab" data-bot="grok">
+            <span class="model-dot" style="background: #facc15"></span>GROK
+          </div>
+          <div class="rr-tab" data-bot="local">
+            <span class="model-dot" style="background: #c084fc"></span>LOCAL
+          </div>
+          <div class="rr-tab" data-bot="all">
+            <span class="model-dot" style="background: #f4f8ff"></span>ALL
+          </div>
+        </div>
+        <div class="rr-body" id="rr-body"></div>
+        <div class="rr-input">
+          <textarea
+            id="chat-input"
+            placeholder="// ask the active model · Enter to send · Shift+Enter for newline"
+            rows="2"
+          ></textarea>
+          <button onclick="sendChat()">SEND</button>
+        </div>
+      </aside>
+
+      <!-- ════════ PANEL (terminal) ════════ -->
+      <div class="panel">
+        <div class="panel-tabs">
+          <div class="panel-tab active">TERMINAL</div>
+          <div class="panel-tab disabled">PROBLEMS</div>
+          <div class="panel-tab disabled">OUTPUT</div>
+          <div class="panel-tab disabled">DEBUG</div>
+          <div class="panel-tab disabled">PORTS</div>
+          <select
+            class="panel-shell-picker"
+            id="shell-picker"
+            onchange="onShellChange()"
+          >
+            <option value="powershell">PowerShell</option>
+            <option value="bash">Bash</option>
+            <option value="wsl">WSL · Ubuntu</option>
+            <option value="pwsh">PowerShell Core (pwsh)</option>
+            <option value="cmd">cmd.exe</option>
+          </select>
+          <div class="panel-actions">
+            <button onclick="termClear()" title="Clear">⌫</button>
+            <button
+              id="terminal-split"
+              onclick="splitTerminal().catch(error => workspaceNotice(error.message))"
+              title="Split terminal (maximum two panes)"
+              aria-label="Split terminal"
+            >
+              ⊟
+            </button>
+            <button onclick="togglePanel()" title="Close">✕</button>
+          </div>
+        </div>
+        <div class="panel-body"><div id="terminal-host"></div></div>
+      </div>
+
+      <!-- ════════ STATUS BAR ════════ -->
+      <footer class="status-bar">
+        <div class="sb-item brand">
+          <span
+            class="d"
+            style="
+              background: #cc2233;
+              box-shadow: 0 0 6px rgba(204, 34, 51, 0.7);
+            "
+          ></span
+          >YUR OS
+        </div>
+        <div class="sb-substrate" title="K1-K6 Kernels · R1-R6 Runtimes">
+          <span class="label">K</span>
+          <span class="blip" title="K1 Autopoiesis"></span>
+          <span class="blip" title="K2 Cognitive"></span>
+          <span class="blip" title="K3 Data"></span>
+          <span class="blip" title="K4 Security"></span>
+          <span class="blip" title="K5 Orchestration"></span>
+          <span class="blip" title="K6 Analytics"></span>
+          <span class="label">R</span>
+          <span class="blip" title="R1 WebSocket"></span>
+          <span class="blip" title="R2 Gateway"></span>
+          <span class="blip" title="R3 Static"></span>
+          <span class="blip" title="R4 Worker"></span>
+          <span class="blip off" title="R5 ML"></span>
+          <span class="blip off" title="R6 Cron"></span>
+        </div>
+        <div class="sb-item">
+          <span class="d" style="background: #4ade80"></span><span>main</span>
+        </div>
+        <div class="sb-item" id="sb-file">// no file</div>
+        <div class="sb-spacer"></div>
+        <div class="sb-item clickable" onclick="cycleModel()" id="sb-model">
+          <span class="sb-model">claude-opus-4-7 · CLOUD</span>
+        </div>
+        <div class="sb-item clickable" onclick="togglePanel()">⛶ TERM</div>
+        <div class="sb-item">UTF-8</div>
+        <div class="sb-item">LF</div>
+        <div class="sb-item" id="sb-lang">plaintext</div>
+        <div class="sb-item" id="sb-pos">Ln 1, Col 1</div>
+      </footer>
+    </div>
+
+    <!-- COMMAND PALETTE -->
+    <div
+      class="palette-backdrop hidden"
+      id="palette"
+      onclick="if (event.target === this) togglePalette();"
+    >
+      <div class="palette">
+        <input
+          type="text"
+          id="palette-input"
+          placeholder="Type a command · > actions · : line · @ symbol · # tag"
+        />
+        <div class="results" id="palette-results"></div>
+      </div>
+    </div>
+
+    <script src="terminal-panes.js"></script>
+    <script>
+      "use strict";
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+      }
+
+      // ─────────────── STATE ───────────────
+      const state = {
+        folder: null,
+        files: new Map(),
+        openTabs: [],
+        activeTab: null,
+        editor: null,
+        mermaidEditor: null,
+        htmlEditor: null,
+        term: null,
+        fitAddon: null,
+        termBuffer: "",
+        currentShell: "powershell",
+        chatBot: "claude",
+        chatHistory: {
+          claude: [],
+          gemini: [],
+          gpt: [],
+          grok: [],
+          local: [],
+          all: [],
+        },
+        models: [
+          "auto · foundry",
+        ],
+        modelIdx: 0,
+        ptyId: null,
+      };
+
+      // Load live models from Foundry
+      async function loadFoundryModels() {
+        if (!window.studio || !window.studio.foundry) return;
+        try {
+          const r = await window.studio.foundry.models();
+          if (r && r.status === 200 && r.json) {
+            const models = r.json.visible_models || r.json.models || [];
+            if (models.length > 0) {
+              state.models = models.map(m => `${m.kind || "local"} · ${m.name}`);
+              // Update status bar
+              const sb = document.querySelector("#sb-model .sb-model");
+              if (sb) sb.textContent = state.models[0];
+            }
+          }
+        } catch {}
+      }
+
+      const workspaceScripts = new Map();
+      let editorReadyPromise = null;
+      let terminalReadyPromise = null;
+      let mermaidReadyPromise = null;
+      let mermaidRenderRevision = 0;
+      let mountedStudio = null;
+      let mountedStudioActive = false;
+      let mountedTerminalOpen = false;
+      let terminalUnsubscribe = null;
+      let terminalPanes = null;
+      const savingFiles = new WeakSet();
+
+      function loadWorkspaceScript(source) {
+        if (workspaceScripts.has(source)) return workspaceScripts.get(source);
+        const pending = new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          const timer = setTimeout(() => {
+            script.remove();
+            reject(new Error("Workspace component loading timed out."));
+          }, 20000);
+          script.src = source;
+          script.onload = () => { clearTimeout(timer); resolve(); };
+          script.onerror = () => {
+            clearTimeout(timer);
+            script.remove();
+            reject(new Error("Workspace component is unavailable. Check the installed application files."));
+          };
+          document.head.appendChild(script);
+        }).catch(error => { workspaceScripts.delete(source); throw error; });
+        workspaceScripts.set(source, pending);
+        return pending;
+      }
+
+      function loadWorkspaceStyle(id, source) {
+        if (document.getElementById(id)) return;
+        const link = document.createElement("link");
+        link.id = id;
+        link.rel = "stylesheet";
+        link.href = source;
+        document.head.appendChild(link);
+      }
+
+      async function loadTerminalLibrary(source, exportName) {
+        if (window[exportName]) return;
+        // Monaco installs an AMD loader; xterm must use that loader when present.
+        if (window.require && window.require.config && window.define && window.define.amd) {
+          const exports = await new Promise((resolve, reject) => window.require([new URL(source, location.href).href], resolve, reject));
+          window[exportName] = exportName === "Terminal" ? exports.Terminal : exportName === "mermaid" ? (exports.default || exports) : exports;
+        } else {
+          await loadWorkspaceScript(source);
+        }
+      }
+
+      function workspaceNotice(message) {
+        let notice = document.getElementById("workspace-notice");
+        if (!notice) {
+          notice = document.createElement("div");
+          notice.id = "workspace-notice";
+          notice.setAttribute("role", "status");
+          notice.style.cssText = "padding:10px 16px;color:#facc15;background:#18181b;line-height:1.5";
+          document.querySelector(".editor-area").prepend(notice);
+        }
+        notice.textContent = message;
+        notice.hidden = !message;
+      }
+
+      function ensureMermaid() {
+        if (!mermaidReadyPromise) mermaidReadyPromise = (async () => {
+          await loadTerminalLibrary("../node_modules/mermaid/dist/mermaid.min.js", "mermaid");
+          window.mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        themeVariables: {
+          darkMode: true,
+          background: "#101722",
+          primaryColor: "#1c2a3e",
+          primaryTextColor: "#e6edf5",
+          primaryBorderColor: "#53677f",
+          lineColor: "#b8c8da",
+          secondaryColor: "#142131",
+          tertiaryColor: "#2b3e56",
+        },
+          });
+          return true;
+        })().catch(error => { mermaidReadyPromise = null; workspaceNotice(error.message); return false; });
+        return mermaidReadyPromise;
+      }
+
+      // ─────────────── MONACO INIT ───────────────
+      function ensureWorkspaceEditors() {
+        if (state.editor) return Promise.resolve(true);
+        if (editorReadyPromise) return editorReadyPromise;
+        editorReadyPromise = (async () => {
+          if (!window.require || !window.require.config) await loadWorkspaceScript("../node_modules/monaco-editor/min/vs/loader.js");
+          window.require.config({
+        waitSeconds: 20,
+        paths: {
+          vs: new URL("../node_modules/monaco-editor/min/vs", location.href).href,
+        },
+      });
+          await new Promise((resolve, reject) => window.require(["vs/editor/editor.main"], function () {
+            try {
+        const rootStyle = typeof getComputedStyle === "function" ? getComputedStyle(document.documentElement) : null;
+        const themeColor = (name, fallback) => rootStyle?.getPropertyValue(name).trim() || fallback;
+        const editorTheme = {
+          base: "vs-dark", inherit: true,
+          rules: [
+            { token: "", foreground: "e6edf5" },
+            { token: "comment", foreground: "a0b1c5", fontStyle: "italic" },
+            { token: "keyword", foreground: "c7d7eb" },
+            { token: "string", foreground: "9adbb3" },
+            { token: "number", foreground: "b1d6ff" },
+            { token: "type", foreground: "f3d394" },
+            { token: "function", foreground: "e6edf5" },
+            { token: "variable", foreground: "b8c8da" },
+            { token: "tag", foreground: "b1d6ff" },
+            { token: "attribute.name", foreground: "f3d394" },
+            { token: "attribute.value", foreground: "9adbb3" },
+          ],
+          colors: {
+            "editor.background": themeColor("--dt-bg", "#101722"),
+            "editor.foreground": themeColor("--dt-text", "#e6edf5"),
+            "editorCursor.foreground": themeColor("--dt-silver", "#c7d7eb"),
+            "editor.lineHighlightBackground": themeColor("--dt-panel", "#142131"),
+            "editor.selectionBackground": themeColor("--dt-active", "#2b3e56"),
+            "editorLineNumber.foreground": themeColor("--dt-muted", "#a0b1c5"),
+            "editorLineNumber.activeForeground": themeColor("--dt-text", "#e6edf5"),
+            "editorGutter.background": themeColor("--dt-bg", "#101722"),
+            "editorIndentGuide.background1": themeColor("--dt-border", "#607690"),
+            "scrollbarSlider.background": "#53677f80",
+            "scrollbarSlider.hoverBackground": "#53677fcc",
+          },
+        };
+        monaco.editor.defineTheme("yur-dark", editorTheme);
+        // Both saved appearance names resolve to the shared Desktop finish.
+        monaco.editor.defineTheme("yur-light", editorTheme);
+        const baseOpts = {
+          theme: "yur-dark",
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: 13,
+          lineHeight: 20,
+          minimap: { enabled: true, renderCharacters: false },
+          automaticLayout: true,
+          scrollBeyondLastLine: false,
+          fontLigatures: true,
+          smoothScrolling: true,
+          cursorBlinking: "phase",
+          cursorSmoothCaretAnimation: "on",
+          renderLineHighlight: "all",
+          bracketPairColorization: { enabled: true },
+          // Monaco 0.52 wordHighlighter leaves its delayed promise unhandled on
+          // model switch. Disable those jobs; keep other editor errors visible.
+          occurrencesHighlight: "off",
+        };
+        state.editor = monaco.editor.create(
+          document.getElementById("monaco-host"),
+          { value: "", language: "plaintext", ...baseOpts },
+        );
+        state.editor.onDidChangeModelContent(() => markEditorDirty(state.editor));
+        state.editor.onDidChangeCursorPosition((e) => {
+          document.getElementById("sb-pos").textContent =
+            `Ln ${e.position.lineNumber}, Col ${e.position.column}`;
+        });
+        state.editor.onDidChangeModelLanguage((e) => {
+          document.getElementById("sb-lang").textContent = e.newLanguage;
+        });
+
+        state.mermaidEditor = monaco.editor.create(
+          document.getElementById("mermaid-editor-host"),
+          {
+            value: `graph TD\n  A[Start] --> B{Decision}\n  B -->|yes| C[Forge Agent]\n  B -->|no| D[Wait]\n  C --> E[Sign · Ledger]\n  E --> F[Deploy :8088]`,
+            language: "markdown",
+            ...baseOpts,
+          },
+        );
+        state.mermaidEditor.onDidChangeModelContent(() => { markEditorDirty(state.mermaidEditor); renderMermaid(); });
+
+        state.htmlEditor = monaco.editor.create(
+          document.getElementById("html-editor-host"),
+          {
+            value: `<!doctype html>\n<html><head><title>preview</title>\n<style>body{background:#000;color:#f4f8ff;font-family:monospace;padding:40px}</style>\n</head>\n<body>\n  <h1>// LIVE PREVIEW</h1>\n  <p>Edit on the left. See it render on the right.</p>\n</body>\n</html>`,
+            language: "html",
+            ...baseOpts,
+          },
+        );
+        state.htmlEditor.onDidChangeModelContent(() => { markEditorDirty(state.htmlEditor); renderHtml(); });
+        renderHtml();
+              workspaceNotice("");
+              resolve();
+            } catch (error) { reject(error); }
+          }, reject));
+          return true;
+        })().catch(error => { editorReadyPromise = null; workspaceNotice(error.message || "Editor could not load."); return false; });
+        return editorReadyPromise;
+      }
+
+      function activateWorkspacePanel(panel) {
+        const buttons = [...document.querySelectorAll(".activity-bar button[data-panel]")];
+        const button = buttons.find(candidate => candidate.dataset.panel === panel) || buttons.find(candidate => candidate.dataset.panel === "files");
+        if (!button) return;
+        buttons.forEach(candidate => candidate.classList.toggle("active", candidate === button));
+        document.querySelectorAll(".sidebar-panel").forEach(candidate => candidate.classList.toggle("active", candidate.dataset.panel === button.dataset.panel));
+        const titles = { files: "EXPLORER", search: "SEARCH", git: "GIT · LENS · TREE", agents: "AGENTS", tools: "TOOLS", workflows: "WORKFLOWS", skills: "SKILLS", mermaid: "MERMAID", html: "HTML STUDIO", vault: "COGNITIVE VAULT", browser: "BROWSER", extensions: "EXTENSIONS" };
+        document.getElementById("sb-title").textContent = titles[button.dataset.panel] || "WORKSPACE";
+        if (["files", "mermaid", "html"].includes(button.dataset.panel)) ensureWorkspaceEditors();
+      }
+
+      function openWorkspace(panel = "files") {
+        window.dispatchEvent(new CustomEvent("yur:workspace-open", { detail: { panel } }));
+      }
+
+      function showConversationHome() {
+        mountedStudioActive = false;
+        document.getElementById("palette").classList.add("hidden");
+        document.body.classList.add("yur-conversation-mode");
+        const home = document.getElementById("yur-conversation");
+        if (home) home.hidden = false;
+        window.dispatchEvent(new Event("yur:conversation-home"));
+      }
+
+      function mountStudio(hosts) {
+        for (const key of ["files", "editor", "terminal", "status", "folder"]) {
+          if (!(hosts?.[key] instanceof HTMLElement)) throw new Error(`Studio ${key} host is unavailable.`);
+        }
+        if (!mountedStudio) {
+          const tree = document.getElementById("file-tree");
+          const editor = document.querySelector(".editor-area");
+          const terminal = document.querySelector(".panel");
+          const folder = document.getElementById("sb-title");
+          const status = ["sb-file", "sb-lang", "sb-pos"].map(id => document.getElementById(id));
+          hosts.files.appendChild(tree);
+          hosts.editor.replaceChildren(editor);
+          hosts.terminal.replaceChildren(terminal);
+          hosts.folder.replaceChildren(folder);
+          hosts.status.replaceChildren(...status);
+          document.getElementById("yur-conversation").appendChild(document.getElementById("palette"));
+          mountedStudio = { ...hosts, terminalPanel: terminal };
+          terminal.style.display = "none";
+          folder.textContent = state.folder?.name || "Files";
+        }
+        return true;
+      }
+
+      function layoutStudio() {
+        if (!mountedStudioActive || !mountedStudio?.editor.isConnected || mountedStudio.editor.getBoundingClientRect().width === 0) return;
+        [state.editor, state.mermaidEditor, state.htmlEditor].forEach(editor => editor && editor.layout());
+        if (mountedTerminalOpen && state.term && mountedStudio.terminal.getBoundingClientRect().height > 0) {
+          state.fitAddon.fit();
+          if (state.ptyId) window.studio.terminal.resize(state.ptyId, state.term.cols, state.term.rows);
+          terminalPanes?.fit();
+        }
+      }
+
+      function showStudio() {
+        if (!mountedStudio) throw new Error("Studio has not been mounted.");
+        mountedStudioActive = true;
+        if (state.editor) monaco.editor.setTheme(document.getElementById("yur-conversation")?.dataset.theme === "dark" ? "yur-dark" : "yur-light");
+        requestAnimationFrame(layoutStudio);
+        return true;
+      }
+
+      async function studioCommand(name) {
+        const commands = {
+          "open-folder": openFolder, "open-file": openNativeFileDialog, "new-file": newFile,
+          save: saveActive, "save-as": () => saveActive(true), html: () => openHtmlStudio("blank"),
+          mermaid: () => openMermaid("graph"), terminal: togglePanel, refresh: refreshTree, "clear-terminal": termClear,
+        };
+        if (!Object.prototype.hasOwnProperty.call(commands, name)) throw new Error("Unknown Studio command.");
+        try { return await commands[name](); }
+        catch (error) { workspaceNotice(error.message || "Studio action failed."); throw error; }
+      }
+
+      window.addEventListener("resize", layoutStudio);
+      window.yurWorkspace = Object.freeze({
+        setDefaultShell: shell => { if (!state.ptyId && ['powershell', 'pwsh', 'cmd', 'bash', 'wsl'].includes(shell)) { state.currentShell = shell; document.getElementById('shell-picker').value = shell; } },
+        open: openWorkspace, home: showConversationHome, mount: mountStudio, show: showStudio,
+        hide: () => { mountedStudioActive = false; document.getElementById("palette").classList.add("hidden"); }, command: studioCommand,
+        setTheme: theme => { if (state.editor) monaco.editor.setTheme(theme === "dark" ? "yur-dark" : "yur-light"); },
+        openCode: async ({ content, language = "plaintext" }) => {
+          if (typeof content !== "string" || content.length > 200000) throw new Error("Choose a code block under 200,000 characters.");
+          if (!(await ensureWorkspaceEditors())) throw new Error("The local editor could not load.");
+          const aliases = { js: "javascript", ts: "typescript", py: "python", sh: "shell", bash: "shell", md: "markdown", yml: "yaml" };
+          const chosen = aliases[language] || language;
+          const lang = monaco.languages.getLanguages().some(item => item.id === chosen) ? chosen : "plaintext";
+          const extensions = { javascript: "js", typescript: "ts", python: "py", html: "html", css: "css", json: "json", markdown: "md", yaml: "yaml", shell: "sh" };
+          let index = 1; const ext = extensions[lang] || "txt";
+          while (state.files.has(`conversation-${index}.${ext}`)) index++;
+          const name = `conversation-${index}.${ext}`;
+          state.files.set(name, { handle: null, model: monaco.editor.createModel(content, lang), dirty: true, lang, type: "code" });
+          state.openTabs.push(name);
+          renderTabs();
+          // Opening a code block never evaluates it or writes it to disk.
+          if (mountedStudioActive) { switchTab(name); document.getElementById("welcome").classList.add("hidden"); }
+          return { name };
+        },
+      });
+
+      // ─────────────── ACTIVITY / SIDEBAR SWITCHING ───────────────
+      document
+        .querySelectorAll(".activity-bar button[data-panel]")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            if (
+              btn.classList.contains("stub") &&
+              btn.dataset.panel !== "extensions"
+            )
+              return;
+            activateWorkspacePanel(btn.dataset.panel);
+          });
+        });
+
+      function refreshActive() {
+        const active = document.querySelector(".activity-bar button.active")
+          ?.dataset.panel;
+        if (active === "files") refreshTree();
+      }
+
+      // ─────────────── FILE SYSTEM ───────────────
+      async function openFolder() {
+        if (window.studio?.file) {
+          const result = await window.studio.file.dialogFolder();
+          if (result.canceled || !result.filePaths?.length) return false;
+          const path = normalizeNativePath(result.filePaths[0]);
+          state.folder = { native: true, path, name: path.split("/").filter(Boolean).pop() || path };
+          document.getElementById("sb-title").textContent = state.folder.name;
+          await refreshTree();
+          return true;
+        }
+        if (!("showDirectoryPicker" in window)) {
+          alert("File System Access API not supported. Use Chrome or Edge.");
+          return;
+        }
+        try {
+          const handle = await window.showDirectoryPicker();
+          state.folder = handle;
+          document.getElementById("sb-title").textContent =
+            handle.name.toUpperCase();
+          await refreshTree();
+        } catch (error) { if (error.name !== "AbortError") throw error; }
+      }
+
+      function normalizeNativePath(path) {
+        if (typeof path !== "string" || path.includes("\0") || !/^(?:[a-zA-Z]:[\\/]|[\\/]{2}|\/)/.test(path)) throw new Error("Choose an absolute file or folder path.");
+        return path.replace(/\\/g, "/");
+      }
+
+      async function openNativeFileDialog() {
+        if (!window.studio?.file) throw new Error("Native file dialogs require YUR Desktop.");
+        const result = await window.studio.file.dialogOpen();
+        if (result.canceled || !result.filePaths?.length) return false;
+        return openNativeFile(result.filePaths[0]);
+      }
+
+      async function openNativeFile(filePath, node) {
+        const path = normalizeNativePath(filePath);
+        if (!(await ensureWorkspaceEditors())) throw new Error("The editor could not be initialized.");
+        let file = state.files.get(path);
+        if (!file) {
+          const result = await window.studio.file.read(path);
+          if (!result?.ok || typeof result.content !== "string") throw new Error(result?.error || "Could not read the selected file.");
+          const lang = langForFile(path);
+          file = { nativePath: path, handle: null, model: monaco.editor.createModel(result.content, lang), dirty: false, lang, type: "code" };
+          state.files.set(path, file);
+        }
+        if (!state.openTabs.includes(path)) state.openTabs.push(path);
+        switchTab(path);
+        document.getElementById("welcome").classList.add("hidden");
+        document.querySelectorAll(".sb-tree-node").forEach(item => item.classList.toggle("active", item === node));
+        workspaceNotice("");
+        requestAnimationFrame(layoutStudio);
+        return true;
+      }
+
+      async function renderNativeDir(dirPath, container, depth) {
+        const result = await window.studio.file.list(dirPath);
+        if (!result?.ok || !Array.isArray(result.items)) throw new Error(result?.error || "Could not list the selected folder.");
+        const entries = result.items.filter(item => typeof item.name === "string" && !/[\\/]/.test(item.name)).sort((a, b) => Number(b.isDir) - Number(a.isDir) || a.name.localeCompare(b.name));
+        for (const entry of entries) {
+          const path = dirPath.replace(/\/$/, "") + "/" + entry.name;
+          const node = document.createElement("div");
+          node.className = "sb-tree-node";
+          node.style.paddingLeft = `${6 + depth * 12}px`;
+          node.tabIndex = 0;
+          node.setAttribute("role", "button");
+          node.title = path;
+          node.innerHTML = `<span class="chev">${entry.isDir ? "▸" : ""}</span><span class="icon">${entry.isDir ? "▾" : "◆"}</span><span>${escapeHtml(entry.name)}</span>`;
+          const child = entry.isDir ? document.createElement("div") : null;
+          if (child) { child.hidden = true; node.setAttribute("aria-expanded", "false"); }
+          const activate = async () => {
+            try {
+              if (!child) { await openNativeFile(path, node); return; }
+              child.hidden = !child.hidden;
+              node.setAttribute("aria-expanded", String(!child.hidden));
+              node.querySelector(".chev").textContent = child.hidden ? "▸" : "▾";
+              if (!child.hidden && !child.dataset.loaded) { await renderNativeDir(path, child, depth + 1); child.dataset.loaded = "1"; }
+            } catch (error) { workspaceNotice(error.message); }
+          };
+          node.addEventListener("click", activate);
+          node.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); activate(); } });
+          container.appendChild(node);
+          if (child) container.appendChild(child);
+        }
+      }
+
+      async function refreshTree() {
+        if (!state.folder) return;
+        const tree = document.getElementById("file-tree");
+        tree.innerHTML = "";
+        if (state.folder.native) await renderNativeDir(state.folder.path, tree, 0);
+        else await renderDir(state.folder, tree, 0);
+        workspaceNotice("");
+      }
+      async function renderDir(dirHandle, container, depth, prefix = "") {
+        const entries = [];
+        for await (const [name, h] of dirHandle.entries()) {
+          if (
+            name.startsWith(".") ||
+            name === "node_modules" ||
+            name === "__pycache__"
+          )
+            continue;
+          entries.push({ name, handle: h });
+        }
+        entries.sort((a, b) =>
+          a.handle.kind !== b.handle.kind
+            ? a.handle.kind === "directory"
+              ? -1
+              : 1
+            : a.name.localeCompare(b.name),
+        );
+        for (const e of entries) {
+          const path = prefix + e.name;
+          const node = document.createElement("div");
+          node.className = "sb-tree-node";
+          node.style.paddingLeft = 6 + depth * 12 + "px";
+          const isDir = e.handle.kind === "directory";
+          node.innerHTML = `<span class="chev">${isDir ? "▸" : ""}</span><span class="icon">${isDir ? "▾" : "◆"}</span><span>${escapeHtml(e.name)}</span>`;
+          if (isDir) {
+            let expanded = false;
+            const child = document.createElement("div");
+            child.style.display = "none";
+            node.addEventListener("click", async () => {
+              expanded = !expanded;
+              node.querySelector(".chev").textContent = expanded ? "▾" : "▸";
+              child.style.display = expanded ? "" : "none";
+              if (expanded && !child.dataset.loaded) {
+                await renderDir(e.handle, child, depth + 1, path + "/");
+                child.dataset.loaded = "1";
+              }
+            });
+            container.appendChild(node);
+            container.appendChild(child);
+          } else {
+            node.addEventListener("click", () =>
+              openFile(path, e.handle, node),
+            );
+            container.appendChild(node);
+          }
+        }
+      }
+
+      const EXT_TO_LANG = {
+        js: "javascript",
+        ts: "typescript",
+        jsx: "javascript",
+        tsx: "typescript",
+        py: "python",
+        rb: "ruby",
+        go: "go",
+        rs: "rust",
+        java: "java",
+        c: "c",
+        cpp: "cpp",
+        cs: "csharp",
+        html: "html",
+        css: "css",
+        json: "json",
+        yaml: "yaml",
+        yml: "yaml",
+        md: "markdown",
+        txt: "plaintext",
+        sh: "shell",
+        ps1: "powershell",
+        sql: "sql",
+        xml: "xml",
+      };
+      function langForFile(name) {
+        const ext = name.toLowerCase().split(".").pop();
+        return EXT_TO_LANG[ext] || "plaintext";
+      }
+
+      async function openFile(path, handle, node) {
+        if (!(await ensureWorkspaceEditors())) return;
+        let f = state.files.get(path);
+        if (!f) {
+          try {
+            const file = await handle.getFile();
+            const text = await file.text();
+            const lang = langForFile(path);
+            const model = monaco.editor.createModel(text, lang);
+            f = { handle, model, dirty: false, lang, type: "code" };
+            state.files.set(path, f);
+          } catch (e) {
+            alert("Open failed: " + e.message);
+            return;
+          }
+        }
+        if (!state.openTabs.includes(path)) state.openTabs.push(path);
+        switchTab(path);
+        document.getElementById("welcome").classList.add("hidden");
+        document
+          .querySelectorAll(".sb-tree-node")
+          .forEach((n) => n.classList.remove("active"));
+        if (node) node.classList.add("active");
+      }
+
+      async function newFile() {
+        if (!(await ensureWorkspaceEditors())) return;
+        let index = 1;
+        while (state.files.has(`untitled-${index}.md`)) index++;
+        const name = `untitled-${index}.md`;
+        const model = monaco.editor.createModel("", "markdown");
+        const f = {
+          handle: null,
+          model,
+          dirty: false,
+          lang: "markdown",
+          type: "code",
+        };
+        state.files.set(name, f);
+        state.openTabs.push(name);
+        switchTab(name);
+        document.getElementById("welcome").classList.add("hidden");
+      }
+
+      async function saveActive(saveAs = false) {
+        if (!state.activeTab) return;
+        const originalKey = state.activeTab;
+        const f = state.files.get(originalKey);
+        if (!f) return;
+        if (savingFiles.has(f)) throw new Error("This file is already being saved. Wait for that save to finish.");
+        savingFiles.add(f);
+        try {
+        if (window.studio?.file) {
+          const content = f.model?.getValue() ?? (f.type === "html" ? state.htmlEditor?.getValue() : f.type === "mermaid" ? state.mermaidEditor?.getValue() : null);
+          if (typeof content !== "string") throw new Error("This tab has no editable file content.");
+          let target = f.nativePath;
+          if (!target || saveAs === true) {
+            const selected = await window.studio.file.dialogSave();
+            if (selected.canceled || !selected.filePath) return false;
+            target = normalizeNativePath(selected.filePath);
+          }
+          if (state.files.has(target) && state.files.get(target) !== f) throw new Error("That file is already open. Save its existing tab or choose a different name.");
+          const result = await window.studio.file.write(target, content);
+          if (!result?.ok) throw new Error(result?.error || "Could not save the file.");
+          f.nativePath = target;
+          // A save may finish after the user starts another edit or switches tabs.
+          f.dirty = (f.model?.getValue() ?? content) !== content;
+          if (target !== originalKey) {
+            state.files.delete(originalKey); state.files.set(target, f);
+            state.openTabs = state.openTabs.map(key => key === originalKey ? target : key);
+            if (state.activeTab === originalKey) state.activeTab = target;
+          }
+          renderTabs();
+          if (state.activeTab === target) document.getElementById("sb-file").textContent = target + (f.dirty ? " •" : "");
+          workspaceNotice(`Saved ${target.split("/").pop()}.`);
+          return true;
+        }
+        if (!f || !f.handle) {
+          alert("No disk handle (file was created via NEW). Save-As coming.");
+          return;
+        }
+        try {
+          const w = await f.handle.createWritable();
+          await w.write(state.editor.getValue());
+          await w.close();
+          f.dirty = false;
+          renderTabs();
+          if (state.term)
+            state.term.writeln(
+              `\x1b[38;5;46m✓ saved\x1b[0m  ${state.activeTab}`,
+            );
+        } catch (e) {
+          alert("Save failed: " + e.message);
+        }
+        } finally { savingFiles.delete(f); }
+      }
+
+      function markEditorDirty(editor) {
+        const model = editor.getModel();
+        const file = [...state.files.values()].find(candidate => candidate.model === model);
+        if (file && !file.dirty) { file.dirty = true; renderTabs(); }
+      }
+
+      function renderTabs() {
+        const bar = document.getElementById("editor-tabs");
+        bar.innerHTML = "";
+        state.openTabs.forEach((path) => {
+          const f = state.files.get(path);
+          const tab = document.createElement("div");
+          tab.className =
+            "editor-tab" + (path === state.activeTab ? " active" : "");
+          const typeIcon =
+            { code: "◆", mermaid: "◊", html: "</>", browser: "⊕" }[f.type] ||
+            "◆";
+          tab.innerHTML = `<span class="type-icon">${escapeHtml(typeIcon)}</span>${f.dirty ? '<span class="dirty-dot"></span>' : ""}<span>${escapeHtml(path.split("/").pop())}</span><span class="close">✕</span>`;
+          tab.querySelector('.close').addEventListener('click', event => { event.stopPropagation(); closeTab(path); });
+          tab.addEventListener("click", () => switchTab(path));
+          bar.appendChild(tab);
+        });
+      }
+
+      function switchTab(path) {
+        const f = state.files.get(path);
+        if (!f) return;
+        state.activeTab = path;
+        document
+          .querySelectorAll(".editor-view")
+          .forEach((v) => v.classList.remove("active"));
+        if (f.type === "mermaid") {
+          document
+            .querySelector('.editor-view[data-view="mermaid"]')
+            .classList.add("active");
+          state.mermaidEditor.setModel(f.model);
+          renderMermaid();
+        } else if (f.type === "html") {
+          document
+            .querySelector('.editor-view[data-view="html"]')
+            .classList.add("active");
+          state.htmlEditor.setModel(f.model);
+          renderHtml();
+        } else if (f.type === "browser") {
+          document
+            .querySelector('.editor-view[data-view="browser"]')
+            .classList.add("active");
+        } else {
+          document
+            .querySelector('.editor-view[data-view="monaco"]')
+            .classList.add("active");
+          state.editor.setModel(f.model);
+          document.getElementById("sb-lang").textContent = f.lang;
+        }
+        document.getElementById("sb-lang").textContent = f.lang;
+        document.getElementById("sb-file").textContent =
+          path + (f.dirty ? " •" : "");
+        renderTabs();
+      }
+      window.switchTab = switchTab;
+
+      function closeTab(path) {
+        const idx = state.openTabs.indexOf(path);
+        if (idx < 0) return;
+        const file = state.files.get(path);
+        const discard = Boolean(file?.dirty);
+        if (discard && !window.confirm(`Discard unsaved changes to ${path.split("/").pop()}?`)) return;
+        state.openTabs.splice(idx, 1);
+        if (state.activeTab === path) {
+          state.activeTab = state.openTabs[state.openTabs.length - 1] || null;
+          if (state.activeTab) switchTab(state.activeTab);
+          else {
+            document
+              .querySelectorAll(".editor-view")
+              .forEach((v) => v.classList.remove("active"));
+            document
+              .querySelector('.editor-view[data-view="monaco"]')
+              .classList.add("active");
+            if (state.editor) state.editor.setModel(monaco.editor.createModel("", "plaintext"));
+            document.getElementById("welcome").classList.remove("hidden");
+            document.getElementById("sb-file").textContent = "// no file";
+          }
+        }
+        if (discard) {
+          state.files.delete(path);
+          for (const editor of [state.editor, state.htmlEditor, state.mermaidEditor]) {
+            if (editor && editor.getModel() === file.model) editor.setModel(null);
+          }
+          if (file.model) file.model.dispose();
+        }
+        renderTabs();
+      }
+      window.closeTab = closeTab;
+
+      // ─────────────── MERMAID ───────────────
+      async function renderMermaid() {
+        if (!state.mermaidEditor) return;
+        const revision = ++mermaidRenderRevision;
+        if (!(await ensureMermaid())) return;
+        if (revision !== mermaidRenderRevision) return;
+        const src = state.mermaidEditor.getValue();
+        const target = document.getElementById("mermaid-render-target");
+        try {
+          const { svg } = await mermaid.render("mer-" + Date.now(), src);
+          if (revision === mermaidRenderRevision) target.innerHTML = svg;
+        } catch (e) {
+          if (revision === mermaidRenderRevision) target.innerHTML = `<pre style="color:#ef4444;font-size:11px">${escapeHtml(e.message)}</pre>`;
+        }
+      }
+      async function openMermaid(type) {
+        if (!(await ensureWorkspaceEditors())) return;
+        const name = `mermaid-${type}-${Date.now()}.mmd`;
+        const samples = {
+          graph:
+            "graph TD\n  A[Start] --> B{Branch}\n  B -->|yes| C[Done]\n  B -->|no| D[Retry]",
+          seq: "sequenceDiagram\n  User->>FORGE: SUBMIT\n  FORGE->>K5: enqueue\n  K5->>R4: dispatch\n  R4-->>User: result",
+          class: "classDiagram\n  class Agent {\n    +id: str\n    +run()\n  }",
+          state:
+            "stateDiagram-v2\n  [*] --> Idle\n  Idle --> Running\n  Running --> [*]",
+          er: "erDiagram\n  AGENT ||--o{ TASK : owns",
+          mindmap:
+            "mindmap\n  root((YUR))\n    Kernels\n    Runtimes\n    Consoles",
+          gantt:
+            "gantt\n  title Build\n  section Phase 1\n  Design :a1, 2026-06-01, 7d\n  Build  :after a1, 14d",
+        };
+        const f = {
+          handle: null,
+          model: monaco.editor.createModel(samples[type] || samples.graph, "markdown"),
+          dirty: true,
+          lang: "mermaid",
+          type: "mermaid",
+        };
+        state.files.set(name, f);
+        state.openTabs.push(name);
+        switchTab(name);
+        document.getElementById("welcome").classList.add("hidden");
+      }
+      window.openMermaid = openMermaid;
+
+      // ─────────────── HTML STUDIO ───────────────
+      function renderHtml() {
+        if (!state.htmlEditor) return;
+        const src = state.htmlEditor.getValue();
+        const iframe = document.getElementById("html-preview");
+        iframe.srcdoc = src;
+      }
+      async function openHtmlStudio(template) {
+        if (!(await ensureWorkspaceEditors())) return;
+        const name = `html-studio-${Date.now()}.html`;
+        const tpls = {
+          blank: "<!doctype html>\n<html><body>\n  hello\n</body></html>",
+          brand:
+            "<!doctype html>\n<html><head><style>body{background:#000;color:#f4f8ff;font-family:Orbitron,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}h1{font-size:14vw;letter-spacing:-0.05em}</style></head><body><h1>YOUR BRAND</h1></body></html>",
+          webflow:
+            '<!doctype html>\n<html><head><style>body{background:#000;color:#f4f8ff;font-family:sans-serif;margin:0}.hero{padding:80px 40px;text-align:center}.cta{background:#cc2233;color:#fff;padding:14px 32px;border:none;font-size:14px;letter-spacing:0.2em;text-transform:uppercase}</style></head><body><div class="hero"><h1>HEADLINE</h1><p>subhead</p><button class="cta">ACTION</button></div></body></html>',
+        };
+        const f = {
+          handle: null,
+          model: monaco.editor.createModel(tpls[template] || tpls.blank, "html"),
+          dirty: true,
+          lang: "html",
+          type: "html",
+        };
+        state.files.set(name, f);
+        state.openTabs.push(name);
+        switchTab(name);
+        document.getElementById("welcome").classList.add("hidden");
+      }
+      window.openHtmlStudio = openHtmlStudio;
+
+      // ─────────────── BROWSER ───────────────
+      function openBrowser(url) {
+        const name = `browser-${Date.now()}`;
+        const f = {
+          handle: null,
+          model: null,
+          dirty: false,
+          lang: "browser",
+          type: "browser",
+        };
+        state.files.set(name, f);
+        state.openTabs.push(name);
+        switchTab(name);
+        document.getElementById("browser-url").value = url;
+        document.getElementById("browser-frame").src = url;
+        document.getElementById("welcome").classList.add("hidden");
+      }
+      window.openBrowser = openBrowser;
+
+      // ─────────────── TERMINAL ───────────────
+      function initTerminal() {
+        if (state.ptyId) return Promise.resolve(true);
+        if (terminalReadyPromise) return terminalReadyPromise;
+        terminalReadyPromise = (async () => {
+          loadWorkspaceStyle("workspace-terminal-css", "../node_modules/xterm/css/xterm.css");
+          await loadTerminalLibrary("../node_modules/xterm/lib/xterm.js", "Terminal");
+          await loadTerminalLibrary("../node_modules/xterm-addon-fit/lib/xterm-addon-fit.js", "FitAddon");
+          if (!state.term) {
+            state.term = new Terminal({
+              fontFamily: "Consolas, monospace", fontSize: 12, cursorBlink: true,
+              theme: { background: "#101722", foreground: "#e6edf5", cursor: "#c7d7eb", selectionBackground: "#2b3e56", black: "#142131", red: "#ffb4b4", green: "#9adbb3", yellow: "#f3d394", blue: "#b1d6ff", magenta: "#d8b9ed", cyan: "#a8dedc", white: "#e6edf5", brightBlack: "#a0b1c5" },
+            });
+            state.fitAddon = new FitAddon.FitAddon();
+            state.term.loadAddon(state.fitAddon);
+            state.term.open(document.getElementById("terminal-host"));
+            state.term.onData(data => {
+              if (state.ptyId) window.studio.terminal.input(state.ptyId, data);
+            });
+          }
+          if (!window.studio?.terminal) throw new Error("Native terminal is unavailable in this window.");
+          if (mountedStudioActive && mountedTerminalOpen) state.fitAddon.fit();
+          const id = await window.studio.terminal.spawn({ cols: state.term.cols, rows: state.term.rows, shell: state.currentShell });
+          if (!id) throw new Error("Native terminal could not start. Check the installed shell and terminal dependency.");
+          state.ptyId = id;
+          if (terminalUnsubscribe) terminalUnsubscribe();
+          terminalUnsubscribe = window.studio.terminal.onData((receivedId, data) => {
+            if (receivedId === state.ptyId) state.term.write(data);
+          });
+          terminalPanes ||= window.yurTerminalPanes.create({
+            primary: state.term, host: document.getElementById("terminal-host"),
+            api: window.studio.terminal, Terminal, FitAddon: FitAddon.FitAddon,
+            getShell: () => state.currentShell,
+            canFit: () => mountedStudioActive && mountedTerminalOpen,
+            onState: value => {
+              document.getElementById("terminal-split").disabled = value.split || value.busy;
+              requestAnimationFrame(layoutStudio);
+            },
+            onError: error => workspaceNotice(error.message),
+          });
+          document.getElementById("shell-picker").disabled = true;
+          workspaceNotice("");
+          return true;
+        })().catch(error => {
+          terminalReadyPromise = null;
+          const message = error.message || "Terminal could not load.";
+          workspaceNotice(message);
+          if (state.term) state.term.writeln(message);
+          throw error;
+        });
+        return terminalReadyPromise;
+      }
+      function termClear() {
+        if (terminalPanes) terminalPanes.clear();
+        else if (state.term) state.term.clear();
+      }
+      async function splitTerminal() {
+        await initTerminal();
+        const result = await terminalPanes.split();
+        layoutStudio();
+        return result;
+      }
+      window.addEventListener("unload", () => { void terminalPanes?.dispose().catch(() => {}); }, { once: true });
+      function onShellChange() {
+        const picker = document.getElementById("shell-picker");
+        if (state.ptyId) { picker.value = state.currentShell; return; }
+        state.currentShell = picker.value;
+      }
+      window.onShellChange = onShellChange;
+
+      // The mounted terminal keeps its PTY when a section or its panel is hidden.
+      async function togglePanel() {
+        if (!mountedStudio) return false;
+        mountedTerminalOpen = !mountedTerminalOpen;
+        document.getElementById("yc-studio-panel").classList.toggle("terminal-open", mountedTerminalOpen);
+        document.querySelectorAll('[data-studio-command="terminal"]').forEach(button => button.setAttribute("aria-pressed", String(mountedTerminalOpen)));
+        mountedStudio.terminalPanel.style.display = mountedTerminalOpen ? "flex" : "none";
+        requestAnimationFrame(layoutStudio);
+        if (!mountedTerminalOpen) return false;
+        await initTerminal();
+        if (mountedStudioActive && mountedTerminalOpen) {
+          layoutStudio();
+          if (terminalPanes) terminalPanes.focus(); else state.term.focus();
+        }
+        return true;
+      }
+      function toggleChat() {
+        if (mountedStudio) { showConversationHome(); return; }
+        document.getElementById("shell").classList.toggle("chat-open");
+        renderChat();
+      }
+      window.togglePanel = togglePanel;
+      window.toggleChat = toggleChat;
+
+      // ─────────────── MULTI-CHAT ───────────────
+      document.querySelectorAll(".rr-tab").forEach((t) => {
+        t.addEventListener("click", () => {
+          document
+            .querySelectorAll(".rr-tab")
+            .forEach((x) => x.classList.toggle("active", x === t));
+          state.chatBot = t.dataset.bot;
+          renderChat();
+        });
+      });
+      function renderChat() {
+        const body = document.getElementById("rr-body");
+        body.innerHTML = "";
+        const hist = state.chatHistory[state.chatBot];
+        if (hist.length === 0) {
+          body.innerHTML = `<div class="chat-msg system"><div class="who">// SYSTEM</div><div class="text">no messages yet · type below · wire to model API (Anthropic / Google / OpenAI / xAI / local Ollama) to make this real</div></div>`;
+          return;
+        }
+        hist.forEach((m) => {
+          const div = document.createElement("div");
+          div.className = "chat-msg " + m.role;
+          div.innerHTML = `<div class="who">${m.role === "user" ? "// YOU" : "// " + escapeHtml(m.who.toUpperCase())}</div><div class="text">${escapeHtml(m.text)}</div>`;
+          body.appendChild(div);
+        });
+        body.scrollTop = body.scrollHeight;
+      }
+      async function sendChat() {
+        const inp = document.getElementById("chat-input");
+        const text = inp.value.trim();
+        if (!text) return;
+        state.chatHistory[state.chatBot].push({ role: "user", who: "you", text });
+        inp.value = "";
+        renderChat();
+        // Show thinking indicator
+        state.chatHistory[state.chatBot].push({ role: "system", who: "agent", text: "// thinking..." });
+        renderChat();
+        try {
+          const bot = state.chatBot;
+          const modelMap = { claude: null, gemini: null, gpt: null, grok: null, local: null, all: null };
+          const result = await window.studio.foundry.ask(text, { provider: "auto", model: modelMap[bot] || undefined });
+          state.chatHistory[bot].pop();
+          if (result && result.status === 200 && result.json) {
+            const j = result.json;
+            state.chatHistory[bot].push({ role: "assistant", who: bot, text: j.answer || "no response" });
+            // Update model display
+            if (j.model) document.querySelector("#sb-model .sb-model").textContent = `${j.provider || "ollama"} · ${j.model}`;
+          } else {
+            state.chatHistory[bot].push({ role: "system", who: "error", text: `// Error: ${result?.status || "no response"}` });
+          }
+        } catch (e) {
+          state.chatHistory[state.chatBot].pop();
+          state.chatHistory[state.chatBot].push({ role: "system", who: "error", text: `// Error: ${e.message}` });
+        }
+        renderChat();
+      }
+      window.sendChat = sendChat;
+      document.getElementById("chat-input").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendChat();
+        }
+      });
+
+      // ─────────────── MODEL CYCLE ───────────────
+      function cycleModel() {
+        state.modelIdx = (state.modelIdx + 1) % state.models.length;
+        document.querySelector("#sb-model .sb-model").textContent =
+          state.models[state.modelIdx];
+      }
+      window.cycleModel = cycleModel;
+
+      // ─────────────── COMMAND PALETTE ───────────────
+      const COMMANDS = [
+        { kind: "cmd", name: "Open Folder", kbd: "Ctrl+O", run: openFolder },
+        { kind: "cmd", name: "New File", kbd: "Ctrl+N", run: newFile },
+        { kind: "cmd", name: "Save File", kbd: "Ctrl+S", run: saveActive },
+        {
+          kind: "cmd",
+          name: "Toggle Terminal",
+          kbd: "Ctrl+`",
+          run: togglePanel,
+        },
+        { kind: "cmd", name: "Toggle Chat", kbd: "Ctrl+/", run: toggleChat },
+        {
+          kind: "cmd",
+          name: "New Mermaid Graph",
+          kbd: "",
+          run: () => openMermaid("graph"),
+        },
+        {
+          kind: "cmd",
+          name: "New HTML (blank)",
+          kbd: "",
+          run: () => openHtmlStudio("blank"),
+        },
+        {
+          kind: "cmd",
+          name: "Open yur-ai.com",
+          kbd: "",
+          run: () => openBrowser("https://yur-ai.com"),
+        },
+        {
+          kind: "cmd",
+          name: "Open monaco-core :3010",
+          kbd: "",
+          run: () => openBrowser("http://localhost:3010"),
+        },
+        { kind: "cmd", name: "Cycle Model", kbd: "", run: cycleModel },
+        { kind: "cmd", name: "Clear Terminal", kbd: "", run: termClear },
+        {
+          kind: "cmd",
+          name: "Close Tab",
+          kbd: "Ctrl+W",
+          run: () => state.activeTab && closeTab(state.activeTab),
+        },
+        {
+          kind: "exit",
+          name: "Return to chat",
+          kbd: "Esc",
+          run: showConversationHome,
+        },
+      ];
+
+      function togglePalette() {
+        const p = document.getElementById("palette");
+        p.classList.toggle("hidden");
+        if (!p.classList.contains("hidden")) {
+          document.getElementById("palette-input").value = "";
+          renderPaletteResults("");
+          setTimeout(
+            () => { if (mountedStudioActive && !p.classList.contains("hidden")) document.getElementById("palette-input").focus(); },
+            10,
+          );
+        }
+      }
+      window.togglePalette = togglePalette;
+
+      function renderPaletteResults(q) {
+        const wrap = document.getElementById("palette-results");
+        wrap.innerHTML = "";
+        const items = [];
+        if (q.startsWith(":")) {
+          const line = parseInt(q.slice(1), 10);
+          if (!isNaN(line))
+            items.push({
+              kind: "goto",
+              name: `Go to line ${line}`,
+              kbd: "Enter",
+              run: () =>
+                (state.editor && state.editor.revealLineInCenter(line)) ||
+                state.editor.setPosition({ lineNumber: line, column: 1 }),
+            });
+        } else {
+          const ql = q.toLowerCase().replace(/^>/, "").trim();
+          COMMANDS.filter(
+            (c) => !ql || c.name.toLowerCase().includes(ql),
+          ).forEach((c) => items.push(c));
+          if (!q.startsWith(">"))
+            state.openTabs
+              .filter((t) => !ql || t.toLowerCase().includes(ql))
+              .forEach((t) =>
+                items.push({
+                  kind: "file",
+                  name: t,
+                  kbd: "",
+                  run: () => switchTab(t),
+                }),
+              );
+        }
+        if (items.length === 0) {
+          wrap.innerHTML = '<div class="empty">no results</div>';
+          return;
+        }
+        items.forEach((it, i) => {
+          const row = document.createElement("div");
+          row.className = "result" + (i === 0 ? " selected" : "");
+          row.innerHTML = `<span class="kind">${escapeHtml(it.kind)}</span><span class="name">${escapeHtml(it.name)}</span><span class="kbd">${escapeHtml(it.kbd)}</span>`;
+          row.addEventListener("click", () => {
+            document.getElementById("palette").classList.add("hidden");
+            Promise.resolve().then(() => it.run()).catch(error => workspaceNotice(error.message || "Studio action failed."));
+          });
+          wrap.appendChild(row);
+        });
+      }
+      document
+        .getElementById("palette-input")
+        .addEventListener("input", (e) => renderPaletteResults(e.target.value));
+      document
+        .getElementById("palette-input")
+        .addEventListener("keydown", (e) => {
+          const wrap = document.getElementById("palette-results");
+          const items = wrap.querySelectorAll(".result");
+          const cur = wrap.querySelector(".result.selected");
+          let idx = Array.from(items).indexOf(cur);
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            cur?.classList.remove("selected");
+            items[Math.min(idx + 1, items.length - 1)]?.classList.add(
+              "selected",
+            );
+          }
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            cur?.classList.remove("selected");
+            items[Math.max(idx - 1, 0)]?.classList.add("selected");
+          }
+          if (e.key === "Enter") {
+            e.preventDefault();
+            cur?.click();
+          }
+          if (e.key === "Escape") {
+            togglePalette();
+          }
+        });
+
+      // ─────────────── HOTKEYS ───────────────
+      document.addEventListener("keydown", (e) => {
+        if (e.isComposing || document.querySelector("dialog[open]")) return;
+        if (document.body.classList.contains("yur-conversation-mode") && !mountedStudioActive) return;
+        const mod = e.ctrlKey || e.metaKey;
+        if (mod && e.shiftKey && (e.key === "P" || e.key === "p")) {
+          e.preventDefault();
+          togglePalette();
+          return;
+        }
+        if (mod && (e.key === "s" || e.key === "S")) {
+          e.preventDefault();
+          studioCommand("save").catch(() => {});
+          return;
+        }
+        if (mod && (e.key === "o" || e.key === "O")) {
+          e.preventDefault();
+          studioCommand("open-folder").catch(() => {});
+          return;
+        }
+        if (mod && (e.key === "n" || e.key === "N")) {
+          e.preventDefault();
+          studioCommand("new-file").catch(() => {});
+          return;
+        }
+        if (mod && e.key === "`") {
+          e.preventDefault();
+          studioCommand("terminal").catch(() => {});
+          return;
+        }
+        if (mod && e.key === "/") {
+          e.preventDefault();
+          toggleChat();
+          return;
+        }
+        if (mod && (e.key === "w" || e.key === "W")) {
+          e.preventDefault();
+          if (state.activeTab) closeTab(state.activeTab);
+          return;
+        }
+      });
+
+      // ─────────────── FOUNDRY LIVE WIRING ───────────────
+      async function checkFoundryHealth() {
+        if (!window.studio || !window.studio.foundry) return;
+        try {
+          const r = await window.studio.foundry.health();
+          if (r && r.status === 200 && r.json) {
+            const stats = r.json.stats || {};
+            // Update status bar with foundry info
+            const sb = document.querySelector(".status-bar");
+            if (sb) {
+              let foundryItem = document.getElementById("sb-foundry-status");
+              if (!foundryItem) {
+                foundryItem = document.createElement("span");
+                foundryItem.id = "sb-foundry-status";
+                foundryItem.className = "sb-item clickable";
+                foundryItem.style.color = "#4ade80";
+                const spacer = sb.querySelector(".sb-spacer");
+                sb.insertBefore(foundryItem, spacer);
+              }
+              foundryItem.textContent = `FOUNDRY · ${stats.total_vectors || stats.total_artifacts || 0} VEC`;
+            }
+          }
+        } catch {}
+      }
+      setInterval(() => {
+        if (!document.body.classList.contains("yur-conversation-mode")) {
+          loadFoundryModels();
+          checkFoundryHealth();
+        }
+      }, 30000);
+    </script>
+  </body>
+</html>

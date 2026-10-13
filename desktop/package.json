@@ -1,0 +1,62 @@
+{
+  "name": "studio-electron",
+  "version": "1.0.0",
+  "description": "YUR AI Desktop — conversations, specialist workspaces, and the existing YUR harness bridge",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "factory": "electron . --factory",
+    "factory:cli": "python -B -m foundry.factory_cli",
+    "test": "node scripts/verify.cjs",
+    "test:python": "python -B -m unittest discover -s tests -p test_*.py -v",
+    "test:desktop": "node --test --test-concurrency=1 tests/*.test.js",
+    "test:electron": "electron tests/desktop-regression-entry.cjs electron-smoke.cjs",
+    "test:conversation": "electron tests/desktop-regression-entry.cjs conversation-smoke.cjs",
+    "test:conversation:live": "electron tests/desktop-regression-entry.cjs conversation-preview.cjs --live-local",
+    "test:repository": "electron tests/desktop-regression-entry.cjs repository-smoke.cjs",
+    "test:repository:live": "electron tests/desktop-regression-entry.cjs repository-smoke.cjs --live-local",
+    "test:copilot": "electron tests/desktop-regression-entry.cjs copilot-smoke.cjs",
+    "test:hermes": "electron tests/desktop-regression-entry.cjs hermes-smoke.cjs",
+    "test:workforce": "electron tests/desktop-regression-entry.cjs workforce-smoke.cjs",
+    "test:parity": "electron tests/desktop-regression-entry.cjs desktop-parity-smoke.cjs",
+    "test:projects": "electron tests/desktop-regression-entry.cjs project-navigation-smoke.cjs",
+    "test:attachments": "electron tests/desktop-regression-entry.cjs attachment-smoke.cjs",
+    "test:work": "electron tests/desktop-regression-entry.cjs work-smoke.cjs",
+    "test:browser": "electron tests/desktop-regression-entry.cjs browser-smoke.cjs",
+    "test:browser:work": "electron tests/desktop-regression-entry.cjs browser-work-smoke.cjs",
+    "test:voice": "electron tests/desktop-regression-entry.cjs voice-smoke.cjs",
+    "test:specialists": "electron tests/desktop-regression-entry.cjs specialists-smoke.cjs",
+    "test:specialist-forge": "electron tests/desktop-regression-entry.cjs specialist-forge-smoke.cjs",
+    "test:specialist-forge:live": "electron tests/desktop-regression-entry.cjs specialist-forge-live.cjs",
+    "test:schedules": "electron tests/desktop-regression-entry.cjs schedules-smoke.cjs",
+    "test:artifact-preview": "electron tests/artifact-preview-smoke.cjs",
+    "test:artifacts/full": "electron tests/desktop-regression-entry.cjs artifact-smoke.cjs",
+    "test:documents": "electron tests/desktop-regression-entry.cjs documents-smoke.cjs",
+    "test:steering": "electron tests/desktop-regression-entry.cjs steering-smoke.cjs",
+    "test:construction": "electron tests/desktop-regression-entry.cjs construction-smoke.cjs",
+    "test:concepts": "electron tests/desktop-regression-entry.cjs concepts-smoke.cjs",
+    "test:sources": "electron tests/desktop-regression-entry.cjs sources-smoke.cjs",
+    "test:specialists-generated": "node -e \"const env={...process.env,YUR_RUN_EXECUTION_CELL_TESTS:'1'}; delete env.ELECTRON_RUN_AS_NODE; const r=require('node:child_process').spawnSync(require('electron'),['tests/desktop-regression-entry.cjs','generated-specialists-smoke.cjs'],{stdio:'inherit',windowsHide:true,env}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:generated-worker:live": "node -e \"const p=require('./src/desktop-runtime').desktopPython(process.cwd()); const r=require('node:child_process').spawnSync(p,['-B','-m','unittest','discover','-s','tests','-p','test_generated_worker.py','-v'],{stdio:'inherit',windowsHide:true,env:{...process.env,YUR_RUN_GENERATED_WORKER_TESTS:'1'}}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:execution": "node -e \"const p=require('./src/desktop-runtime').desktopPython(process.cwd()); const r=require('node:child_process').spawnSync(p,['-B','-m','unittest','discover','-s','tests','-p','test_*cell*.py','-v'],{stdio:'inherit',windowsHide:true,env:{...process.env,YUR_RUN_EXECUTION_CELL_TESTS:'0'}}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:execution:live": "node -e \"const p=require('./src/desktop-runtime').desktopPython(process.cwd()); const r=require('node:child_process').spawnSync(p,['-B','-m','unittest','discover','-s','tests','-p','test_execution_cell.py','-v'],{stdio:'inherit',windowsHide:true,env:{...process.env,YUR_RUN_EXECUTION_CELL_TESTS:'1'}}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:code:live": "node -e \"const env={...process.env,YUR_RUN_EXECUTION_CELL_TESTS:'1'}; delete env.ELECTRON_RUN_AS_NODE; const r=require('node:child_process').spawnSync(require('electron'),['tests/desktop-regression-entry.cjs','code-cell-smoke.cjs'],{stdio:'inherit',windowsHide:true,env}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:execution:probe": "node -e \"const p=require('./src/desktop-runtime').desktopPython(process.cwd()); const r=require('node:child_process').spawnSync(p,['-B','scripts/probe_execution_cell.py','--run'],{stdio:'inherit',windowsHide:true}); if(r.error) console.error(r.error.message); process.exit(r.status??1)\"",
+    "test:execution:setup": "electron tests/desktop-regression-entry.cjs execution-runtime-smoke.cjs",
+    "package:source": "python -B scripts/package_source.py"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "mermaid": "10.9.0",
+    "monaco-editor": "0.52.0",
+    "node-pty": "^1.0.0",
+    "xterm": "5.3.0",
+    "xterm-addon-fit": "0.8.0"
+  },
+  "devDependencies": {
+    "electron": "^44.3.0"
+  }
+}

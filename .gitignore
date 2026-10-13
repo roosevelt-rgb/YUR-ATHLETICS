@@ -1,0 +1,187 @@
+# YUR Athletics: what never enters this public repository, even if someone copies it into the tree later.
+# Athlete records and everything built from them, family and coach contacts, the team's game data, accounts,
+# runtimes and build output stay on the machine that makes them. Nested .gitignore files repeat the rules.
+
+# ---- secrets and local configuration (any folder) ----
+.env
+.env.*
+*.env
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+*.secret
+*credentials*.json
+anthropic-env-backup.txt
+.keys/
+secrets/
+.yur_data/
+.yur-runtime/
+*.local.json
+
+# ---- credential files, key stores and saved logins (any folder) ----
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+.ssh/
+.gnupg/
+.aws/
+.azure/
+.kube/
+.npmrc
+.yarnrc.yml
+.pypirc
+.netrc
+_netrc
+.git-credentials
+client_secret*.json
+token.json
+token.pickle
+*.token
+service-account*.json
+serviceAccountKey*.json
+*storage_state*.json
+*storageState*.json
+.auth/
+cookies*.txt
+*.har
+*.jks
+*.keystore
+*.p8
+*.ppk
+*.kdbx
+secrets.*
+.firebaserc
+# browser login profiles (cookies, saved passwords and the key that unlocks them)
+**/browser_profile/
+**/runtime/browser/
+Local State
+Login Data
+Login Data For Account
+Cookies
+
+# ---- dependencies, runtimes, caches, build output, logs ----
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage/
+dist/
+build/
+release/
+*.zip
+*.log
+*.err
+*.jsonl
+*.db
+*.db-*
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+npm-debug.log*
+*.bak-*
+backups/
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# ---- film, frames, video and audio never ship ----
+*.mp4
+*.mov
+*.m4v
+*.mkv
+*.avi
+*.webm
+*.wav
+*.mp3
+*.m4a
+**/frames/
+**/reel/
+**/film/
+**/sheets/
+*USAGE*.png
+*USAGE*.jpg
+# no photos or documents ship (the brand art is png / webp / svg / ico under desktop/)
+*.jpg
+*.jpeg
+*.pdf
+
+# ---- desktop/ ----
+# The athlete manifest is each owner's own file; the repo ships editions/athletics.example.json.
+desktop/editions/*
+!desktop/editions/athletics.example.json
+desktop/.desktop-python/
+desktop/.desktop-models/
+desktop/.factory-state/
+desktop/.factory-sources.local.json
+desktop/.forge-*.txt
+desktop/.specialist-forge-*.txt
+desktop/In my ecosystem*.md
+desktop/Paste-ready prompt*.md
+# The Hermes skill snapshot is imported locally (scripts/import_hermes_skills.py) and not published.
+desktop/integrations/hermes_skills/
+
+# ---- gridiron/ ----
+# Private data: only the README and the fictional samples are public.
+gridiron/recruit/data/*
+!gridiron/recruit/data/README.md
+!gridiron/recruit/data/sample/
+# inside sample/ only the named fictional files ship; anything else put there stays out
+gridiron/recruit/data/sample/**
+!gridiron/recruit/data/sample/athletes/
+!gridiron/recruit/data/sample/athletes/quinn-placeholder.json
+!gridiron/recruit/data/sample/athletes/quinn-placeholder.package.json
+# reports, cards, briefs and spreadsheets written anywhere else under recruit/
+gridiron/recruit/**/*.html
+gridiron/recruit/**/*.csv
+gridiron/recruit/**/*.xlsx
+gridiron/recruit/**/*.xls
+gridiron/recruit/cache/
+gridiron/recruit/cache_hist/
+# usage and billing ledgers, the film-study workspace and private plans
+gridiron/recruit/billing/
+gridiron/recruit/usage_ledger.py
+gridiron/recruit/film_study/
+gridiron/recruit/QB_TRAITS_PLAN.md
+# team and family film study (the team's playbook, game data and the athlete's reports)
+gridiron/recruit/season_report.py
+gridiron/recruit/season_report_full.py
+gridiron/recruit/coach_scout.py
+gridiron/recruit/coach_history.py
+gridiron/recruit/game_pbp.py
+gridiron/recruit/merge_season.py
+gridiron/recruit/merge_coverage.py
+gridiron/recruit/merge_alignment.py
+gridiron/recruit/merge_txf.py
+gridiron/recruit/recap_merge.py
+gridiron/recruit/highlight_order.py
+gridiron/recruit/athletic_resume.py
+gridiron/recruit/coach_brief.py
+gridiron/recruit/pod/
+gridiron/recruit/DESIGN.md
+gridiron/recruit/CARD_BUILD_BRIEF.md
+gridiron/recruit/MATCH_V1_DESIGN.md
+gridiron/recruit/RANKING_ENGINE_DESIGN.md
+gridiron/recruit/ATHLETICS_DESKTOP_PLAN.md
+gridiron/recruit/PLAYER_AGENT_DESIGN.md
+gridiron/recruit/PORTAL_DESIGN.md
+# real seed exports (coach emails and phones, outreach state); the committed seeds are in src/data/sample/
+gridiron/src/data/*.seed.json
+# the Firebase web config of a real project; firebase-applet-config.example.json ships
+gridiron/firebase-applet-config.json
+# agent runtime state, browser login profile, live screenshots, machine paths
+gridiron/agent_runtime/.harness_data/
+gridiron/agent_runtime/browser_profile/
+gridiron/agent_runtime/live/
+gridiron/agent_runtime/yur_desktop/state/
+gridiron/agent_runtime/yur_desktop/mcp_servers.json
+gridiron/agent_runtime/yur_desktop/shell-config.json

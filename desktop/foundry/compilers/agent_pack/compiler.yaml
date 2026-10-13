@@ -1,0 +1,26 @@
+# YUR Foundry Compiler Cartridge Manifest
+# Declares what this cartridge REQUESTS to do. Effective permission is the
+# intersection of this, env overrides, and side-effect-policy.json, enforced
+# by the OrchestrationManager. This self-declaration is never trusted.
+id: agent_pack.compiler
+name: Agent Pack Compiler
+version: 1.0.0
+enabled_env: COMPILER_AGENT_PACK_ENABLED
+inputs:
+  - foundry_ir.json
+  - source_map.json
+  - dependency_graph.json
+outputs:
+  - agent_pack.json
+  - agent_pack_manifest.json
+side_effects:
+  class: write_artifacts_only
+  can_modify_files: false
+  can_execute_shell: false
+  can_call_external_systems: false
+  can_deploy: false
+  requires_approval: false
+  approver: none
+runtime:
+  adapter: compilers.agent_pack.adapter:AgentPackCompiler
+  timeout_seconds_env: COMPILER_AGENT_PACK_TIMEOUT_SECONDS

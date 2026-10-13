@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+/* Tailwind scans the whole repo for class names; the data/report side (multi-MB HTML with embedded images, frames,
+   agent state) is not UI and crashed the scanner ("Invalid code point"). Only the app's own files are sources. */
+@source not "../recruit";
+@source not "../agent_runtime";
+@source not "../backups";
+
+/* Native <select> popups were rendering white-on-white on Windows; force the dark scheme. */
+select {
+  color-scheme: dark;
+  background-color: #111111;
+}
+select option {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* ---- Phones and tablets ---------------------------------------------------------------------------------------------
+   Desktop (1024px and wider) keeps its original look: every rule below is scoped to narrower screens. */
+
+/* 40px tap targets below 1024px (phones, iPad portrait). In base/components so an explicit utility still wins. */
+@layer base {
+  @media (width < 1024px) {
+    button,
+    select,
+    textarea,
+    input:not([type="checkbox"], [type="radio"], [type="range"], [type="hidden"]) {
+      min-height: 40px;
+    }
+    button {
+      min-width: 40px;
+    }
+  }
+}
+@layer components {
+  @media (width < 1024px) {
+    /* a pill or one-line link */
+    .tap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+    }
+    /* a block link, one or more lines */
+    .tap-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 40px;
+    }
+  }
+  /* a row that scrolls sideways on phones (stat tiles, section tabs): a thin, quiet scrollbar */
+  .scroll-strip {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255 255 255 / 0.15) transparent;
+  }
+}
+
+/* Readable text below 1024px: the 9-11px micro labels become 12px (unlayered, so it beats the text-[..px] utilities). */
+@media (width < 1024px) {
+  .text-\[9px\],
+  .text-\[10px\],
+  .text-\[11px\] {
+    font-size: 12px;
+  }
+}
+
+/* Wide tables on phones (below md, 768px, the same cut as the max-md: tweaks in App.tsx): <table class="rt"> stacks
+   each row into a card. A cell's data-label is shown as its label; .rt-full takes a whole line; empty cells drop out.
+   .rt-flow runs the cells on in wrapped lines with inline labels (long lists): .rt-lead grows and leaves room for one
+   .rt-end cell on its line, .rt-first / .rt-last move a cell to the front / back. .rt-list draws rows as ruled lines
+   instead of cards. The table markup and the desktop look are unchanged. */
+@media (width < 48rem) {
+  .rt,
+  .rt > tbody {
+    display: block;
+    width: 100%;
+  }
+  .rt > thead {
+    display: none;
+  }
+  .rt > tbody > tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.625rem 0.875rem;
+    margin-bottom: 0.625rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 1rem;
+    background-color: rgb(255 255 255 / 0.03);
+  }
+  .rt > tbody > tr > td {
+    display: block;
+    min-width: 0;
+    padding: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .rt > tbody > tr > td:empty {
+    display: none;
+  }
+  .rt > tbody > tr > td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.125rem;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.35);
+  }
+  .rt > tbody > tr > td[colspan],
+  .rt .rt-full {
+    grid-column: 1 / -1;
+  }
+  .rt .rt-first {
+    order: -1;
+  }
+  .rt .rt-last {
+    order: 1;
+  }
+  .rt-flow > tbody > tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.375rem 0.875rem;
+  }
+  .rt-flow > tbody > tr > td[data-label]::before {
+    display: inline;
+    margin: 0 0.375rem 0 0;
+  }
+  .rt-flow > tbody > tr > td[colspan],
+  .rt-flow .rt-full {
+    flex-basis: 100%;
+  }
+  .rt-flow .rt-lead {
+    flex: 1 1 calc(100% - 8rem);
+  }
+  .rt-flow .rt-end {
+    margin-left: auto;
+    text-align: right;
+  }
+  .rt-list > tbody {
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .rt-list > tbody > tr {
+    margin: 0;
+    padding: 0.75rem 0;
+    border-width: 0 0 1px;
+    border-color: rgb(255 255 255 / 0.06);
+    border-radius: 0;
+    background-color: transparent;
+  }
+}
+
+/* Tablets (768-1023px) keep the tables; the 12px labels above make them wider, so tighter cell padding and wrapping
+   inside cells (action buttons stack) keep them inside the page instead of scrolling sideways. Stacked action buttons
+   (Approve / Reject / Reset) get 8px between them, so a tap meant for one cannot land on the other. */
+@media (48rem <= width < 64rem) {
+  .rt > thead > tr > th,
+  .rt > tbody > tr > td {
+    padding-right: 0.625rem;
+  }
+  .rt > tbody > tr > td {
+    white-space: normal;
+  }
+  .rt .rt-actions > button {
+    margin-block: 0.25rem;
+  }
+}
+
+/* A date or season cell (2026-08-09, 2026-27) stays on one line at every width instead of breaking at its hyphen. */
+.rt > tbody > tr > td.rt-nowrap {
+  white-space: nowrap;
+}

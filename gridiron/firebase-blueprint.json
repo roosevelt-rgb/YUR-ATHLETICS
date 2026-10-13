@@ -1,0 +1,497 @@
+{
+  "entities": {
+    "AthleteProfile": {
+      "title": "Athlete Profile",
+      "description": "Vectorized representation of a recruit",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "demographics": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "highSchool": {
+              "type": "string"
+            },
+            "gradYear": {
+              "type": "integer"
+            },
+            "state": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "firstName",
+            "lastName",
+            "highSchool",
+            "gradYear",
+            "state"
+          ]
+        },
+        "athletics": {
+          "type": "object",
+          "properties": {
+            "primaryPosition": {
+              "type": "string"
+            },
+            "heightInches": {
+              "type": "integer"
+            },
+            "weightLbs": {
+              "type": "integer"
+            },
+            "stats": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "primaryPosition",
+            "heightInches",
+            "weightLbs"
+          ]
+        },
+        "academics": {
+          "type": "object",
+          "properties": {
+            "gpa": {
+              "type": "number"
+            },
+            "satScore": {
+              "type": "integer"
+            },
+            "actScore": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "gpa"
+          ]
+        },
+        "media": {
+          "type": "object",
+          "properties": {
+            "hudlUrl": {
+              "type": "string",
+              "format": "uri"
+            },
+            "twitterUrl": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "desiredDivision": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "preferredRegion": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "uid",
+        "demographics",
+        "athletics",
+        "academics"
+      ]
+    },
+    "CollegeProgram": {
+      "title": "College Program",
+      "description": "Programmatic parameters of the institution",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "division": {
+              "type": "string"
+            },
+            "conference": {
+              "type": "string"
+            },
+            "region": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "division",
+            "conference",
+            "region"
+          ]
+        },
+        "academicThresholds": {
+          "type": "object",
+          "properties": {
+            "minGpa": {
+              "type": "number"
+            },
+            "minSat": {
+              "type": "integer"
+            },
+            "minAct": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "minGpa"
+          ]
+        },
+        "positionalNeeds": {
+          "type": "object"
+        },
+        "rosterProfile": {
+          "type": "object",
+          "description": "Roster-derived needs: byPosition {count, byClass, openingsByHsClass, heightIn, weightLb}, footprint {total, texas, dfw, topStates}, staffCounts, sourceUrl, scrapedAt, scrapeStatus"
+        },
+        "isTexas": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "metadata",
+        "academicThresholds",
+        "positionalNeeds"
+      ]
+    },
+    "Highlight": {
+      "title": "Highlight",
+      "description": "Athlete highlight video",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "athleteUid": {
+          "type": "string"
+        },
+        "athleteName": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "videoUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "description": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "athleteUid",
+        "athleteName",
+        "title",
+        "videoUrl",
+        "createdAt"
+      ]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User account metadata",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "photoURL": {
+          "type": "string",
+          "format": "uri"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "athlete",
+            "coach",
+            "admin"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "email",
+        "role",
+        "createdAt"
+      ]
+    },
+    "Coach": {
+      "title": "Coach",
+      "description": "Recruiting coach profile",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "college": {
+          "type": "string"
+        },
+        "division": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "twitterUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "photoUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "region": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "qb_coach",
+            "recruiting_coordinator",
+            "player_personnel",
+            "area_recruiter_dfw",
+            "oc",
+            "head_coach",
+            "other"
+          ]
+        },
+        "state": {
+          "type": "string"
+        },
+        "conference": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "verifiedAt": {
+          "type": "string"
+        },
+        "emailStatus": {
+          "type": "string",
+          "enum": [
+            "unknown",
+            "ok",
+            "bounced"
+          ]
+        },
+        "programStatus": {
+          "type": "string",
+          "enum": [
+            "verified",
+            "unverified",
+            "excluded"
+          ]
+        },
+        "lastTouch": {
+          "type": "string"
+        },
+        "touches": {
+          "type": "integer"
+        },
+        "isTexas": {
+          "type": "boolean"
+        },
+        "schoolStatus": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "title",
+        "college",
+        "division",
+        "region"
+      ]
+    },
+    "Outreach": {
+      "title": "Outreach touch",
+      "description": "One contact attempt or reply between the athlete and a coach (email / dm / follow)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "coachId": {
+          "type": "string"
+        },
+        "athleteUid": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string",
+          "enum": [
+            "email",
+            "dm",
+            "follow"
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "out",
+            "in"
+          ]
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "draftId": {
+          "type": "string"
+        },
+        "messageId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "coachId",
+        "channel",
+        "direction",
+        "at"
+      ]
+    },
+    "HighSchool": {
+      "title": "High School",
+      "description": "UIL (Texas) football program from the 2026-28 realignment",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "league": {
+          "type": "string"
+        },
+        "conference": {
+          "type": "string"
+        },
+        "enrollment": {
+          "type": "number"
+        },
+        "footballDistrict": {
+          "type": "integer"
+        },
+        "division": {
+          "type": "string"
+        },
+        "footballType": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "isDfw": {
+          "type": "boolean"
+        },
+        "cycle": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "state",
+        "league",
+        "conference"
+      ]
+    }
+  },
+  "firestore": {
+    "/athletes/{uid}": {
+      "schema": "AthleteProfile",
+      "description": "Recruit profiles"
+    },
+    "/colleges/{collegeId}": {
+      "schema": "CollegeProgram",
+      "description": "College program parameters"
+    },
+    "/highlights/{highlightId}": {
+      "schema": "Highlight",
+      "description": "Athlete highlight videos"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User account metadata"
+    },
+    "/coaches/{coachId}": {
+      "schema": "Coach",
+      "description": "Recruiting coach profiles"
+    },
+    "/outreach/{touchId}": {
+      "schema": "Outreach",
+      "description": "Outreach ledger (touches)"
+    },
+    "/highschools/{hsId}": {
+      "schema": "HighSchool",
+      "description": "High-school programs (UIL first)"
+    }
+  }
+}

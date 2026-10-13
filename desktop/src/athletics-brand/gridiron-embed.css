@@ -1,0 +1,41 @@
+/* YUR Athletics: the side-browser finish for Gridiron Scout pages. The Desktop inserts it as a user
+   style sheet into every Gridiron page its side browser shows (browser-host.js pageStyle, edition only,
+   main.js), because Gridiron has no embed view of its own yet; it steps aside as soon as Gridiron marks
+   one (<html data-gridiron-embed>). Presentation only: it loads nothing (edition.js refuses a sheet that
+   could fetch). It hides Gridiron's site bar, footer and outbound links (Hudl, MaxPreps, team site; the
+   side browser does not open other origins), compacts the player card's header, shows the card's stat
+   tiles only on its Board tab so a section opens on its own content, and sets the hard-edged black and
+   silver finish of Main.dc.html. */
+
+/* The black page area (#09090b), square corners, no sideways page scroll. */
+html:not([data-gridiron-embed]), html:not([data-gridiron-embed]) body { background: #09090b !important; }
+html:not([data-gridiron-embed]) body { overflow-x: hidden !important; }
+html:not([data-gridiron-embed]) *, html:not([data-gridiron-embed]) *::before, html:not([data-gridiron-embed]) *::after { border-radius: 0 !important; }
+
+/* Silver for Gridiron's green accent (Tailwind v4 reads every emerald utility from these variables): a
+   selected tab or button becomes the bright slab, accent text silver, borders and rings hairlines. */
+html:not([data-gridiron-embed]):root {
+  --color-emerald-300: #ffffff !important; --color-emerald-400: #ffffff !important; --color-emerald-500: #e4e4e7 !important;
+  --color-emerald-600: #a1a1aa !important; --color-emerald-700: #71717a !important;
+}
+
+/* Gridiron's own site chrome: the fixed top bar (Join The League and its menu) and the footer. Each page
+   pads its top for that bar; here the page starts right under the side browser's toolbar. */
+html:not([data-gridiron-embed]) nav.fixed.top-0 { display: none !important; }
+html:not([data-gridiron-embed]) footer { display: none !important; }
+html:not([data-gridiron-embed]) .min-h-screen[class*="pt-"] { padding-top: 20px !important; }
+
+/* Page headers, the player card's above all: a compact name line, its outbound links left out. */
+html:not([data-gridiron-embed]) .min-h-screen header { gap: 10px !important; margin-bottom: 14px !important; padding-bottom: 12px !important; }
+html:not([data-gridiron-embed]) .min-h-screen header h2 { font-size: 24px !important; font-style: normal !important; line-height: 1.15 !important; letter-spacing: .01em !important; }
+html:not([data-gridiron-embed]) .min-h-screen header a[href^="http"] { display: none !important; }
+
+/* The card's stat tiles belong to its Board tab (the tab bar follows them; Board is its first tab). On
+   any other tab they are left out, so Film, Highlights, Stats, Camps, Resume and Outreach each open on
+   their own content instead of the same tiles. */
+html:not([data-gridiron-embed]) .grid.scroll-strip:has(+ .scroll-strip > button[aria-pressed="false"]:first-child) { display: none !important; }
+
+/* Thin hairline scrollbars on the black ground. */
+html:not([data-gridiron-embed]) ::-webkit-scrollbar { width: 8px; height: 8px; }
+html:not([data-gridiron-embed]) ::-webkit-scrollbar-track { background: transparent; }
+html:not([data-gridiron-embed]) ::-webkit-scrollbar-thumb { background: rgba(228, 228, 231, .18); }

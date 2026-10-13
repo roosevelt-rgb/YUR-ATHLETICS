@@ -1,0 +1,386 @@
+@import url('./fonts/fonts.css');
+/* YUR Athletics finish for the Electron Desktop. edition-shell.js loads it last, and only for
+   the athletics edition (YUR_EDITION=athletics); every rule is scoped to html[data-yur-edition].
+   Presentation only: no authority, browser, Franklin or execution behavior changes.
+   Locked YUR brand rules (donor: athletics-tauri athletics-theme.css and athletics.css):
+   Orbitron for wordmarks and titles, JetBrains Mono for UI and status, hard edges (no radius),
+   silver chrome inside with no red, patriotic chrome only on the outside splash
+   (athletics-launch.css), and state by intensity: bright white = on or needs you,
+   grey = waiting, dark grey = off. Glass = hard-edged frosted slabs over a faint field. */
+
+html[data-yur-edition="athletics"] {
+  /* --ath-warn is the dimmest text (#8e8e97 = 6:1 on the near-black panels, WCAG AA at 11px); #71717a
+     stays only for non-text marks (--ath-mute). */
+  --ath-void: #000000; --ath-on: #ffffff; --ath-ink: #e8e8ec; --ath-steel: #a1a1aa; --ath-warn: #8e8e97; --ath-mute: #71717a; --ath-off: #3f3f46;
+  --ath-hair: rgba(228, 228, 231, .12); --ath-hair-hi: rgba(228, 228, 231, .22); --ath-light: #3b82f6; --ath-light-text: #60a5fa;
+  --ath-franklin-silver: linear-gradient(180deg, #ffffff 0%, #ececef 44%, #8e8e97 53%, #d4d4d8 60%, #f4f4f5 100%);
+  --ath-silver-chrome: linear-gradient(135deg, #1a1a24, #4a4a55, #d4d4d8, #ffffff, #e8e8ec, #71717a, #1a1a24);
+  --ath-silver-text: linear-gradient(178deg, #ffffff 6%, #e8e8ec 38%, #a1a1aa 72%, #d4d4d8 100%);
+  --ath-silver-slab: linear-gradient(180deg, #ffffff, #d4d4d8 55%, #a1a1aa);
+  --ath-glass: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .022));
+  --ath-glass-dark: rgba(4, 4, 6, .62);
+  --ath-edge: rgba(255, 255, 255, .11); --ath-edge-hi: rgba(255, 255, 255, .3);
+  --ath-blur: blur(20px) saturate(135%);
+  --ath-top-light: inset 0 1px 0 rgba(255, 255, 255, .2);
+  --ath-shadow: 0 30px 70px rgba(0, 0, 0, .6);
+  --ath-display: "Orbitron", "Bahnschrift", "Segoe UI", sans-serif;
+  --ath-ui: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --ath-yard: 96px;
+  /* The Desktop's shared tokens in the Athletics palette: black, zinc and silver only. */
+  --dt-bg: #000000; --dt-panel: #09090b; --dt-surface: #111114; --dt-active: #26262b; --dt-border: #66666f;
+  --dt-text: #e8e8ec; --dt-secondary: #b4b4bc; --dt-muted: #a1a1aa;
+  --dt-silver: #d4d4d8; --dt-silver-hover: #ffffff; --dt-on-accent: #050506; --dt-focus: #ffffff;
+  --dt-success: #ffffff; --dt-success-bg: #141417; --dt-success-border: #d4d4d8;
+  --dt-warning: #b4b4bc; --dt-warning-bg: #121215; --dt-warning-border: #71717a;
+  --dt-error: #ffffff; --dt-error-bg: #1c1c20; --dt-error-border: #ffffff;
+  --dt-info: #d4d4d8; --dt-info-bg: #141417; --dt-info-border: #71717a;
+  color-scheme: dark;
+}
+/* The IntelliFlow frame's metal, in silver. */
+html[data-yur-edition="athletics"] body.glider-enabled { --yf-metal: linear-gradient(115deg, #71717a 0%, #d4d4d8 34%, #ffffff 48%, #d4d4d8 66%, #71717a 100%); }
+
+/* Hard edges everywhere inside the app. */
+html[data-yur-edition="athletics"] *,
+html[data-yur-edition="athletics"] *::before,
+html[data-yur-edition="athletics"] *::after { border-radius: 0 !important; }
+
+/* Type: JetBrains Mono for the UI, Orbitron for wordmarks and titles. */
+html[data-yur-edition="athletics"] body,
+html[data-yur-edition="athletics"] body #yur-conversation,
+html[data-yur-edition="athletics"] body .yur-franklin,
+html[data-yur-edition="athletics"] body #glider-frame,
+html[data-yur-edition="athletics"] body #rc6-panel { font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body :is(#yur-conversation, #rc6-panel) :is(h1, h2) { font-family: var(--ath-display); font-weight: 700; letter-spacing: .03em; }
+html[data-yur-edition="athletics"] body .yc-edition-wordmark {
+  color: transparent; background: var(--ath-silver-text); -webkit-background-clip: text; background-clip: text;
+  font: 700 13px/1 var(--ath-display); letter-spacing: .14em;
+}
+
+/* The field: stadium lights over yard lines and two rows of hash marks. */
+html[data-yur-edition="athletics"] body.yur-theme,
+html[data-yur-edition="athletics"] body #yur-conversation,
+html[data-yur-edition="athletics"] body #yur-conversation[data-theme],
+html[data-yur-edition="athletics"] body.glider-enabled #yur-conversation,
+html[data-yur-edition="athletics"] body.glider-enabled #rc6-panel {
+  background-color: var(--ath-void);
+  background-image:
+    radial-gradient(1100px 620px at 6% -16%, rgba(226, 232, 244, .1), transparent 62%),
+    radial-gradient(900px 540px at 106% 114%, rgba(226, 232, 244, .055), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .08) 0 1px, transparent 1px calc(var(--ath-yard) / 5)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .08) 0 1px, transparent 1px calc(var(--ath-yard) / 5)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, .034) 0 1px, transparent 1px var(--ath-yard));
+  background-size: auto, auto, 100% 7px, 100% 7px, auto;
+  background-position: 0 0, 0 0, 0 34%, 0 66%, 0 0;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+  background-attachment: fixed;
+  color: var(--ath-ink);
+}
+/* [data-theme] matches the shared palette's own #yur-conversation[data-theme] rule. */
+html[data-yur-edition="athletics"] body #yur-conversation,
+html[data-yur-edition="athletics"] body #yur-conversation[data-theme] {
+  --yc-paper: transparent; --yc-sidebar: rgba(0, 0, 0, .45); --yc-surface: rgba(255, 255, 255, .045);
+  --yc-ink: var(--ath-ink); --yc-secondary: var(--ath-steel); --yc-muted: var(--dt-muted); --yc-line: var(--ath-edge);
+  --yc-accent: var(--ath-on); --yc-accent-hover: var(--ath-on); --yc-accent-soft: rgba(255, 255, 255, .1);
+}
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-main, .yc-section-panel, .yc-preferences-panel, .yc-studio-panel) { background: transparent; }
+
+/* Glass slabs: the frame, title bar, sidebar, top bar and side pane. */
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-titlebar, .yc-sidebar, .yc-topbar) {
+  border-color: var(--ath-edge); background: rgba(0, 0, 0, .45); box-shadow: var(--ath-top-light);
+  -webkit-backdrop-filter: var(--ath-blur); backdrop-filter: var(--ath-blur);
+}
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame {
+  border-bottom: 1px solid var(--ath-edge); background: rgba(0, 0, 0, .72);
+  box-shadow: var(--ath-top-light), 0 3px 18px rgba(0, 0, 0, .6);
+  -webkit-backdrop-filter: var(--ath-blur); backdrop-filter: var(--ath-blur);
+}
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame strong { background: none; color: var(--ath-on); filter: none; font: 700 12px/1 var(--ath-display); letter-spacing: .14em; }
+/* The thin blue light line under the title bar (brand light, not a state). */
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header { position: relative; }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header::after {
+  content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0) 0%, rgba(59, 130, 246, .9) 50%, rgba(59, 130, 246, 0) 100%);
+}
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header > span { color: var(--ath-steel); font: 500 11px/1 var(--ath-ui); letter-spacing: .05em; }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame :is(header, nav) button { border: 1px solid transparent; background: transparent; color: var(--ath-steel); font: 500 12px/1 var(--ath-ui); letter-spacing: .03em; }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame :is(header, nav) button:hover:not(:disabled) { background: rgba(255, 255, 255, .045); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame nav button.selected {
+  border-color: var(--ath-edge); border-bottom: 2px solid var(--ath-on); color: var(--ath-on);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .03)); box-shadow: var(--ath-top-light);
+}
+html[data-yur-edition="athletics"] body #glider-frame .glider-pages-list { border-color: var(--ath-edge); background: rgba(5, 5, 7, .96); box-shadow: var(--ath-top-light), var(--ath-shadow); }
+html[data-yur-edition="athletics"] body #glider-frame .glider-pages-list button { border: 1px solid var(--ath-edge); background: rgba(255, 255, 255, .03); color: var(--ath-ink); }
+
+/* Sidebar: the edition's sections. Active = silver chrome edge on a lit slab. */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-sidebar-brand { min-height: 34px; margin-bottom: 8px; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-sidebar-brand .yc-edition-wordmark { font-size: 12px; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-desktop-mark { border-color: var(--ath-edge-hi); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-desktop-mark .yc-edition-wordmark { font-size: 11px; letter-spacing: 0; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-group { color: var(--ath-warn); font: 500 11px/1 var(--ath-ui); letter-spacing: .04em; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-divider { border-top-color: var(--ath-edge); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item {
+  position: relative; min-height: 36px; padding: 0 12px; border: 1px solid transparent; background: transparent; color: var(--ath-steel);
+  font: 500 12.5px/1.2 var(--ath-ui); transition: color .18s ease-out, background .18s ease-out, border-color .18s ease-out;
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item:hover { border-color: rgba(255, 255, 255, .06); background: rgba(255, 255, 255, .045); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.active {
+  border-color: var(--ath-edge); background: linear-gradient(90deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, .025));
+  box-shadow: var(--ath-top-light); color: var(--ath-on); font-weight: 500;
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.active::before { content: ""; position: absolute; top: -1px; bottom: -1px; left: -1px; width: 3px; background: var(--ath-silver-chrome); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab[data-edition-action="franklin"] {
+  min-height: 62px; padding: 8px 12px; border-color: var(--ath-edge); box-shadow: var(--ath-top-light);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02));
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab[data-edition-action="franklin"].active { border-color: var(--ath-edge-hi); background: linear-gradient(180deg, rgba(255, 255, 255, .14), rgba(255, 255, 255, .04)); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab[data-edition-action="franklin"] .yc-edition-tab-label {
+  color: transparent; background: var(--ath-silver-text); -webkit-background-clip: text; background-clip: text;
+  font: 700 15px/1 var(--ath-display); letter-spacing: .04em;
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab-sub { color: var(--ath-warn); font: 400 10.5px/1 var(--ath-ui); letter-spacing: .02em; }
+/* Bright = needs you. */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-badge { height: 20px; background: var(--ath-on); box-shadow: 0 0 14px rgba(255, 255, 255, .45); color: #000000; font: 700 11px/20px var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-history-item, .yc-sidebar-project) { color: var(--ath-steel); font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-history-item, .yc-sidebar-project):is(:hover, .active, [aria-current="page"]) { background: rgba(255, 255, 255, .06); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-profile { border-top-color: var(--ath-edge); }
+
+/* Top bar and side-pane toggles: ghost glass, bright when open. */
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-context-toggle, .yc-sidebar-toggle, .yc-conversation-menu) { border: 1px solid transparent; color: var(--ath-steel); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-context-toggle, .yc-sidebar-toggle, .yc-conversation-menu):hover { border-color: var(--ath-edge); background: rgba(255, 255, 255, .06); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-context-toggle[aria-expanded="true"] { border-color: var(--ath-edge-hi); background: rgba(255, 255, 255, .1); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-topbar .yc-thread-title { color: var(--ath-steel); }
+
+/* Franklin on the main page: a glass slab, silver wordmark, intensity for his state. */
+html[data-yur-edition="athletics"] body .yur-franklin { color: var(--ath-ink); }
+/* No backdrop blur on his page: the ghost position canvas behind him stays a crisp hairline. */
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"] .yur-franklin-panel {
+  border-right: 1px solid var(--ath-edge); background: var(--ath-glass); box-shadow: var(--ath-top-light);
+}
+html[data-yur-edition="athletics"] body .yur-franklin .yur-franklin-panel { border-color: var(--ath-edge); }
+html[data-yur-edition="athletics"] body .yur-franklin h2 {
+  color: transparent; background: var(--ath-silver-text); -webkit-background-clip: text; background-clip: text;
+  font: 700 21px/1.1 var(--ath-display); letter-spacing: .04em;
+}
+html[data-yur-edition="athletics"] body .yur-franklin header p { color: var(--ath-warn); font-family: var(--ath-ui); }
+/* His mark on the main page: the open Y with the athlete, in a black square. */
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"] header::before {
+  content: ""; flex: none; width: 40px; height: 40px; margin-right: 8px; border: 1px solid rgba(228, 228, 231, .2);
+  background: #000000 url('./brand/y-mark-figure.svg') center / 34px 34px no-repeat;
+}
+/* The ghost position canvas behind his chat (edition-shell.css places it): a hairline Orbitron
+   outline with a transparent fill that breathes slowly; reduced motion holds it still (below). */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-ghost {
+  color: transparent; -webkit-text-fill-color: transparent; -webkit-text-stroke: 1.5px rgba(228, 228, 231, .11);
+  font-family: var(--ath-display); font-weight: 900; letter-spacing: -.02em;
+  animation: ath-ghost-breathe 9s ease-in-out infinite;
+}
+html[data-yur-edition="athletics"] body .yur-franklin button {
+  min-height: 32px; border: 1px solid var(--ath-edge-hi); background: rgba(255, 255, 255, .05); color: var(--ath-ink);
+  font: 500 11px/1 var(--ath-ui); letter-spacing: .04em;
+}
+html[data-yur-edition="athletics"] body .yur-franklin button:hover:not(:disabled) { background: rgba(255, 255, 255, .1); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body .yur-franklin #franklin-send { border-color: rgba(255, 255, 255, .45); background: var(--ath-silver-slab); color: #050506; font-weight: 700; }
+html[data-yur-edition="athletics"] body .yur-franklin #franklin-send:hover:not(:disabled) { filter: brightness(1.08); }
+html[data-yur-edition="athletics"] body .yur-franklin :is(textarea, select) { border: 1px solid var(--ath-edge-hi); background: rgba(0, 0, 0, .55); color: var(--ath-on); font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body .yur-franklin :is(textarea, select):focus { border-color: var(--ath-on); }
+html[data-yur-edition="athletics"] body .yur-franklin-log { border-color: var(--ath-edge); }
+html[data-yur-edition="athletics"] body .yur-franklin-message { border: 1px solid var(--ath-edge); background: rgba(255, 255, 255, .035); box-shadow: var(--ath-top-light); }
+html[data-yur-edition="athletics"] body .yur-franklin-message[data-role="user"] { border-color: var(--ath-edge-hi); background: rgba(255, 255, 255, .075); }
+html[data-yur-edition="athletics"] body .yur-franklin-message strong { color: var(--ath-steel); font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body .yur-franklin :is(.yur-franklin-context, .yur-franklin-timeline) > div,
+html[data-yur-edition="athletics"] body .yur-franklin pre { border: 1px solid var(--ath-edge); background: rgba(0, 0, 0, .45); }
+html[data-yur-edition="athletics"] body .yur-franklin :is(.yur-franklin-observation, .yur-franklin-persistence, .yur-franklin-empty) { color: var(--ath-warn); }
+html[data-yur-edition="athletics"] body .yur-franklin .yur-franklin-observation { border-left-color: var(--ath-edge-hi); background: rgba(255, 255, 255, .03); }
+html[data-yur-edition="athletics"] body .yur-franklin .yur-franklin-error { border-left: 2px solid var(--ath-on); background: rgba(255, 255, 255, .06); color: var(--ath-on); font-weight: 700; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"] .yur-franklin-status { color: var(--ath-steel); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"] .yur-franklin-status::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 9px; background: var(--ath-mute); vertical-align: middle; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"]:is([data-phase="ready"], [data-phase="idle"], [data-phase="watching"]) .yur-franklin-status { color: var(--ath-ink); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"]:is([data-phase="ready"], [data-phase="idle"], [data-phase="watching"]) .yur-franklin-status::before { background: var(--ath-ink); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"][data-phase="working"] .yur-franklin-status { color: var(--ath-on); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"][data-phase="working"] .yur-franklin-status::before { background: var(--ath-on); box-shadow: 0 0 10px rgba(255, 255, 255, .75); animation: ath-pulse 1.4s ease-in-out infinite; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"]:is([data-phase="unconfirmed"], [data-phase="error"], [data-phase="waiting_approval"]) .yur-franklin-status { color: var(--ath-on); font-weight: 700; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"]:is([data-phase="unconfirmed"], [data-phase="error"], [data-phase="waiting_approval"]) .yur-franklin-status::before { background: var(--ath-on); box-shadow: 0 0 14px rgba(255, 255, 255, .9); animation: ath-pulse .9s steps(2, jump-none) infinite; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"]:is([data-phase="disabled"], [data-phase="offline"], [data-phase="unavailable"], [data-phase="disconnected"]) .yur-franklin-status::before { background: var(--ath-off); }
+html[data-yur-edition="athletics"] body .yur-franklin .yur-franklin-dot { border-color: var(--ath-mute); background: var(--ath-off); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-phase="working"] .yur-franklin-dot { border-color: var(--ath-on); background: var(--ath-on); box-shadow: 0 0 10px rgba(255, 255, 255, .75); }
+html[data-yur-edition="athletics"] body .yur-franklin:is([data-phase="unconfirmed"], [data-phase="error"]) .yur-franklin-dot { border-color: var(--ath-on); background: var(--ath-on); box-shadow: 0 0 14px rgba(255, 255, 255, .9); }
+
+/* The side pane: the browser Franklin drives, beside him. */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-panel {
+  border-left: 1px solid var(--ath-edge); background: rgba(5, 5, 7, .82);
+  box-shadow: var(--ath-top-light), -12px 0 40px rgba(0, 0, 0, .55);
+  -webkit-backdrop-filter: var(--ath-blur); backdrop-filter: var(--ath-blur);
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-header { border-bottom-color: var(--ath-edge); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-tabs [role="tab"] { border: 1px solid transparent; background: transparent; color: var(--ath-steel); font: 500 11.5px/1 var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-tabs [role="tab"][aria-selected="true"] { border-color: var(--ath-edge); border-bottom: 2px solid var(--ath-on); background: rgba(255, 255, 255, .08); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-resize:hover { background: var(--ath-edge-hi); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-browser-viewport { border-color: var(--ath-edge); background: #000000; }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-browser-heading h3, .yc-detail-card :is(h2, h3, h4)) { font-family: var(--ath-display); letter-spacing: .04em; }
+
+/* Cards, dialogs and pages: glass slabs with a bright top edge. */
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-detail-card, .yc-resource-card, .yc-resource-detail, .yc-project-card, .yc-composer, .yu-card, .ys-row, .sf-starter, .sf-preview, .sf-result, .yc-dialog) {
+  border-color: var(--ath-edge); background: var(--ath-glass); box-shadow: var(--ath-top-light), inset 0 0 0 4px rgba(0, 0, 0, .35), inset 0 0 0 5px rgba(255, 255, 255, .035);
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-dialog { background: rgba(8, 8, 10, .96); box-shadow: var(--ath-top-light), var(--ath-shadow); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-preferences-heading h1, #yc-section-title, #yc-studio-title, .yc-heading) {
+  color: transparent; background: var(--ath-silver-text); -webkit-background-clip: text; background-clip: text; font-family: var(--ath-display);
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-heading span { color: transparent; background: var(--ath-silver-text); -webkit-background-clip: text; background-clip: text; border-bottom-color: var(--ath-edge-hi); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-eyebrow, .yc-section-count, .yc-footnote) { color: var(--ath-warn); font-family: var(--ath-ui); }
+
+/* Buttons: primary = silver chrome slab with black text; everything else is ghost glass. */
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-primary, .yc-send, .yc-resource-action) {
+  border: 1px solid rgba(255, 255, 255, .45); background: var(--ath-silver-slab); color: #050506; font-family: var(--ath-ui); font-weight: 700;
+}
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-primary, .yc-send, .yc-resource-action):hover:not(:disabled) { background: var(--ath-silver-slab); filter: brightness(1.08); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-send:disabled { background: var(--dt-active); color: var(--ath-warn); filter: none; }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yu-actions, .yc-launch-routing, .yc-browser-heading, .yc-browser-address-form, .yc-browser-controls, .yc-detail-card, .yc-preferences-panel, .yc-section-toolbar) button:not(.yc-primary):not(.yc-resource-action) {
+  border: 1px solid var(--ath-edge-hi); background: rgba(255, 255, 255, .05); color: var(--ath-ink); font-family: var(--ath-ui);
+}
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yu-actions, .yc-launch-routing, .yc-browser-heading, .yc-browser-address-form, .yc-browser-controls, .yc-detail-card, .yc-preferences-panel, .yc-section-toolbar) button:not(.yc-primary):not(.yc-resource-action):hover:not(:disabled) { background: rgba(255, 255, 255, .1); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-composer:focus-within { border-color: var(--ath-on); box-shadow: 0 0 0 1px rgba(255, 255, 255, .25), var(--ath-top-light); }
+html[data-yur-edition="athletics"] body :is(#yur-conversation, #rc6-panel) :is(input, textarea, select) { border-color: var(--ath-edge-hi); background-color: rgba(0, 0, 0, .55); color: var(--ath-on); caret-color: var(--ath-on); }
+
+/* Notices and signals by intensity: no colored states inside the app. */
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yc-notice, .yc-model-setup, .yu-warn),
+html[data-yur-edition="athletics"] body .rc6-approval { border-color: var(--ath-edge-hi); border-left: 3px solid var(--ath-on); background: rgba(255, 255, 255, .06); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation :is(.yu-ok, .yc-status[data-state="connected"]) { border-color: var(--ath-edge-hi); background: transparent; color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-status[data-state="offline"] { border-color: var(--ath-off); color: var(--ath-warn); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-message.error .yc-message-body { border-color: var(--ath-on); color: var(--ath-on); font-weight: 700; }
+
+/* Coding workbench (Franklin's IntelliFlow path stays as is; only its finish changes). */
+html[data-yur-edition="athletics"] body #rc6-panel :is(.rc6-toolbar, .rc6-models, form) { border-color: var(--ath-edge); background: rgba(0, 0, 0, .55); }
+html[data-yur-edition="athletics"] body .rc6-context-rail { border-right-color: var(--ath-edge); background: rgba(0, 0, 0, .4); }
+html[data-yur-edition="athletics"] body .rc6-conversation { background: transparent; }
+html[data-yur-edition="athletics"] body :is(.rc6-context-card, .rc6-welcome-card, .rc6-live-work, .rc6-input-dialog) { border-color: var(--ath-edge); background: var(--ath-glass); box-shadow: var(--ath-top-light), var(--ath-shadow); }
+html[data-yur-edition="athletics"] body.glider-enabled #rc6-panel button { border: 1px solid var(--ath-edge-hi); background: rgba(255, 255, 255, .05); color: var(--ath-ink); box-shadow: none; font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body.glider-enabled #rc6-panel button:hover:not(:disabled) { border-color: var(--ath-edge-hi); background: rgba(255, 255, 255, .1); box-shadow: none; }
+html[data-yur-edition="athletics"] body :is(.rc6-primary-context, #rc6-send, .rc6-input-actions button[type="submit"]) { border-color: rgba(255, 255, 255, .45) !important; background: var(--ath-silver-slab) !important; color: #050506 !important; font-weight: 700; }
+html[data-yur-edition="athletics"] body #rc6-panel .rc6-toolbar-heading strong { font-family: var(--ath-display); }
+html[data-yur-edition="athletics"] body .rc6-live-pulse { background: var(--ath-mute); box-shadow: none; }
+html[data-yur-edition="athletics"] body .rc6-live-work:is(.working, .waiting) .rc6-live-pulse { background: var(--ath-on); box-shadow: 0 0 10px rgba(255, 255, 255, .75); animation: ath-pulse 1.4s ease-in-out infinite; }
+html[data-yur-edition="athletics"] body .rc6-live-work.error .rc6-live-pulse { background: var(--ath-on); box-shadow: 0 0 14px rgba(255, 255, 255, .9); }
+html[data-yur-edition="athletics"] body .rc6-message-user .rc6-message-body { border-color: var(--ath-edge-hi); background: rgba(255, 255, 255, .075); }
+
+/* Focus, selection and scrollbars. */
+html[data-yur-edition="athletics"] body :is(button, input, textarea, select, a, summary):focus-visible { outline: 2px solid var(--ath-on); outline-offset: 2px; }
+html[data-yur-edition="athletics"] ::selection { background: #3f3f46; color: var(--ath-on); }
+html[data-yur-edition="athletics"] body * { scrollbar-color: #3f3f46 transparent; }
+
+@keyframes ath-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+@keyframes ath-ghost-breathe { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }
+
+/* ─── The approved layout (Welcome/Main): one black ground inside a hairline frame, a 44px title row
+   with the blue light line, 40px nav rows lit by intensity, Franklin's page and the side browser's
+   one-row toolbar. Layout lives in edition-shell.css; this is its finish. */
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame {
+  border-color: rgba(228, 228, 231, .18); border-bottom-color: var(--ath-hair); background: #000000; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header::after { bottom: -1px; }
+html[data-yur-edition="athletics"] body.glider-enabled #yur-conversation { border-color: rgba(228, 228, 231, .18); }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header > button { width: 46px; height: 44px; min-height: 44px; padding: 0; border: 0; color: var(--ath-steel); font: 400 14px/1 var(--ath-ui); }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header > button:hover:not(:disabled) { background: rgba(255, 255, 255, .06); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame strong .yc-edition-home { border: 0; background: transparent; }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header > .yc-edition-chip {
+  border: 1px solid rgba(228, 228, 231, .16); background: rgba(255, 255, 255, .04); color: #f4f4f5; font: 500 12px/1 var(--ath-ui); letter-spacing: 0;
+}
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame .yc-edition-chip > b { font-weight: 500; }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame .yc-edition-chip > span { color: var(--ath-steel); }
+html[data-yur-edition="athletics"] body.glider-enabled #glider-frame header > .yc-edition-status { color: var(--ath-steel); font: 400 12px/1 var(--ath-ui); letter-spacing: 0; }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status > i { background: var(--ath-mute); }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="ready"] > i { background: #f4f4f5; }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="working"] { color: #c4c4cb; }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="working"] > i { background: var(--ath-light); animation: ath-live 2.4s ease-in-out infinite; }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="attention"] { color: var(--ath-on); font-weight: 700; }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="attention"] > i { background: var(--ath-on); box-shadow: 0 0 12px rgba(255, 255, 255, .8); }
+html[data-yur-edition="athletics"] body #glider-frame .yc-edition-status[data-state="off"] > i { background: var(--ath-off); }
+
+/* Left nav (Welcome/Main rows). */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-sidebar { background: transparent; border-right: 1px solid var(--ath-hair); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-group { color: var(--ath-warn); font: 400 11px/1.2 var(--ath-ui); letter-spacing: 0; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.yc-edition-tab {
+  min-height: 40px; padding: 0 10px; border: 1px solid transparent; background: transparent; box-shadow: none; color: var(--ath-steel); font: 500 13px/1.2 var(--ath-ui);
+}
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.yc-edition-tab:hover { border-color: rgba(228, 228, 231, .1); background: rgba(255, 255, 255, .04); color: #f4f4f5; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.yc-edition-tab::before { content: none; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-dot { background: rgba(161, 161, 170, .35); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.yc-edition-tab[data-open="true"] { color: #f4f4f5; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab[data-open="true"] .yc-edition-dot { background: var(--ath-light); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-open { color: var(--ath-light-text); font: 400 10px/1 var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-nav-item.yc-edition-tab.active { border-color: var(--ath-hair-hi); background: rgba(255, 255, 255, .08); box-shadow: none; color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab.active .yc-edition-dot { background: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-tab[data-edition-action="franklin"] .yc-edition-tab-label { color: inherit; background: none; -webkit-background-clip: border-box; background-clip: border-box; font: inherit; letter-spacing: 0; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-badge { height: 20px; background: #f4f4f5; box-shadow: none; color: #000000; font: 700 11px/20px var(--ath-ui); }
+
+/* The closed side browser's rail. */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-rail { border-left: 1px solid var(--ath-hair); background: rgba(255, 255, 255, .02); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-rail > button { border: 1px solid rgba(228, 228, 231, .16); background: transparent; color: #c4c4cb; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-rail > button:hover { border-color: rgba(228, 228, 231, .3); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-rail > span { color: var(--ath-warn); font-family: var(--ath-ui); }
+
+/* The side browser: toolbar, page ground and footer note (Main). */
+html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-panel { border-left: 1px solid var(--ath-hair); background: #09090b; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-browser-viewport { background: #09090b; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browserbar { border-bottom: 1px solid var(--ath-hair); background: rgba(255, 255, 255, .03); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browserbar > button { border: 1px solid var(--ath-hair); background: transparent; color: #c4c4cb; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browserbar > button:hover:not(:disabled) { border-color: rgba(228, 228, 231, .3); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browserbar > button:disabled { color: var(--ath-off); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-address { border: 1px solid var(--ath-hair); background: #000000; color: var(--ath-steel); font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-address > b { color: #f4f4f5; font-weight: 400; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-driving { border: 1px solid rgba(59, 130, 246, .55); background: rgba(59, 130, 246, .1); color: #dbeafe; font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-driving > i { background: var(--ath-light); animation: ath-live 2.4s ease-in-out infinite; }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browserbar > .yc-edition-takeover { border: 0; background: #f4f4f5; color: #000000; font: 700 12px/1 var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browser-notice { border-left: 2px solid #f4f4f5; background: rgba(255, 255, 255, .06); color: #f4f4f5; font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body #yur-conversation .yc-edition-browser-footer { border-top: 1px solid var(--ath-hair); color: var(--ath-steel); font-family: var(--ath-ui); }
+
+/* Franklin's page (Welcome/Main): his column stays clear so the ghost reads behind it. */
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-panel { border: 0; background: transparent; box-shadow: none; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] header { border-bottom: 1px solid rgba(228, 228, 231, .08); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-layout="main"][data-intro] header::before { content: none; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] h2 { background: var(--ath-franklin-silver); -webkit-background-clip: text; background-clip: text; font: 700 15px/1 var(--ath-display); letter-spacing: .08em; text-transform: uppercase; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] header p { color: var(--ath-steel); font: 400 12px/1 var(--ath-ui); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] header button { border: 1px solid rgba(228, 228, 231, .16); background: transparent; color: #c4c4cb; font: 500 12px/1 var(--ath-ui); letter-spacing: 0; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] #franklin-activity[aria-expanded="true"] { border-color: rgba(228, 228, 231, .4); background: rgba(255, 255, 255, .08); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-figure { border: 1px solid rgba(228, 228, 231, .2); background: #000000 url('./brand/y-mark-figure.svg') center / 34px 34px no-repeat; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-wordmark { color: transparent; background: var(--ath-franklin-silver); -webkit-background-clip: text; background-clip: text; font: 700 13px/1 var(--ath-display); letter-spacing: .1em; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-greeting p { color: #f4f4f5; font-family: var(--ath-ui); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-start {
+  border: 1px solid rgba(228, 228, 231, .16); background: rgba(8, 8, 10, .7); color: #f4f4f5; font: 500 14px/1.3 var(--ath-ui); letter-spacing: 0;
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+}
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-start:hover:not(:disabled) { border-color: rgba(228, 228, 231, .34); background: rgba(16, 16, 19, .82); color: var(--ath-on); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-start strong { font-weight: 700; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-start span { color: var(--ath-steel); font-size: 12px; line-height: 1.5; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-start small { color: var(--ath-warn); font-size: 11px; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-message { border: 1px solid rgba(228, 228, 231, .1); background: rgba(8, 8, 10, .6); box-shadow: none; color: #e4e4e7; font-size: 14px; line-height: 1.65; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-message[data-role="user"] { border-color: rgba(228, 228, 231, .14); background: rgba(255, 255, 255, .06); color: #f4f4f5; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-message strong { color: var(--ath-warn); font: 400 11px/1.2 var(--ath-ui); letter-spacing: 0; text-transform: none; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-form {
+  border: 1px solid var(--ath-hair-hi); background: rgba(8, 8, 10, .78); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-form:focus-within { border-color: rgba(228, 228, 231, .45); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-form textarea { border: 0; background: transparent; color: #f4f4f5; font: 400 14px/1.5 var(--ath-ui); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] .yur-franklin-form textarea::placeholder { color: var(--ath-warn); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] #franklin-send { border: 0; background: #f4f4f5; color: #000000; font: 700 13px/1 var(--ath-ui); letter-spacing: 0; }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] #franklin-send:disabled { background: #26262b; color: var(--ath-warn); }
+html[data-yur-edition="athletics"] body .yur-franklin[data-intro] :is(#franklin-stop, #franklin-retry) { border: 1px solid rgba(228, 228, 231, .3); background: transparent; color: #f4f4f5; }
+
+@keyframes ath-live { 0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, .6); } 50% { box-shadow: 0 0 0 5px rgba(59, 130, 246, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-yur-edition="athletics"] body *, html[data-yur-edition="athletics"] body *::before { animation: none !important; transition: none !important; }
+}
+/* With Windows transparency effects off, every surface is the one black ground (the side browser's
+   page ground stays #09090b); Franklin's column is a solid surface under a clear panel, so the ghost
+   behind his chat still shows. */
+@media (prefers-reduced-transparency: reduce) {
+  html[data-yur-edition="athletics"] body :is(#glider-frame, #yur-conversation .yc-titlebar, #yur-conversation .yc-sidebar, #yur-conversation .yc-topbar, .yur-franklin .yur-franklin-panel) {
+    background: #000000; -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+  html[data-yur-edition="athletics"] body #yur-conversation .yc-detail-panel { background: #09090b; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  html[data-yur-edition="athletics"] body #yur-conversation .yc-franklin-main { background: #000000; }
+  html[data-yur-edition="athletics"] body #yur-franklin[data-layout="main"] .yur-franklin-panel { background: transparent; }
+  html[data-yur-edition="athletics"] body .yur-franklin[data-intro] :is(.yur-franklin-form, .yur-franklin-start) { background: rgba(8, 8, 10, .9); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

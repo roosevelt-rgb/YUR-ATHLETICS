@@ -1,0 +1,52 @@
+#yur-conversation.yc-settings-mode { grid-template-columns: minmax(0, 1fr); }
+#yur-conversation.yc-settings-mode > .yc-sidebar, #yur-conversation.yc-settings-mode .yc-topbar, #yur-conversation.yc-settings-mode #yc-preferences-panel > .yc-preferences-heading { display: none; }
+#yur-conversation.yc-settings-mode #yc-preferences-panel { padding: 0; overflow: hidden; height: 100%; max-width: none; }
+#yur-conversation .ys-shell { display: grid; grid-template-columns: 250px minmax(0,1fr); height: 100%; min-height: 0; color: var(--yc-ink); background: var(--yc-paper); }
+#yur-conversation .ys-sidebar { overflow-y: auto; padding: 18px 10px; background: var(--yc-sidebar); border-right: 1px solid var(--yc-line); }
+#yur-conversation .ys-sidebar > input { width: 100%; padding: 11px; margin: 16px 0 6px; border: 1px solid var(--yc-line); border-radius: 18px; background: var(--yc-surface); color: var(--yc-ink); }
+#yur-conversation .ys-group { margin: 20px 10px 6px; color: var(--yc-muted); font-size: 12px; font-weight: 600; }
+#yur-conversation .ys-sidebar .ys-action { display: block; width: 100%; text-align: left; border: 0; margin: 2px 0; padding: 9px 12px; background: transparent; }
+#yur-conversation .ys-sidebar .ys-action[aria-current="page"] { background: var(--yc-surface); color: var(--yc-ink); font-weight: 600; }
+#yur-conversation .ys-main { overflow-y: auto; padding: 36px clamp(20px,6vw,100px); min-width: 0; }
+#yur-conversation .ys-form { width: min(100%,850px); margin: 0 auto; }
+#yur-conversation .ys-page h2 { font-size: 25px; margin: 0 0 25px; outline: none; }
+#yur-conversation .ys-page h3 { font-size: 14px; margin: 0 0 14px; }
+#yur-conversation .ys-row { display: flex; align-items: center; gap: 24px; justify-content: space-between; padding: 18px; background: var(--yc-surface); border: 1px solid var(--yc-line); border-bottom: 0; }
+#yur-conversation .ys-row + .ys-row { margin-top: 0; }
+#yur-conversation .ys-row:last-of-type { border-bottom: 1px solid var(--yc-line); border-radius: 0 0 12px 12px; }
+#yur-conversation .ys-row:first-of-type { border-radius: 12px 12px 0 0; }
+#yur-conversation .ys-row-copy { display: grid; gap: 5px; min-width: 0; flex: 1; }
+#yur-conversation .ys-row-copy strong { font-size: 13px; font-weight: 600; }
+#yur-conversation .ys-row-copy > span, #yur-conversation .ys-note { color: var(--yc-secondary); font-size: 12px; line-height: 1.6; }
+#yur-conversation .ys-row input:not([type="checkbox"]), #yur-conversation .ys-row select { width: min(45%,320px); border: 1px solid var(--yc-line); border-radius: 8px; padding: 9px; color: var(--yc-ink); background: var(--yc-paper); }
+#yur-conversation .ys-row input[type="number"] { width: 85px; }
+#yur-conversation .ys-row input[type="checkbox"] { appearance: none; cursor: pointer; width: 36px; height: 21px; flex-shrink: 0; background: var(--yc-line); border-radius: 15px; position: relative; }
+#yur-conversation .ys-row input[type="checkbox"]::after { content: ''; display: block; position: absolute; width: 15px; height: 15px; border-radius: 50%; left: 3px; top: 3px; background: var(--dt-surface); transition: left .15s; }
+#yur-conversation .ys-row input[type="checkbox"]:checked { background: var(--yc-accent); }
+#yur-conversation .ys-row input[type="checkbox"]:checked::after { left: 18px; }
+#yur-conversation .ys-row:has(textarea) { display: block; }
+#yur-conversation .ys-row textarea, #yur-conversation #yc-settings-import { width: 100%; min-height: 150px; resize: vertical; margin-top: 12px; border: 1px solid var(--yc-line); border-radius: 8px; padding: 12px; color: var(--yc-ink); background: var(--yc-paper); }
+#yur-conversation .ys-action { border: 1px solid var(--yc-line); border-radius: 8px; padding: 9px 14px; background: var(--yc-surface); color: var(--yc-ink); cursor: pointer; margin: 12px 8px 8px 0; }
+#yur-conversation .ys-action:hover { background: var(--yc-accent-soft); }
+#yur-conversation .ys-card { border: 1px solid var(--yc-line); border-radius: 12px; padding: 18px; margin: 20px 0; }
+#yur-conversation .ys-card pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/1.6 monospace; max-height: 400px; overflow: auto; }
+#yur-conversation .ys-card > input { width: 100%; padding: 10px; border: 1px solid var(--yc-line); border-radius: 8px; background: var(--yc-paper); color: var(--yc-ink); }
+#yur-conversation .ys-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; position: sticky; bottom: 0; padding: 18px 0; margin-top: 30px; background: var(--yc-paper); border-top: 1px solid var(--yc-line); }
+#yur-conversation .ys-footer .ys-status { margin: 0; font-size: 12px; color: var(--yc-secondary); }
+#yur-conversation .ys-status[data-error="true"] { color: var(--dt-error); }
+#yur-conversation .ys-archive-row { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--yc-line); }
+#yur-conversation .ys-archive-row > span { flex: 1; overflow-wrap: anywhere; }
+#yur-conversation .ys-appshot { display: block; width: 100%; border: 1px solid var(--yc-line); border-radius: 10px; margin-top: 15px; }
+#yur-conversation .ys-shell [hidden] { display: none !important; }
+#yur-conversation[data-density="compact"] .yc-history-item { padding-top: 5px; padding-bottom: 5px; }
+#yur-conversation .yc-message-body { font-size: var(--yc-user-font-size,14px); }
+#yc-context-usage { color: var(--yc-muted); font-size: 11px; padding: 3px 12px; }
+#yc-desktop-pet { padding: 4px 12px; color: var(--yc-secondary); font-size: 12px; }
+@media(max-width:760px) { .ys-shell { grid-template-columns: 170px minmax(0,1fr); } #yur-conversation .ys-main { padding: 24px 16px; } #yur-conversation .ys-row { align-items: flex-start; gap: 10px; flex-wrap: wrap; } #yur-conversation .ys-row-copy { min-width: 130px; } #yur-conversation .ys-row input:not([type="checkbox"]), #yur-conversation .ys-row select { width: 100%; } #yur-conversation .ys-sidebar { padding: 12px 6px; } #yur-conversation .ys-sidebar .ys-action { font-size: 12px; padding: 8px; } }
+
+#yur-conversation.yc-settings-mode .yc-main { grid-area: 2 / 1 / -1 / -1; padding-right: 0; }
+#yur-conversation.yc-settings-mode[data-theme="dark"] { --yc-paper: var(--dt-bg); --yc-sidebar: var(--dt-panel); --yc-surface: var(--dt-surface); --yc-line: var(--dt-border); }
+#yur-conversation .ys-row input[type="checkbox"] { margin: 0; padding: 0; border: 0; }
+#yur-conversation .ys-shell :focus-visible { outline: 2px solid var(--yc-accent); outline-offset: 3px; }
+#yur-conversation .ys-page h2:focus { outline: none; }
+@media(max-width:760px) { #yur-conversation .ys-shell { grid-template-columns: 170px minmax(0,1fr); } }

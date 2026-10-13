@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YUR AI :: DORMANT INTELLIGENCE</title>
+    
+    
+    
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100vh;
+        overflow: hidden;
+        background: var(--dt-bg);
+      }
+      body {
+        color: var(--dt-text);
+        font-family: "Orbitron", sans-serif;
+        position: relative;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        background:
+          radial-gradient(
+            circle at center,
+            color-mix(in srgb, var(--dt-surface) 1.5%, transparent) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at center,
+            color-mix(in srgb, var(--dt-surface) 1.0%, transparent) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            color-mix(in srgb, var(--dt-surface) 1.0%, transparent) 0%,
+            transparent 55%
+          );
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 12px;
+        pointer-events: none;
+        z-index: 1;
+        border: 1px solid color-mix(in srgb, var(--dt-border) 5.0%, transparent);
+        box-shadow:
+          inset 0 0 80px rgba(255, 255, 255, 0.04),
+          0 0 100px rgba(180, 180, 180, 0.03);
+      }
+      .stage {
+        position: relative;
+        z-index: 5;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        user-select: none;
+      }
+      .breathing {
+        animation: breathe 6s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0.85;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.02);
+        }
+      }
+      .wordmark-block {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 0.08em;
+        line-height: 0.75;
+      }
+      .wordmark {
+        font-family: "Orbitron", sans-serif;
+        font-weight: 700;
+        color: var(--dt-text);
+        letter-spacing: -0.05em;
+        line-height: 0.75;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .tm {
+        font-family: "Orbitron", sans-serif;
+        font-weight: 400;
+        color: color-mix(in srgb, var(--dt-text) 42.0%, transparent);
+        line-height: 1;
+        letter-spacing: 0;
+        user-select: none;
+        margin-bottom: 0.2em;
+      }
+      .tagline {
+        margin-top: 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--dt-secondary);
+        letter-spacing: 0.6em;
+        text-transform: uppercase;
+      }
+      .sigil-btn {
+        position: fixed;
+        bottom: 64px;
+        right: 64px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: var(--dt-bg);
+        border: 1px solid color-mix(in srgb, var(--dt-border) 10.0%, transparent);
+        padding: 20px 32px;
+        color: var(--dt-secondary);
+        font-family: "Orbitron", sans-serif;
+        font-size: 9px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+      .sigil-btn:hover {
+        border-color: color-mix(in srgb, var(--dt-border) 30.0%, transparent);
+        color: var(--dt-text);
+        transform: scale(1.03);
+      }
+      .sigil-btn:active {
+        transform: scale(0.98);
+      }
+      .sigil-btn .compass {
+        width: 16px;
+        height: 16px;
+        color: var(--dt-secondary);
+        animation: spin 10s linear infinite;
+        transition: color 0.3s;
+      }
+      .sigil-btn:hover .compass {
+        color: var(--dt-text);
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .wordmark {
+        color: transparent;
+        background: linear-gradient(180deg, var(--dt-surface) 0%, var(--dt-surface) 38%, var(--dt-surface) 58%, var(--dt-active) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        text-shadow: 0 0 24px rgba(255, 255, 255, 0.08);
+      }
+      .sigil-btn {
+        border: 1px solid color-mix(in srgb, var(--dt-border) 20.0%, transparent);
+        color: var(--dt-text);
+        box-shadow: 0 25px 50px -12px rgba(255, 255, 255, 0.05);
+      }
+      .sigil-btn:hover {
+        border-color: color-mix(in srgb, var(--dt-border) 45.0%, transparent);
+        color: var(--dt-text);
+      }
+      .sigil-btn .compass {
+        color: var(--dt-secondary);
+      }
+    </style>
+  <style>
+ #yur-spine-badge{position:fixed;bottom:22px;left:22px;z-index:20;padding:9px 12px;border:1px solid var(--dt-border);background:var(--dt-bg);color:var(--dt-secondary);font:11px/1.5 "JetBrains Mono",monospace;cursor:pointer;}
+ #yur-launch-notice{position:fixed;bottom:90px;right:30px;max-width:380px;color:var(--dt-warning);font:12px/1.5 sans-serif;}
+ .sigil-btn:focus-visible,#yur-spine-badge:focus-visible{outline:2px solid var(--dt-focus);outline-offset:4px;}
+ .sigil-btn:disabled{opacity:.65;cursor:wait;}
+ @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+ </style><script src="yur-launch.js" defer></script>    <link rel="stylesheet" href="desktop-theme.css">
+  </head>
+  <body class="yur-theme">
+    <div class="stage">
+      <div class="breathing">
+        <div class="wordmark-block">
+          <h1 class="wordmark" id="wm">YUR AI</h1>
+          <span class="tm" id="tm">&trade;</span>
+        </div>
+        <p class="tagline">DORMANT INTELLIGENCE WAITING TO BE BORN</p>
+      </div>
+    </div>
+    <button class="sigil-btn">
+      <svg
+        class="compass"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <polygon
+          points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+        />
+      </svg>
+      <span>PRESS TO BEGIN GENESIS</span>
+    </button>
+    
+  <button type="button" id="yur-spine-badge" title="Read-only spine protocol check. Execution authority remains separate."><span class="label">SPINE — NOT CHECKED</span></button><p id="yur-launch-notice" role="status" aria-live="polite"></p></body>
+</html>
+

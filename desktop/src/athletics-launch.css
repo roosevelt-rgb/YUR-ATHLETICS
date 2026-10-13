@@ -1,0 +1,336 @@
+@import url('./athletics-brand/fonts/fonts.css');
+/* YUR Athletics launch page (Splash mockup): black ground, a 12px inset hairline frame, the YUR Athletics
+   master art as the hero cropped at 80.5% of its height above the live subline, the athlete's position card,
+   a loading line, and, for a sport with play art (athletics-play-art.js), a play that draws itself
+   behind everything. Silver and blue light only, hard edges. Under reduced motion every animation
+   stops and the page shows its final state at once. */
+
+:root {
+  --ath-void: #000000;
+  --ath-on: #ffffff;
+  --ath-ink: #f4f4f5;
+  --ath-steel: #a1a1aa;
+  --ath-display: "Orbitron", "Bahnschrift", "Segoe UI", sans-serif;
+  --ath-ui: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --ath-silver-text: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #ececef 44%,
+    #8e8e97 53%,
+    #d4d4d8 60%,
+    #f4f4f5 100%
+  );
+  --ath-silver-slab: linear-gradient(180deg, #ffffff, #d4d4d8 55%, #a1a1aa);
+  --ath-blue: #3b82f6;
+  --ath-blue-light: #60a5fa;
+  --ath-hero: min(440px, 49vh, 70vw);
+}
+
+html,
+body.athletics-splash {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ath-void);
+}
+
+body.athletics-splash {
+  color: var(--ath-ink);
+  font-family: var(--ath-ui);
+}
+
+.launch-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(20px, 8.5vh, 77px);
+  box-sizing: border-box;
+  padding-top: clamp(20px, 4.5vh, 40px);
+  overflow: hidden;
+  background: var(--ath-void);
+  text-align: center;
+}
+
+/* The play: behind everything, drawn by athletics-launch.js only for a sport with play art. */
+.ath-play {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ath-play[hidden] {
+  display: none;
+}
+
+.ath-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ath-draw 2.2s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) forwards;
+}
+
+.ath-fade {
+  opacity: 0;
+  animation: ath-fade 0.6s ease-out var(--d, 0s) forwards;
+}
+
+.ath-frame {
+  position: absolute;
+  inset: 12px;
+  z-index: 3;
+  border: 1px solid rgba(228, 228, 231, 0.18);
+  pointer-events: none;
+}
+
+/* The hero: the master art above its baked-in subline (cropped at 0.805), the subline set live.
+   The crop is opaque (Splash.dc.html): its ground is the art's own black (0-9 per channel), so it
+   shows no box on the black page, and the play's routes pass behind it instead of through the logo. */
+.ath-hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ath-hero-crop {
+  width: var(--ath-hero);
+  aspect-ratio: 1 / 0.805;
+  overflow: hidden;
+  background: #000000;
+  /* soft edges: the routes fade in under the art instead of stopping at a hard rectangle */
+  -webkit-mask-image: radial-gradient(
+    ellipse 64% 66% at 50% 46%,
+    #000 62%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 64% 66% at 50% 46%,
+    #000 62%,
+    transparent 100%
+  );
+}
+
+.ath-hero-crop img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  user-select: none;
+}
+
+.ath-hero-subline {
+  margin: 6px 0 0;
+  padding-left: 0.46em;
+  color: #c4c4cb;
+  font: 400 11px/1 var(--ath-display);
+  letter-spacing: 0.46em;
+  white-space: nowrap;
+}
+
+/* The position card, filled from the edition manifest. */
+.ath-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  /* a black halo around the letters, so the play's lines pass behind the card and never through the words */
+  filter: drop-shadow(0 0 6px #000000) drop-shadow(0 0 14px #000000)
+    drop-shadow(0 0 22px #000000);
+  animation: ath-rise 0.7s ease-out 0.5s both;
+}
+
+.ath-card[hidden] {
+  display: none;
+}
+
+/* The heading holds the position (a block) and its TM mark beside the last letter. */
+.ath-card-mark {
+  position: relative;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.ath-card-position {
+  display: block;
+  color: transparent;
+  background: var(--ath-silver-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font: 900 78px/1 var(--ath-display);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.ath-card-tm {
+  position: absolute;
+  right: -26px;
+  bottom: 6px;
+  color: rgba(255, 255, 255, 0.42);
+  font: 400 12px/1 var(--ath-display);
+  letter-spacing: 0;
+}
+
+.ath-card-tagline {
+  margin: 0;
+  padding-left: 0.42em;
+  color: var(--ath-steel);
+  font: 400 14px/1 var(--ath-ui);
+  letter-spacing: 0.42em;
+}
+
+.ath-card-athlete {
+  margin: 0;
+  padding-left: 0.3em;
+  color: #e4e4e7;
+  font: 500 13px/1 var(--ath-display);
+  letter-spacing: 0.3em;
+}
+
+.ath-card-athlete:empty {
+  display: none;
+}
+
+/* The loading line: Franklin wakes for about three seconds, then the Desktop opens. */
+.ath-loading {
+  position: absolute;
+  right: 0;
+  bottom: 64px;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ath-loading-track {
+  position: relative;
+  width: 240px;
+  height: 2px;
+  overflow: hidden;
+  background: rgba(228, 228, 231, 0.12);
+}
+
+.ath-loading-bar {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #a1a1aa 0%,
+    #f4f4f5 85%,
+    var(--ath-blue-light) 100%
+  );
+  transform-origin: left center;
+  animation: ath-load 3s ease-out both;
+}
+
+.ath-launch-status {
+  max-width: min(560px, 90vw);
+  min-height: 18px;
+  margin: 0;
+  color: var(--ath-steel);
+  font: 400 12px/1.5 var(--ath-ui);
+  white-space: pre-wrap;
+}
+
+/* Shown only when entry fails: a silver slab that tries again. */
+.ath-enter {
+  min-width: 168px;
+  min-height: 36px;
+  padding: 0 22px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 0;
+  background: var(--ath-silver-slab);
+  color: #050506;
+  cursor: pointer;
+  font: 700 12px/1 var(--ath-ui);
+  letter-spacing: 0.08em;
+  transition: filter 0.2s ease-out;
+}
+
+.ath-enter[hidden] {
+  display: none;
+}
+
+.ath-enter:hover {
+  filter: brightness(1.08);
+}
+
+body.athletics-splash .ath-enter:focus-visible {
+  outline: 2px solid var(--ath-blue-light);
+  outline-offset: 2px;
+}
+
+@keyframes ath-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ath-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ath-load {
+  from {
+    transform: scaleX(0.08);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ath-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Short windows keep the loading line clear of the card. */
+@media (max-height: 640px) {
+  .ath-card {
+    gap: 10px;
+  }
+  .ath-loading {
+    bottom: 26px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ath-draw,
+  .ath-fade,
+  .ath-card,
+  .ath-loading-bar {
+    animation: none !important;
+  }
+  .ath-draw {
+    stroke-dashoffset: 0;
+  }
+  .ath-fade {
+    opacity: 1;
+  }
+  /* The still loading line (Splash.dc.html): 72% full. */
+  .ath-loading-bar {
+    transform: scaleX(0.72);
+  }
+  .ath-enter {
+    transition: none !important;
+  }
+}

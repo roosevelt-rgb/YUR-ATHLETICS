@@ -1,0 +1,184 @@
+/* Unified YUR AI Desktop views: Agent Marketplace, IntelliFlow coding harness, Deployed agents. */
+.yu-note {
+  color: var(--yc-secondary, #65655f);
+  max-width: 900px;
+  line-height: 1.5;
+}
+.yu-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0;
+}
+.yu-toolbar,
+.yu-actions,
+.yu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.yu-tabs button[aria-pressed="true"] {
+  border-color: var(--yc-accent, #a12a39);
+  color: var(--yc-accent, #a12a39);
+  font-weight: 600;
+}
+.yu-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--yc-line, #e4e2dc);
+  background: var(--yc-surface, #fff);
+  font-size: 12px;
+  color: var(--yc-secondary, #65655f);
+}
+.yu-ok {
+  color: var(--dt-secondary);
+  border-color: var(--dt-border);
+}
+.yu-warn {
+  color: var(--dt-warning);
+  border-color: var(--dt-warning-border);
+  background: var(--dt-warning-bg);
+}
+.yu-card {
+  border: 1px solid var(--yc-line, #e4e2dc);
+  border-radius: 12px;
+  background: var(--yc-surface, #fff);
+  padding: 14px 16px;
+  margin: 10px 0;
+}
+.yu-card h2 {
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+.yu-card h3 {
+  font-size: 15px;
+  margin: 0;
+}
+.yu-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.yu-hint {
+  color: var(--yc-muted, #85847c);
+  font-size: 12.5px;
+  margin: 4px 0;
+  display: block;
+}
+.yu-goal {
+  margin: 6px 0;
+  white-space: pre-wrap;
+}
+.yu-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  max-width: 720px;
+}
+.yu-label {
+  font-weight: 600;
+  font-size: 13px;
+}
+.yu-field input[type="text"],
+.yu-field input[type="number"],
+.yu-field input[type="datetime-local"],
+.yu-field textarea,
+.yu-field select {
+  font: inherit;
+  padding: 7px 9px;
+  border: 1px solid var(--yc-line, #e4e2dc);
+  border-radius: 8px;
+  background: var(--yc-paper, #fbfaf8);
+}
+.yu-trigger {
+  border-left: 3px solid var(--yc-accent-soft, #f5e9e9);
+  padding-left: 10px;
+  margin: 8px 0;
+}
+.yu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.yu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+.yu-columns {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(320px, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 1100px) {
+  .yu-columns {
+    grid-template-columns: 1fr;
+  }
+}
+.yu-history,
+.yu-files {
+  max-height: 260px;
+  overflow: auto;
+  font-size: 12.5px;
+  color: var(--yc-secondary, #65655f);
+  padding-left: 18px;
+}
+.yu-task {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--yc-line, #e4e2dc);
+  background: var(--yc-paper, #fbfaf8);
+  cursor: pointer;
+}
+.yu-approval {
+  border: 1px dashed var(--dt-warning-border);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 8px 0;
+  background: var(--dt-warning-bg);
+}
+.yu-approval pre {
+  white-space: pre-wrap;
+  font-size: 12px;
+  max-height: 180px;
+  overflow: auto;
+}
+.yu-state-active {
+  border-left: 4px solid var(--dt-border);
+}
+.yu-state-paused {
+  border-left: 4px solid var(--dt-border);
+}
+.yu-state-finished {
+  border-left: 4px solid var(--dt-border);
+}
+.yu-state-retired {
+  border-left: 4px solid var(--dt-border);
+  opacity: 0.8;
+}
+.yu-pill.yu-state-active,
+.yu-pill.yu-state-paused,
+.yu-pill.yu-state-finished,
+.yu-pill.yu-state-retired {
+  border-left-width: 1px;
+}
+
+/* Organism view */
+.yu-organism h3 { margin: 18px 0 8px; font-size: 13px; letter-spacing: .04em; }
+.yu-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; margin: 10px 0 14px; }
+.yu-tile { display: flex; flex-direction: column; gap: 4px; padding: 12px; border: 1px solid var(--line, rgba(127,127,127,.25)); border-radius: 10px; }
+.yu-tile.yu-ok { border-color: color-mix(in srgb, var(--dt-border) 55.0%, transparent); }
+.yu-tile.yu-warn { border-color: color-mix(in srgb, var(--dt-warning-border) 60.0%, transparent); }
+.yu-tile-value { font-size: 18px; }
+.yu-event { gap: 10px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid color-mix(in srgb, var(--dt-border) 12.0%, transparent); }
+.yu-organism textarea, .yu-organism select, .yu-organism input { width: 100%; margin: 4px 0; }
+.yu-tile.yu-ok, .yu-tile.yu-warn { background: transparent; color: inherit; }
+.yu-tile.yu-warn .yu-tile-value { color: var(--dt-warning); }
+.yu-tile.yu-ok .yu-tile-value { color: var(--dt-secondary); }

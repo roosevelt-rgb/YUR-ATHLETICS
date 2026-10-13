@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-10-13",
+  "source": "sample data (fictional)",
+  "colleges": [
+    {
+      "id": "demo-state-university",
+      "metadata": {
+        "name": "Demo State University",
+        "division": "FCS",
+        "conference": "Demo Conference",
+        "region": "Southwest",
+        "state": "TX",
+        "ncaaOrgId": 0,
+        "athleticsUrl": "https://example.edu"
+      },
+      "academicThresholds": { "minGpa": 2.5 },
+      "positionalNeeds": { "QB": 0.5, "WR": 0.4, "OL": 0.6 },
+      "rosterProfile": {
+        "season": "2026",
+        "byPosition": {
+          "QB": {
+            "count": 5,
+            "byClass": { "FR": 2, "SO": 1, "JR": 1, "SR": 1 },
+            "openingsByHsClass": { "2027": 1, "2028": 1, "2029": 2 },
+            "heightIn": { "min": 72, "avg": 74.5, "max": 77 },
+            "weightLb": { "min": 190, "avg": 205.0, "max": 220 },
+            "committedByHsClass": { "2027": 0, "2028": 0, "2029": 0 },
+            "netOpeningsByHsClass": { "2027": 1, "2028": 1, "2029": 2 },
+            "commitsKnown": { "2027": false, "2028": false, "2029": false }
+          }
+        },
+        "footprint": {
+          "total": 100,
+          "texas": 80,
+          "dfw": 30,
+          "topStates": [["TX", "80"]]
+        },
+        "staffCounts": {},
+        "sourceUrl": "",
+        "scrapedAt": "2026-10-13",
+        "scrapeStatus": "ok"
+      },
+      "commits": {},
+      "camps": [],
+      "policy": null,
+      "isTexas": true,
+      "schoolStatus": "open"
+    },
+    {
+      "id": "example-college",
+      "metadata": {
+        "name": "Example College",
+        "division": "D2",
+        "conference": "Sample Athletic Conference",
+        "region": "Midwest",
+        "state": "KS",
+        "ncaaOrgId": 0,
+        "athleticsUrl": "https://example.org"
+      },
+      "academicThresholds": { "minGpa": 2.2 },
+      "positionalNeeds": { "QB": 0.3 },
+      "rosterProfile": {
+        "season": "2026",
+        "byPosition": {},
+        "footprint": {
+          "total": 90,
+          "texas": 10,
+          "dfw": 2,
+          "topStates": [["KS", "50"]]
+        },
+        "staffCounts": {},
+        "sourceUrl": "",
+        "scrapedAt": "2026-10-13",
+        "scrapeStatus": "ok"
+      },
+      "commits": {},
+      "camps": [],
+      "policy": null,
+      "isTexas": false,
+      "schoolStatus": "open"
+    }
+  ]
+}

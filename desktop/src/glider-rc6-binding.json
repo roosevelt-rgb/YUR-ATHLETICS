@@ -1,0 +1,12 @@
+{
+  "runtime": "IntelliFlow",
+  "executable": "@local-app-data/Intelliflow/resources/gateway-runtime/yur-gateway.exe",
+  "sha256": "af79aeeede5f6e31dddca91809c1e7de504d4284994a2f2f0fbc03890071e8a2",
+  "provider": {
+    "base_url": "http://127.0.0.1:11434/v1",
+    "model": "qwen3.5:9b"
+  },
+  "profile": "@user-data/rc6",
+  "authority": "bundled RC6 Franklin authority",
+  "source_identity": "Installed RC6 runtime; staging source used only for RPC contract reference"
+}

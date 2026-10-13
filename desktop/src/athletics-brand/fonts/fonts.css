@@ -1,0 +1,8 @@
+/* YUR Athletics brand fonts, bundled offline (font-src 'self'). Orbitron for wordmarks and titles,
+   JetBrains Mono for UI and status. Latin woff2 from @fontsource 5.3.0, SIL Open Font License 1.1
+   (OFL-orbitron.md and OFL-jetbrains-mono.md beside this file). */
+@font-face{font-family:'Orbitron';font-style:normal;font-weight:400;font-display:swap;src:url('./orbitron-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Orbitron';font-style:normal;font-weight:700;font-display:swap;src:url('./orbitron-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Orbitron';font-style:normal;font-weight:900;font-display:swap;src:url('./orbitron-latin-900-normal.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400;font-display:swap;src:url('./jetbrains-mono-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:500;font-display:swap;src:url('./jetbrains-mono-latin-500-normal.woff2') format('woff2')}

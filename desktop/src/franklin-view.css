@@ -1,0 +1,56 @@
+/* Franklin is a persistent shell rail. The host remains responsible for authority,
+   navigation, approvals, execution and Commit Service receipts. */
+#franklin-assistant-root{position:fixed;inset:0;z-index:9000;pointer-events:none}
+.yur-franklin{position:fixed;top:30px;right:0;bottom:22px;display:flex;align-items:center;justify-content:flex-end;color:var(--dt-text);font:13px/1.5 Inter,system-ui,sans-serif;pointer-events:none}
+.yur-franklin [hidden]{display:none!important}
+.yur-franklin button{border:1px solid var(--dt-border);border-radius:6px;background:var(--dt-surface);color:var(--dt-text);padding:7px 10px;cursor:pointer;font:inherit}
+.yur-franklin button:hover{background:var(--dt-active)}
+.yur-franklin button:disabled{opacity:.5;cursor:default}
+.yur-franklin :is(button,input,select,textarea,summary):focus-visible{outline:2px solid var(--dt-focus);outline-offset:2px}
+.yur-franklin-toggle{order:2;pointer-events:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;width:38px;min-width:38px;min-height:148px;padding:10px 7px;border-radius:10px 0 0 10px!important;background:linear-gradient(160deg,var(--dt-surface),var(--dt-active))!important;box-shadow:0 6px 22px #0008;border-color:var(--dt-border)!important;writing-mode:vertical-rl;letter-spacing:.06em;text-transform:uppercase}
+.yur-franklin-toggle span:not(.yur-franklin-dot){font-size:11px;font-weight:700}
+.yur-franklin-toggle small{color:var(--dt-secondary);font-size:9px;letter-spacing:0;writing-mode:vertical-rl;text-transform:none}
+.yur-franklin-dot{height:9px;width:9px;min-height:9px;min-width:9px;border:2px solid var(--dt-border);background:var(--dt-active);border-radius:50%;display:inline-block;writing-mode:horizontal-tb}
+.yur-franklin[data-phase=working] .yur-franklin-dot{background:var(--dt-surface);border-color:var(--dt-border);box-shadow:0 0 9px #8dc7f588}
+.yur-franklin[data-phase=unconfirmed] .yur-franklin-dot,.yur-franklin[data-phase=error] .yur-franklin-dot{background:var(--dt-error-bg);border-color:var(--dt-error-border)}
+.yur-franklin-panel{order:1;box-sizing:border-box;display:flex;flex-direction:column;pointer-events:auto;width:min(440px,calc(100vw - 48px));height:100%;max-height:none;margin:0;padding:14px;background:linear-gradient(145deg,var(--dt-surface),var(--dt-panel));border:1px solid var(--dt-border);border-right:0;border-radius:12px 0 0 12px;box-shadow:0 15px 50px #000a;overflow:auto}
+.yur-franklin header{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.yur-franklin header>div{flex:1}
+.yur-franklin h2{font-size:19px;font-weight:650;letter-spacing:.02em;margin:0;color:var(--dt-text)}
+.yur-franklin h3{font-size:12px;margin:10px 0 4px}
+.yur-franklin header p{font-size:11px;color:var(--dt-secondary);margin:0}
+.yur-franklin p{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.yur-franklin-status{font-size:11px;color:var(--dt-text)}
+.yur-franklin-error{padding:7px;border-left:2px solid var(--dt-error-border);background:var(--dt-error-bg);color:var(--dt-error);font-size:11px}
+.yur-franklin-model{display:flex;align-items:center;gap:10px;margin:7px 0;color:var(--dt-secondary);font-size:11px}
+.yur-franklin-model select{flex:1;min-width:0;background:var(--dt-panel);color:var(--dt-text);border:1px solid var(--dt-border);border-radius:5px;padding:6px;font:inherit}
+.yur-franklin-log{min-height:110px;max-height:35vh;overflow:auto;border-block:1px solid #354a60;padding:8px 0;margin:4px 0;scrollbar-color:var(--dt-border) var(--dt-panel)}
+.yur-franklin-message{padding:8px 9px;margin-bottom:8px;border:1px solid var(--dt-border);background:var(--dt-surface);border-radius:7px;font-size:12px}
+.yur-franklin-message[data-role=user]{background:var(--dt-surface);border-color:var(--dt-border)}
+.yur-franklin-message strong{color:var(--dt-text);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.yur-franklin-empty{color:var(--dt-secondary);font-size:12px}
+.yur-franklin details{font-size:11px;margin:5px 0}
+.yur-franklin summary{cursor:pointer;color:var(--dt-text);padding:3px 0}
+.yur-franklin :is(.yur-franklin-context,.yur-franklin-timeline)>div{max-height:200px;overflow:auto;padding:6px;border:1px solid var(--dt-border);border-radius:5px}
+.yur-franklin-event{padding:6px;border-bottom:1px solid var(--dt-border)}
+.yur-franklin pre{font:10px/1.4 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--dt-panel);padding:6px;border-radius:4px;max-height:180px;overflow:auto}
+.yur-franklin-review{border-left:2px solid var(--dt-border);padding-left:8px}
+.yur-franklin-form{margin-top:auto}
+.yur-franklin-form>label{display:block;color:var(--dt-text);font-size:11px;margin:6px 0}
+.yur-franklin textarea{box-sizing:border-box;resize:vertical;min-height:66px;max-height:160px;width:100%;background:var(--dt-panel);color:var(--dt-text);border:1px solid var(--dt-border);border-radius:6px;padding:9px;font:inherit}
+.yur-franklin-actions{display:flex;gap:7px;margin-top:7px;justify-content:flex-end}
+.yur-franklin-voice{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-top:7px}
+.yur-franklin-voice p{flex-basis:100%;font-size:10px;color:var(--dt-secondary)}
+.yur-franklin-voice-review{padding:8px;margin-top:7px;border:1px solid var(--dt-border);border-radius:6px;background:var(--dt-surface)}
+.yur-franklin-voice-review label{display:block;font-size:11px;margin-bottom:5px}
+.yur-franklin-voice-review button{margin:6px 6px 0 0}
+.yur-franklin-persistence{display:block;color:var(--dt-secondary);font-size:10px;margin-top:6px}
+.yur-franklin-observation{font-size:10px;color:var(--dt-secondary);border-left:2px solid var(--dt-border);padding:5px 8px;background:var(--dt-surface);border-radius:0 4px 4px 0}
+#franklin-rail-toggle[aria-pressed=true]{color:var(--dt-text);background:var(--dt-active)}
+@media(max-width:650px){.yur-franklin-panel{width:calc(100vw - 42px);padding:11px}.yur-franklin-toggle{width:34px;min-width:34px;min-height:128px}.yur-franklin-log{max-height:29vh}}
+/* Main-page mode: an edition's primary surface (franklin-view create({ layout: 'main' })).
+   In the page flow, full height, always open, no rail toggle; the Desktop drawer above is unchanged. */
+.yur-franklin[data-layout=main]{position:static;top:auto;right:auto;bottom:auto;flex:1 1 auto;width:100%;height:100%;min-width:0;min-height:0;align-items:stretch;justify-content:stretch;pointer-events:auto}
+.yur-franklin[data-layout=main] .yur-franklin-toggle{display:none}
+.yur-franklin[data-layout=main] .yur-franklin-panel{width:100%;height:100%;max-width:none;padding:18px clamp(14px,3vw,36px);border:0;border-radius:0;box-shadow:none}
+.yur-franklin[data-layout=main] .yur-franklin-log{flex:1 1 auto;min-height:120px;max-height:none}

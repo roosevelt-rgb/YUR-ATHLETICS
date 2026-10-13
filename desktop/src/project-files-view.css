@@ -1,0 +1,18 @@
+#yur-conversation .yc-project-files { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--yc-line); color: var(--yc-ink); min-width: 0; }
+#yur-conversation .yc-project-files h2 { margin: 0 0 8px; font-size: 18px; }
+#yur-conversation :is(.yc-project-files-intro,.yc-project-files-context,.yc-project-files-note,.yc-project-files-status,.yc-project-files-empty) { color: var(--yc-secondary); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+#yur-conversation .yc-project-files-context { color: var(--yc-ink); }
+#yur-conversation .yc-project-files-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+#yur-conversation .yc-project-files-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,260px),1fr)); gap: 10px; }
+#yur-conversation .yc-project-file { padding: 14px; border: 1px solid var(--yc-line); border-radius: 12px; background: var(--yc-surface); min-width: 0; }
+#yur-conversation .yc-project-file h3 { margin: 0 0 6px; color: var(--yc-ink); font-size: 14px; overflow-wrap: anywhere; }
+#yur-conversation :is(.yc-project-file-meta,.yc-project-file-note) { margin: 6px 0; color: var(--yc-secondary); font-size: 12px; line-height: 1.6; }
+#yur-conversation .yc-project-files-include { display: flex; align-items: flex-start; gap: 8px; margin: 10px 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+#yur-conversation .yc-project-files-checkbox { flex: 0 0 auto; margin: 3px 0 0; accent-color: var(--yc-accent); }
+#yur-conversation :is(.yc-project-files-actions button,.yc-project-file-remove) { padding: 7px 10px; min-height: 36px; border: 1px solid var(--yc-line); border-radius: 8px; background: var(--yc-paper); color: var(--yc-ink); }
+#yur-conversation .yc-project-file-remove { margin-top: 8px; font-size: 12px; }
+#yur-conversation .yc-project-files :is(button,input):focus-visible { outline: 2px solid var(--yc-accent); outline-offset: 3px; }
+#yur-conversation .yc-project-files button:hover:not(:disabled) { border-color: var(--yc-accent); }
+#yur-conversation .yc-project-files :is(button,input):disabled { cursor: not-allowed; opacity: .55; }
+#yur-conversation :is(.yc-project-files-error,.yc-project-file-stale) { color: var(--yc-accent); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+@media (max-width:600px) { #yur-conversation .yc-project-files-actions button { flex: 1 1 auto; } }

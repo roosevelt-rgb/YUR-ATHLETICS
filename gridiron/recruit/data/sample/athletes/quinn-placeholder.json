@@ -1,0 +1,182 @@
+{
+  "id": "quinn-placeholder",
+  "name": "Quinn Placeholder",
+  "firstName": "Quinn",
+  "lastName": "Placeholder",
+  "jersey": "00",
+  "position": "QB",
+  "positions": ["QB"],
+  "throws": "right",
+  "gradYear": 2028,
+  "highSchool": "Demo High School",
+  "highSchoolId": "uil-demo-high-school",
+  "city": "Sampleville",
+  "state": "TX",
+  "uil": {
+    "conference": "5A",
+    "footballDistrict": 1,
+    "region": "Region 1",
+    "cycle": "2026-28"
+  },
+  "heightInches": null,
+  "weightLbs": null,
+  "gpa": null,
+  "measurablesNote": "Demo record: every value here is fictional.",
+  "media": {
+    "hudlUrl": "",
+    "maxPrepsUrl": "",
+    "twitterUrl": "",
+    "teamSite": ""
+  },
+  "film": [
+    {
+      "title": "Demo highlight reel",
+      "file": "",
+      "length": "2:00",
+      "plays": 10,
+      "games": ["Demo Game 1"],
+      "hostedUrl": "",
+      "notes": "Placeholder; no real film."
+    }
+  ],
+  "gameSources": [],
+  "stats": [],
+  "statsNote": "No stats synced (demo).",
+  "contacts": {
+    "headCoach": "",
+    "headCoachEmail": "",
+    "parent": "",
+    "parentEmail": ""
+  },
+  "preferences": {
+    "divisions": ["FCS", "D2"],
+    "regions": ["Southwest"],
+    "statesFirst": ["TX"]
+  },
+  "agent": {
+    "enabled": false,
+    "cadence": "weekly",
+    "maxSendsPerWeek": 0,
+    "senderMailbox": "",
+    "approvalMode": "per-batch",
+    "lastRun": null,
+    "nextRun": null
+  },
+  "source": "sample data shipped with the public repo",
+  "updatedAt": "2026-10-13T00:00:00Z",
+  "listed": {
+    "heightInches": 74,
+    "weightLbs": 195,
+    "grade": "10",
+    "source": "demo",
+    "sourceUrl": "",
+    "fetchedAt": "2026-10-13T00:00:00Z"
+  },
+  "card": {
+    "id": "quinn-placeholder",
+    "name": "Quinn Placeholder",
+    "firstName": "Quinn",
+    "lastName": "Placeholder",
+    "position": "QB",
+    "jersey": "00",
+    "throws": "right",
+    "gradYear": 2028,
+    "school": "Demo High School",
+    "city": "Sampleville",
+    "state": "TX",
+    "classification": "5A",
+    "photoUrl": null,
+    "measurables": {
+      "height": { "value": "6-2", "confirmed": false, "source": "demo" },
+      "weight": { "value": "195", "confirmed": false, "source": "demo" }
+    },
+    "season": {
+      "year": 2026,
+      "games": 6,
+      "record": "4-2",
+      "cmp": 90,
+      "att": 150,
+      "pct": 60.0,
+      "yds": 1100,
+      "ypa": 7.3,
+      "td": 9,
+      "int": 4,
+      "ncaaEfficiency": 135.5,
+      "nflRating": 88.6,
+      "source": "demo"
+    },
+    "career": {
+      "cmp": 90,
+      "att": 150,
+      "yds": 1100,
+      "td": 9,
+      "int": 4,
+      "games": 6,
+      "source": "demo"
+    },
+    "film": {
+      "dropbacks": 160,
+      "judged": 140,
+      "rightReads": 100,
+      "acceptable": 20,
+      "rightOrAcceptablePct": 86,
+      "missedFlagged": 20,
+      "missedConfirmedBlind": 12,
+      "cantTell": 20,
+      "ballOutMedianS": 2.6,
+      "ballOutTimed": 120,
+      "cleanPocket": {
+        "dropbacks": 100,
+        "cmp": 65,
+        "att": 95,
+        "yds": 780,
+        "ypa": 8.2,
+        "td": 7,
+        "int": 2,
+        "sacks": 1
+      },
+      "thirdAndFourthDown": {
+        "dropbacks": 40,
+        "cmp": 20,
+        "att": 36,
+        "yds": 260,
+        "ypa": 7.2,
+        "td": 2,
+        "int": 1,
+        "sacks": 2
+      },
+      "redZone": {
+        "dropbacks": 15,
+        "cmp": 7,
+        "att": 13,
+        "yds": 60,
+        "ypa": 4.6,
+        "td": 5,
+        "int": 0,
+        "sacks": 1
+      },
+      "method": "demo numbers",
+      "source": "demo"
+    },
+    "highlights": {
+      "topPlay": {
+        "opponent": "Demo Opponent",
+        "situation": "3rd and 7",
+        "result": "complete for 35, touchdown",
+        "score": 92
+      },
+      "reelPlays": 10,
+      "reelUrl": null
+    },
+    "rank": {
+      "national": null,
+      "state": null,
+      "percentile": null,
+      "pool": null,
+      "note": "no peer pool in the demo"
+    },
+    "links": { "maxpreps": "", "hudl": "" },
+    "asOf": "2026-10-13",
+    "version": 1
+  }
+}

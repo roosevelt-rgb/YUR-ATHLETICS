@@ -1,0 +1,93 @@
+{
+  "schema": "yur.python-specialist-contract.v1",
+  "name": "Quantity rollup",
+  "description": "Group the supplied line quantities by the exact pair (code, unit). Sum nonnegative integer quantities within each group, retain zero-valued groups, and sort groups by code and then unit in ascending Unicode order. Return groups and input_count, where input_count is the number of supplied lines. Never combine different units. Use only Python's standard library and no networking. This operation aggregates explicit structured input; it performs no drawing interpretation, takeoff, unit conversion, pricing, or verification of the source quantities. The examples are manually authored arithmetic expectations, not inherited donor algorithms or industry certification.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "lines": {
+        "type": "array",
+        "maxItems": 64,
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "minLength": 1, "maxLength": 40 },
+            "unit": { "type": "string", "maxLength": 2, "enum": ["EA", "LF", "SF"] },
+            "quantity": { "type": "integer", "minimum": 0, "maximum": 1000000 }
+          },
+          "required": ["code", "unit", "quantity"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": ["lines"],
+    "additionalProperties": false
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "groups": {
+        "type": "array",
+        "maxItems": 64,
+        "items": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "minLength": 1, "maxLength": 40 },
+            "unit": { "type": "string", "maxLength": 2, "enum": ["EA", "LF", "SF"] },
+            "quantity": { "type": "integer", "minimum": 0, "maximum": 64000000 }
+          },
+          "required": ["code", "unit", "quantity"],
+          "additionalProperties": false
+        }
+      },
+      "input_count": { "type": "integer", "minimum": 0, "maximum": 64 }
+    },
+    "required": ["groups", "input_count"],
+    "additionalProperties": false
+  },
+  "cases": [
+    { "id": "empty", "input": { "lines": [] }, "expected": { "groups": [], "input_count": 0 } },
+    {
+      "id": "combine-repeated-code",
+      "input": { "lines": [
+        { "code": "03", "unit": "SF", "quantity": 4 },
+        { "code": "26", "unit": "EA", "quantity": 2 },
+        { "code": "03", "unit": "SF", "quantity": 7 }
+      ] },
+      "expected": { "groups": [
+        { "code": "03", "unit": "SF", "quantity": 11 },
+        { "code": "26", "unit": "EA", "quantity": 2 }
+      ], "input_count": 3 }
+    },
+    {
+      "id": "keep-units-separate-and-sort",
+      "input": { "lines": [
+        { "code": "03", "unit": "SF", "quantity": 8 },
+        { "code": "03", "unit": "LF", "quantity": 5 },
+        { "code": "03", "unit": "SF", "quantity": 2 },
+        { "code": "01", "unit": "EA", "quantity": 0 }
+      ] },
+      "expected": { "groups": [
+        { "code": "01", "unit": "EA", "quantity": 0 },
+        { "code": "03", "unit": "LF", "quantity": 5 },
+        { "code": "03", "unit": "SF", "quantity": 10 }
+      ], "input_count": 4 }
+    },
+    {
+      "id": "retain-zero-group",
+      "input": { "lines": [
+        { "code": "09", "unit": "EA", "quantity": 0 },
+        { "code": "09", "unit": "EA", "quantity": 0 }
+      ] },
+      "expected": { "groups": [{ "code": "09", "unit": "EA", "quantity": 0 }], "input_count": 2 }
+    },
+    {
+      "id": "sum-maximum-line-values",
+      "input": { "lines": [
+        { "code": "31", "unit": "SF", "quantity": 1000000 },
+        { "code": "31", "unit": "SF", "quantity": 1000000 }
+      ] },
+      "expected": { "groups": [{ "code": "31", "unit": "SF", "quantity": 2000000 }], "input_count": 2 }
+    }
+  ]
+}

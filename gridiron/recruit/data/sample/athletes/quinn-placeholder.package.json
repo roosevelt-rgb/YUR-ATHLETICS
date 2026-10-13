@@ -1,0 +1,42 @@
+{
+  "_note": "Demo recruiting package: fictional, no contacts.",
+  "measurables": {
+    "height": { "value": "", "source": "", "confirmed": false },
+    "weight": { "value": "", "source": "", "confirmed": false },
+    "forty": "",
+    "shuttle": "",
+    "vertical": "",
+    "hand_size": ""
+  },
+  "academics": {
+    "gpa": "",
+    "sat_act": "",
+    "ncaa_id": "",
+    "intended_major": "",
+    "honors": ""
+  },
+  "contact": {
+    "athlete_email": "",
+    "athlete_phone": "",
+    "parent_name": "",
+    "parent_email": "",
+    "parent_phone": "",
+    "x_handle": ""
+  },
+  "references": [],
+  "links": {
+    "hudl": { "label": "", "confirmed": false, "confirm": "" },
+    "highlight_reel": { "label": "", "url": "" },
+    "film_brief": { "label": "", "file": "" },
+    "film_report": { "label": "", "file": "", "url": "" },
+    "full_game_film": { "label": "", "url": "" },
+    "maxpreps": ""
+  },
+  "career_prior": [],
+  "career_gaps": [],
+  "recruiting": { "status": "demo", "offense": "", "availability": "" },
+  "remaining_2026": [{ "date": "2026-10-23", "opponent": "Demo Opponent" }],
+  "remaining_source": "demo",
+  "camps": [],
+  "development_focus": ""
+}

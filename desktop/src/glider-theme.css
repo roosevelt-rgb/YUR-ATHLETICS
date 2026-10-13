@@ -1,0 +1,117 @@
+/* Shared IntelliFlow finish. Palette drawn from the RC6 workbench and Code Glider.
+   Presentation only: no authority, execution or provider changes. */
+@import url('./glider-fonts/fonts.css');
+body.glider-enabled, body.glider-splash {
+  --yf-black:var(--dt-bg); --yf-panel:var(--dt-panel); --yf-raised:var(--dt-surface);
+  --yf-edge:var(--dt-border); --yf-edge-bright:var(--dt-border); --yf-silver:var(--dt-silver);
+  --yf-white:var(--dt-text); --yf-muted:var(--dt-muted);
+  --yf-metal:linear-gradient(115deg,#707c8d 0%,#d2e2fa 34%,#ffffff 48%,#b7cceb 66%,#7c8797 100%);
+  color-scheme:dark; background:var(--yf-black); color:var(--yf-white);
+}
+.glider-enabled #yur-conversation {
+  --yc-paper:var(--yf-black); --yc-sidebar:var(--yf-panel); --yc-surface:var(--yf-raised);
+  --yc-ink:var(--yf-white); --yc-secondary:var(--yf-silver); --yc-muted:var(--yf-muted);
+  --yc-line:var(--yf-edge); --yc-accent:#e1e9f3; --yc-accent-hover:#ffffff; --yc-accent-soft:#20262f;
+  background:radial-gradient(ellipse at 68% 12%,#171d26 0%,#090c11 38%,var(--yf-black) 78%);
+  grid-template-rows:32px minmax(0,1fr);
+}
+.glider-enabled #glider-frame {
+  background:linear-gradient(180deg,#111925 0%,#080b10 60%,#060709 100%);
+  border-bottom:1px solid var(--yf-edge-bright);
+  box-shadow:0 3px 18px #00000088,inset 0 1px 0 #ffffff18;
+}
+.glider-enabled #glider-frame strong {
+  background:var(--yf-metal); background-clip:text; color:transparent;
+  font-family:Michroma,'Segoe UI',sans-serif; font-size:11px; letter-spacing:2px;
+  filter:drop-shadow(0 0 8px #e1e9f325);
+}
+.glider-enabled #glider-frame header > span { color:var(--yf-muted); font-size:10px; letter-spacing:1px; }
+.glider-enabled #glider-frame nav button {
+  background:transparent; border-color:transparent; color:var(--yf-muted); font-family:'Chakra Petch','Segoe UI',sans-serif;
+  font-size:13px; font-weight:600; letter-spacing:.04em; padding:8px 19px;
+}
+.glider-enabled #glider-frame nav button.selected {
+  color:var(--yf-white); background:linear-gradient(180deg,#29313d90,#151a22);
+  border-color:#536072; border-bottom:2px solid #ecf3ff;
+  box-shadow:inset 0 1px 0 #ffffff1c,0 0 18px #cfddf811;
+}
+.glider-enabled #yur-conversation :is(.yc-titlebar,.yc-sidebar) {
+  background:linear-gradient(140deg,#101722,#080a0e 75%); border-color:var(--yf-edge);
+}
+.glider-enabled #yur-conversation .yc-titlebar { min-height:32px; padding:0 16px; }
+.glider-enabled #yur-conversation .yc-desktop-menu { gap:21px; color:var(--yf-muted); font-size:11px; }
+.glider-enabled #yur-conversation .yc-sidebar-brand { letter-spacing:.1em; color:var(--yf-white); }
+.glider-enabled #yur-conversation :is(.yc-nav-item,.yc-history-item) {
+  color:var(--yf-silver); border-left:2px solid transparent; border-radius:3px;
+}
+.glider-enabled #yur-conversation :is(.yc-nav-item,.yc-history-item):hover {
+  background:#ffffff09; color:var(--yf-white); border-left-color:#7e8a9d;
+}
+.glider-enabled #yur-conversation :is(.yc-nav-item,.yc-history-item).active {
+  background:linear-gradient(90deg,#30394799,#151a2233); color:var(--yf-white); border-left-color:#e5edf9;
+}
+.glider-enabled #yur-conversation .yc-heading {
+  color:var(--yf-white); font-family:'Chakra Petch','Segoe UI',sans-serif;
+  font-weight:500; letter-spacing:.015em; text-shadow:0 0 30px #e1e9f312;
+}
+.glider-enabled #yur-conversation .yc-heading span {
+  background:var(--yf-metal); background-clip:text; color:transparent; font-weight:600;
+}
+.glider-enabled #yur-conversation .yc-orbit {
+  color:#e1e9f3; border-color:#74849b; box-shadow:0 0 30px #c4d8f519,inset 0 0 18px #b7cceb0a;
+}
+.glider-enabled #yur-conversation :is(.yc-composer,.yc-detail-card,.yu-card,.ys-row,.sf-starter,.sf-preview,.sf-result) {
+  background:linear-gradient(145deg,#1b212bd9,#0d1118f0 75%); border-color:var(--yf-edge);
+  box-shadow:inset 0 1px 0 #ffffff0e,0 12px 32px #00000044;
+}
+.glider-enabled #yur-conversation .yc-composer {
+  border-color:#515f73; box-shadow:inset 0 1px 0 #ffffff18,0 0 32px #a9bad211,0 16px 40px #00000066;
+}
+.glider-enabled #yur-conversation .yc-composer:focus-within { border-color:#cbd9ed; box-shadow:0 0 0 1px #cbd9ed25,0 0 26px #b2c9eb1d; }
+.glider-enabled #yur-conversation :is(button,.yc-model-setup button,.sf-forge button) {
+  border-color:var(--yf-edge); transition:background .15s,border-color .15s,box-shadow .15s;
+}
+.glider-enabled #yur-conversation :is(.yu-actions button,.yc-launch-routing button,.ys-action,.yc-new-chat),
+.glider-enabled #rc6-panel button {
+  background:linear-gradient(180deg,#242b35,#101722); color:var(--yf-white); border:1px solid #4c5869;
+  box-shadow:inset 0 1px 0 #ffffff17; border-radius:4px;
+}
+.glider-enabled #yur-conversation :is(.yu-actions button,.yc-launch-routing button,.ys-action,.yc-new-chat):hover,
+.glider-enabled #rc6-panel button:hover:not(:disabled) {
+  background:linear-gradient(180deg,#394452,#1b232e); border-color:#a9bad2; box-shadow:0 0 14px #d2e2fa15;
+}
+.glider-enabled :is(#rc6-panel,#glider-frame) button:disabled { opacity:.42; cursor:default; }
+.glider-enabled #yur-conversation :is(input,textarea,select), .glider-enabled #rc6-prompt {
+  color:var(--yf-white); background-color:#0b0f16; border-color:#465365; caret-color:#ffffff;
+}
+.glider-enabled #yur-conversation :is(.yc-notice,.yc-model-setup), .glider-enabled .rc6-approval {
+  color:#e1e8f2; background:#181d26; border-color:#8190a6; border-left:3px solid #d4dfef;
+}
+.glider-enabled #yur-conversation .yu-ok { color:var(--dt-success); border-color:var(--dt-success-border); background:var(--dt-success-bg); }
+.glider-enabled #yur-conversation .yu-warn { color:var(--dt-warning); border-color:var(--dt-warning-border); background:var(--dt-warning-bg); }
+.glider-enabled #rc6-panel {
+  color:var(--yf-white); background:radial-gradient(ellipse at 70% 10%,#1a2230 0%,#0b0f16 40%,#040507 80%);
+}
+.glider-enabled #rc6-panel .rc6-toolbar { background:#0b0f16eb; border-color:var(--yf-edge); flex-wrap:wrap; }
+.glider-enabled #rc6-panel .rc6-toolbar strong { font-family:'Chakra Petch',sans-serif; letter-spacing:.09em; }
+.glider-enabled #rc6-state { color:var(--yf-muted); font-size:11px; }
+.glider-enabled .rc6-models { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:12px 16px; background:#0b0f16eb; border-bottom:1px solid var(--yf-edge); }
+.glider-enabled .rc6-models label { color:var(--yf-silver); }
+.glider-enabled #rc6-model { min-width:220px; max-width:min(500px,100%); flex:1; padding:8px 10px; color:var(--yf-white); background:#0b0f16; border:1px solid #596a82; border-radius:4px; font:inherit; }
+.glider-enabled #rc6-model:disabled { opacity:.65; }
+.glider-enabled #rc6-model-status { color:var(--yf-muted); font-size:11px; }
+.glider-enabled #rc6-provider { flex-basis:100%; color:var(--yf-silver); font-size:11px; overflow-wrap:anywhere; }
+.glider-enabled #rc6-log { overflow-wrap:anywhere; scrollbar-color:#697382 #0b0d10; }
+.glider-enabled #rc6-panel form { border-color:var(--yf-edge); background:#080b10e8; }
+.glider-enabled #rc6-prompt { border-radius:6px; border-color:#596a82; box-shadow:inset 0 1px 0 #ffffff0a; }
+.glider-enabled :is(button,input,textarea,select):focus-visible { outline:2px solid #e1e9f3; outline-offset:3px; }
+.glider-enabled ::selection { background:#536981; color:white; }
+.glider-splash .splash { background:radial-gradient(ellipse at 50% 44%,#29354888 0%,#101722 35%,#040507 74%); }
+.glider-splash { --font-word:Michroma,'Segoe UI',sans-serif; --font-ui:'Share Tech Mono',Consolas,monospace; }
+.glider-splash .splash-word { font-size:32px; background:var(--yf-metal); background-clip:text; color:transparent; }
+.glider-splash .splash-tag,.glider-splash .splash-boot { color:#a4b2c7; }
+.glider-splash .splash-hex { filter:drop-shadow(0 0 35px #d2e3ff30); }
+.glider-splash .splash-core button { color:#f7f9fb; background:linear-gradient(180deg,#303b4b,#111925); letter-spacing:2px; border-color:#b3c3da!important; box-shadow:0 0 22px #e2e2e212; }
+@media (prefers-reduced-motion:reduce) { .glider-enabled *, .glider-splash * { animation:none!important; transition:none!important; } }
+@media (max-width:900px) { .glider-enabled #glider-frame nav button { padding-inline:10px; } .glider-enabled #glider-frame header > span:not(:last-child) { display:none; } }
+

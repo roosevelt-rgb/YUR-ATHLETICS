@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-10-13",
+  "source": "sample data (fictional); the full list is rebuilt locally by recruit/uil_alignment.py from the public UIL alignment PDF",
+  "highschools": [
+    {
+      "id": "uil-demo-high-school",
+      "name": "Demo High School",
+      "state": "TX",
+      "league": "UIL",
+      "conference": "5A",
+      "enrollment": 2000.0,
+      "footballDistrict": 1,
+      "division": "1",
+      "footballType": "11-Man",
+      "region": "Region 1",
+      "isDfw": false,
+      "cycle": "2026-28",
+      "source": "sample"
+    },
+    {
+      "id": "uil-example-high-school",
+      "name": "Example High School",
+      "state": "TX",
+      "league": "UIL",
+      "conference": "4A",
+      "enrollment": 1200.0,
+      "footballDistrict": 2,
+      "division": "2",
+      "footballType": "11-Man",
+      "region": "Region 1",
+      "isDfw": false,
+      "cycle": "2026-28",
+      "source": "sample"
+    }
+  ]
+}

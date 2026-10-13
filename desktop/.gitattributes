@@ -1,0 +1,2 @@
+# Preserve the exact source bytes used by the validation and release manifests.
+* -text -filter -ident whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

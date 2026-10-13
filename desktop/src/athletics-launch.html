@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YUR Athletics</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="athletics-brand/brand/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="athletics-brand/brand/icon-512.png" />
+    <link rel="apple-touch-icon" href="athletics-brand/brand/apple-touch-icon.png" />
+    <link rel="stylesheet" href="athletics-launch.css" />
+    <link rel="stylesheet" href="desktop-theme.css" />
+    <!-- YUR Athletics launch page (YUR_EDITION=athletics). The YUR Athletics master art as the hero (cropped
+         above its baked-in subline, which is set live below it), the athlete's position card and,
+         when the edition's sport has play art, a play that draws itself behind everything. Every
+         athlete detail comes from the edition manifest through edition:launch; this page names no
+         athlete, sport or position. Entry uses the packaged desktop:enter flow, like glider-launch. -->
+  </head>
+  <body class="yur-theme athletics-splash">
+    <div id="launch-splash" class="launch-splash ath-splash">
+      <svg id="ath-play" class="ath-play" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" hidden></svg>
+      <div class="ath-frame" aria-hidden="true"></div>
+      <header class="ath-hero">
+        <div class="ath-hero-crop">
+          <img src="athletics-brand/brand/yur-athletics-master.webp" alt="YUR Athletics" draggable="false" />
+        </div>
+        <p class="ath-hero-subline">SUPER INTELLIGENT ANALYTICS</p>
+      </header>
+      <section id="ath-card" class="ath-card" aria-label="Athlete" hidden>
+        <h1 class="ath-card-mark"><span id="splash-position" class="ath-card-position"></span><span class="ath-card-tm" aria-hidden="true">TM</span></h1>
+        <p id="splash-tagline" class="ath-card-tagline">THE GAME IS WON OFF THE FIELD</p>
+        <p id="splash-athlete" class="ath-card-athlete"></p>
+      </section>
+      <footer class="ath-loading">
+        <div class="ath-loading-track" aria-hidden="true"><div class="ath-loading-bar"></div></div>
+        <p id="ath-launch-status" class="ath-launch-status" role="status" aria-live="polite">Waking Franklin</p>
+        <button id="ath-enter" class="ath-enter" type="button" hidden>Try again</button>
+      </footer>
+    </div>
+    <script src="athletics-play-art.js"></script>
+    <script src="athletics-launch.js"></script>
+  </body>
+</html>

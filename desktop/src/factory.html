@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>YUR · Specialist Factory</title>
+  <link rel="stylesheet" href="factory.css">
+  <script src="factory.js" defer></script>
+    <link rel="stylesheet" href="desktop-theme.css">
+  </head>
+<body class="yur-theme">
+  <aside class="navigation">
+    <div class="brand"><span class="brand-symbol">Y</span><div>YUR<span class="brand-caption">SPECIALIST FACTORY</span></div></div>
+    <div class="workspace-label">YOUR WORKSPACE</div>
+    <a class="nav-item selected" href="#overview"><span>◈</span> Factory overview <span class="nav-dot"></span></a>
+    <a class="nav-item" href="#mission-queue"><span>▤</span> Mission queue</a>
+    <a class="nav-item" href="#capability-catalog"><span>◇</span> Capability catalog</a>
+    <a class="nav-item" href="#ecosystem-sources"><span>⌘</span> Ecosystem sources</a>
+    <a class="nav-item" href="#release-readiness"><span>✓</span> Release readiness</a>
+    <div class="nav-bottom"><div class="local-badge"><span class="status-dot"></span> LOCAL WORKSPACE</div><p>Build. Validate. Commit.<br>Every result has a trace.</p><button id="open-editor" class="editor-link">Open Studio editor <span>↗</span></button><div class="version">FACTORY / 0.2.0</div></div>
+  </aside>
+  <main id="overview">
+    <header class="topbar"><div class="breadcrumb">Workspace <span>/</span> Specialist Factory</div><div class="connection"><span id="connection-dot" class="status-dot pending"></span><span id="connection-label">Connecting to runtime</span><button id="refresh" class="icon-button" title="Refresh factory state" aria-label="Refresh factory state">↻</button></div></header>
+    <section class="page-title"><div><div class="eyebrow">FROM INTENT TO EXECUTABLE AGENT</div><h1>Your specialist factory.</h1><p>Create capable agents, prove their outcomes, and keep the evidence.</p></div><button id="focus-mission" class="primary">＋ Create mission</button></section>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="metrics" aria-label="Factory statistics">
+      <article><div class="metric-label">Total missions <span>◈</span></div><strong id="metric-total">—</strong><div class="metric-caption">Across your local workspace</div></article>
+      <article><div class="metric-label">Ready to build <span>▧</span></div><strong id="metric-queued">—</strong><div class="metric-caption">Waiting in the mission queue</div></article>
+      <article><div class="metric-label">Committed agents <span>✓</span></div><strong id="metric-committed">—</strong><div class="metric-caption">Validated packages with receipts</div></article>
+      <article><div class="metric-label">Available capabilities <span>◇</span></div><strong id="metric-capabilities">—</strong><div class="metric-caption">Executable, contract-bound skills</div></article>
+    </section>
+    <section class="automation-bar" aria-label="Bounded continuous queue"><div class="automation-copy"><h2>Continuous queue</h2><p id="automation-status" role="status" data-enabled="false" data-running="false">Stopped · starts only when you choose</p></div><div class="automation-controls"><label for="automation-cycles">Cycle limit<select id="automation-cycles"><option value="1">1 cycle</option><option value="10" selected>10 cycles</option><option value="25">25 cycles</option><option value="100">100 cycles</option></select></label><label for="automation-interval">Interval<select id="automation-interval"><option value="5">5 seconds</option><option value="30" selected>30 seconds</option><option value="60">1 minute</option><option value="300">5 minutes</option></select></label><button id="automation-start" class="dark-button">Start continuous</button><button id="automation-stop" class="quiet-button" disabled>Stop</button></div><div class="automation-note">One mission per cycle. Stops on error, cycle limit, or console close. Stop lets the current cycle finish.</div></section>
+    <div class="workspace-grid">
+      <div class="main-column">
+        <section id="mission-queue" class="card queue-card"><div class="card-header"><div><h2>Mission queue <span id="queue-count" class="count">0</span></h2><p>Specialists moving from intent to verified output.</p></div><div class="queue-actions"><label class="sr-only" for="batch-size">Maximum missions to process</label><select id="batch-size"><option value="1">1 mission</option><option value="5">Up to 5</option><option value="10">Up to 10</option><option value="25">Up to 25</option></select><button id="process-queue" class="dark-button">▶ Process queue</button></div></div><div class="table-wrap"><table><thead><tr><th>MISSION</th><th>STATE</th><th>CREATED</th><th></th></tr></thead><tbody id="missions"></tbody></table></div><div id="queue-empty" class="empty"><span class="empty-icon">◇</span><h3>Your next specialist starts here.</h3><p>Create a mission, choose its capabilities, then process the queue.</p></div><div class="card-footer"><span class="status-dot"></span><span>Processing is bounded. Validation precedes every package commit.</span></div></section>
+        <section id="mission-detail" class="card detail-card" hidden><div class="card-header"><div><div class="eyebrow">MISSION WORKSPACE</div><h2 id="detail-name">Mission details</h2><p id="detail-id" class="mono"></p></div><button id="cancel-mission" class="quiet-button">Cancel mission</button></div><div class="detail-body"><div id="detail-summary" class="detail-summary"></div><div class="detail-tabs"><button class="detail-tab active" data-detail="evidence">Evidence &amp; provenance</button><button class="detail-tab" data-detail="run">Run specialist</button></div><div id="detail-evidence"><div id="evidence-summary"></div><details><summary>Inspect full mission record</summary><pre id="detail-json"></pre></details></div><div id="detail-run" hidden><p class="helper">Use a committed specialist on new input. Its capability contract is validated before execution.</p><label for="run-capability">Capability</label><select id="run-capability"></select><label for="run-input">Input JSON</label><textarea id="run-input" rows="8" spellcheck="false" class="mono"></textarea><div class="run-actions"><button id="run-specialist" class="primary">Run specialist →</button><button id="export-agent" class="quiet-button">Export package</button></div><pre id="run-output" class="run-output" hidden></pre></div></div></section>
+        <section id="capability-catalog" class="card"><div class="card-header"><div><h2>Capability catalog</h2><p>Concrete skills your specialists can execute today.</p></div><span class="small-label">PROVIDER NEUTRAL</span></div><div id="catalog" class="catalog-grid"></div></section>
+        <section id="ecosystem-sources" class="card"><div class="card-header"><div><h2>Ecosystem sources</h2><p>Discover existing packs, skills, governance, and infrastructure.</p></div><span class="small-label">READ ONLY</span></div><div class="sources-body"><div id="source-readiness" class="source-readiness"><p class="helper">Refresh source evidence to inspect availability.</p></div><form id="source-search" class="source-search"><label class="sr-only" for="source-query">Search existing skill catalog</label><input id="source-query" maxlength="200" placeholder="Search skills, industries, or workflows…"><button class="quiet-button" type="submit">Search sources</button></form><div id="source-matches"></div><p id="source-note" class="helper">Source discovery provides evidence for review. Execution admission requires capability binding and outcome validation.</p></div></section>
+      </div>
+      <div class="side-column">
+        <section class="card create-card"><div class="card-header"><div><span class="mini-icon">✧</span><h2>Create a specialist</h2><p>Define its purpose. Choose its skills.</p></div></div><form id="mission-form"><label for="mission-name">Specialist name</label><input id="mission-name" maxlength="100" required placeholder="e.g. TERRA evidence analyst"><label for="mission-description">What should it do?</label><textarea id="mission-description" rows="3" maxlength="2000" placeholder="Describe the evidence to analyze and the outcome you need."></textarea><fieldset><legend>Capabilities <span>Choose at least one</span></legend><div id="capability-choices"></div></fieldset><button id="submit-mission" class="primary full-width" type="submit">Create mission <span>→</span></button><p class="form-note">Each build compares candidates, checks outcomes, and records its selection.</p></form></section>
+        <section id="release-readiness" class="card readiness-card"><div class="card-header"><div><h2>Release readiness</h2><p>Evidence before promotion.</p></div><span class="shield">⬡</span></div><div id="release-gates" class="release-gates"><p class="helper">Waiting for runtime checks.</p></div><details class="health-details"><summary>Runtime &amp; integrity details</summary><pre id="health-json"></pre></details></section>
+        <div class="build-path"><div class="eyebrow">THE BUILD PATH</div><p>Intent <span>→</span> Candidates <span>→</span> Validation <span>→</span> Commit</p><div>Models contribute. Evidence decides.</div></div>
+      </div>
+    </div>
+    <footer class="page-footer"><span>YUR / FRANKLIN</span><span>Local execution · Explicit authority · Reconstructable provenance</span></footer>
+  </main>
+</body>
+</html>

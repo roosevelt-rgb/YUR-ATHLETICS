@@ -1,0 +1,25 @@
+#yur-conversation .yc-model-setup {
+  margin: 14px 0; padding: 16px; border: 1px solid var(--yc-line); border-radius: 14px;
+  color: var(--yc-ink); background: var(--yc-surface); min-width: 0;
+}
+#yur-conversation .yc-model-setup h3 { margin: 0 0 6px; font-size: 15px; }
+#yur-conversation .yc-model-setup-status { margin: 0 0 10px; color: var(--yc-secondary); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+#yur-conversation .yc-model-setup-services { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0; margin: 0 0 12px; list-style: none; color: var(--yc-secondary); font-size: 12px; }
+#yur-conversation .yc-model-setup-label { display: block; margin: 0 0 5px; color: var(--yc-ink); font-size: 12px; font-weight: 600; }
+#yur-conversation .yc-model-setup-select { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid var(--yc-line); border-radius: 8px; color: var(--yc-ink); background: var(--yc-paper); }
+#yur-conversation .yc-model-setup-select option { color: var(--yc-ink); background: var(--yc-surface); }
+#yur-conversation .yc-model-setup-default-label { display: flex; align-items: center; gap: 8px; margin: 10px 0; font-size: 12px; color: var(--yc-secondary); }
+#yur-conversation .yc-model-setup-default { flex: 0 0 auto; margin: 0; accent-color: var(--yc-accent); }
+#yur-conversation .yc-model-setup-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+#yur-conversation .yc-model-setup-actions button { min-height: 36px; padding: 7px 11px; border: 1px solid var(--yc-line); border-radius: 8px; color: var(--yc-ink); background: var(--yc-paper); }
+#yur-conversation .yc-model-setup-actions .yc-model-setup-use { color: var(--dt-text); border-color: var(--yc-accent); background: var(--yc-accent); }
+#yur-conversation .yc-model-setup-actions button:hover:not(:disabled) { border-color: var(--yc-accent); }
+#yur-conversation .yc-model-setup-actions .yc-model-setup-use:hover:not(:disabled) { background: var(--yc-accent-hover); }
+#yur-conversation[data-theme="dark"] .yc-model-setup-actions .yc-model-setup-use { color: var(--yc-surface); }
+#yur-conversation .yc-model-setup :is(button,select,input):focus-visible { outline: 2px solid var(--yc-accent); outline-offset: 3px; }
+#yur-conversation .yc-model-setup :is(button,select,input):disabled { cursor: not-allowed; opacity: .55; }
+#yur-conversation .yc-model-setup-error { margin: 10px 0 0; color: var(--yc-accent); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+  #yur-conversation .yc-model-setup { padding: 12px; }
+  #yur-conversation .yc-model-setup-actions button { flex: 1 1 auto; }
+}

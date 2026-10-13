@@ -1,0 +1,75 @@
+/* Desktop host palette. Authored web pages, artifact/media pixels and OS dialogs
+   keep their own colors. Layout, authority and execution behavior are unchanged. */
+:root {
+  --dt-bg: #101722;
+  --dt-panel: #142131;
+  --dt-surface: #1c2a3e;
+  --dt-active: #2b3e56;
+  --dt-border: #607690;
+  --dt-text: #e6edf5;
+  --dt-secondary: #b8c8da;
+  --dt-muted: #a0b1c5;
+  --dt-silver: #c7d7eb;
+  --dt-silver-hover: #e9f1fb;
+  --dt-on-accent: #101722;
+  --dt-focus: #d2e3f7;
+  --dt-success: #9adbb3;
+  --dt-success-bg: #153126;
+  --dt-success-border: #548769;
+  --dt-warning: #f3d394;
+  --dt-warning-bg: #342b1a;
+  --dt-warning-border: #a38953;
+  --dt-error: #ffb4b4;
+  --dt-error-bg: #3d242d;
+  --dt-error-border: #b77280;
+  --dt-info: #b1d6ff;
+  --dt-info-bg: #20354d;
+  --dt-info-border: #678ab3;
+  --yf-black: var(--dt-bg); --yf-panel: var(--dt-panel); --yf-raised: var(--dt-surface);
+  --yf-edge: var(--dt-border); --yf-edge-bright: var(--dt-border); --yf-silver: var(--dt-silver);
+  --yf-white: var(--dt-text); --yf-muted: var(--dt-muted);
+}
+html:has(body.yur-theme), body.yur-theme { color-scheme: dark; background: var(--dt-bg); color: var(--dt-text); }
+body.yur-theme #yur-conversation,
+body.yur-theme #yur-conversation[data-theme] {
+  --yc-paper: var(--dt-bg); --yc-sidebar: var(--dt-panel); --yc-surface: var(--dt-surface);
+  --yc-ink: var(--dt-text); --yc-secondary: var(--dt-secondary); --yc-muted: var(--dt-muted);
+  --yc-line: var(--dt-border); --yc-accent: var(--dt-silver); --yc-accent-hover: var(--dt-silver-hover); --yc-accent-soft: var(--dt-active);
+  color-scheme: dark; background: var(--dt-bg); color: var(--dt-text);
+}
+body.yur-theme #yur-conversation :is(.yc-main,.yc-topbar,.yc-section-panel,.yc-preferences-panel) { background: var(--dt-bg); }
+body.yur-theme #yur-conversation :is(.yc-sidebar,.yc-titlebar,.ys-sidebar) { background: var(--dt-panel); border-color: var(--dt-border); }
+body.yur-theme #yur-conversation :is(.yc-composer,.yc-detail-card,.yu-card,.ys-row,.sf-starter,.sf-preview,.sf-result) { background: var(--dt-surface); border-color: var(--dt-border); }
+body.yur-theme #yur-conversation :is(input,textarea,select), body.yur-theme #rc6-prompt { background-color: var(--dt-panel); color: var(--dt-text); border-color: var(--dt-border); caret-color: var(--dt-text); }
+body.yur-theme #yur-conversation :is(.yc-primary,.yc-send,.yc-resource-action,.yc-vault-search-form button),
+body.yur-theme #yur-conversation[data-theme] :is(.yc-primary,.yc-send,.yc-resource-action,.yc-vault-search-form button) { color: var(--dt-on-accent); background: var(--dt-silver); }
+body.yur-theme #yur-conversation :is(.yc-primary,.yc-send,.yc-resource-action):hover:not(:disabled) { background: var(--dt-silver-hover); }
+body.yur-theme #yur-conversation .yc-send:disabled { background: var(--dt-active); color: var(--dt-muted); }
+body.yur-theme #yur-conversation :is(.yu-ok,.yc-status[data-state="connected"]) { color: var(--dt-success); border-color: var(--dt-success-border); background: var(--dt-success-bg); }
+body.yur-theme #yur-conversation :is(.yu-warn,.yc-notice,.yc-status[data-state="checking"]),
+body.yur-theme .rc6-approval { color: var(--dt-warning); border-color: var(--dt-warning-border); background: var(--dt-warning-bg); }
+body.yur-theme #yur-conversation :is(.yc-message.error .yc-message-body,.yc-status[data-state="offline"],.yc-activity-error,.yc-recent-error,.ys-status[data-error="true"]) { color: var(--dt-error); border-color: var(--dt-error-border); }
+body.yur-theme :is(button,input,textarea,select,a,summary):focus-visible { outline: 2px solid var(--dt-focus); outline-offset: 3px; }
+body.yur-theme ::selection { color: var(--dt-text); background: var(--dt-active); }
+body.yur-theme ::placeholder { color: var(--dt-muted); opacity: 1; }
+body.yur-theme #glider-frame { background: var(--dt-panel); border-color: var(--dt-border); }
+body.yur-theme #rc6-panel { color: var(--dt-text); background: var(--dt-bg); }
+body.yur-theme #rc6-panel :is(.rc6-toolbar,.rc6-models,form) { background: var(--dt-panel); border-color: var(--dt-border); }
+body.yur-theme #rc6-panel :is(button,select) { color: var(--dt-text); background: var(--dt-surface); border-color: var(--dt-border); }
+body.yur-theme #rc6-log .rc6-approval { background: var(--dt-warning-bg); border-color: var(--dt-warning-border); }
+body.yur-theme :is(.splash-error,#launch-error) { color: var(--dt-error); }
+body.yur-theme .splash { background: radial-gradient(ellipse at 50% 44%,var(--dt-active),var(--dt-panel) 38%,var(--dt-bg) 78%); }
+@media (forced-colors: active) {
+  body.yur-theme, body.yur-theme #yur-conversation, body.yur-theme #yur-conversation[data-theme] { --yc-paper: Canvas; --yc-sidebar: Canvas; --yc-surface: Canvas; --yc-ink: CanvasText; --yc-secondary: CanvasText; --yc-muted: CanvasText; --yc-line: CanvasText; --yc-accent: Highlight; --yc-accent-hover: Highlight; --yc-accent-soft: Canvas; }
+  body.yur-theme :is(button,input,textarea,select,a,summary):focus-visible { outline-color: Highlight; }
+}
+
+/* A status dot uses the signal itself, while its surrounding badge uses the
+   darker semantic surface. These indicators must never become neutral chrome. */
+body.yur-theme .status-dot, body.yur-theme .dot.on { background: var(--dt-success); }
+body.yur-theme .status-dot.pending, body.yur-theme .dot.warn { background: var(--dt-warning); }
+body.yur-theme .status-dot.offline { background: var(--dt-error); }
+body.yur-theme .yur-franklin[data-phase=working] .yur-franklin-dot { background: var(--dt-info); border-color: var(--dt-info-border); }
+body.yur-theme .yur-franklin[data-phase=completed] .yur-franklin-dot { background: var(--dt-success); border-color: var(--dt-success-border); }
+body.yur-theme .yur-franklin[data-phase=waiting] .yur-franklin-dot { background: var(--dt-warning); border-color: var(--dt-warning-border); }
+body.yur-theme .yur-franklin:is([data-phase=unconfirmed],[data-phase=error]) .yur-franklin-dot { background: var(--dt-error); border-color: var(--dt-error-border); }

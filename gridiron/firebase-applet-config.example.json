@@ -1,0 +1,10 @@
+{
+  "projectId": "demo-gridiron-scout",
+  "appId": "1:000000000000:web:0000000000000000000000",
+  "apiKey": "YOUR_FIREBASE_WEB_API_KEY",
+  "authDomain": "demo-gridiron-scout.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "demo-gridiron-scout.firebasestorage.app",
+  "messagingSenderId": "000000000000",
+  "measurementId": ""
+}

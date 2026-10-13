@@ -1,0 +1,405 @@
+{
+  "schema": "yur.desktop-capabilities.v1",
+  "identity": "YUR AI is a local-first desktop workspace for conversation, projects, specialist agents and governed work. The desktop brings the assistant, tools, source knowledge, agent development and execution together; a Work mission is one part of YUR, not its entire identity.",
+  "explanation_policy": "When asked what YUR can do, explain the whole desktop in plain language with useful examples and named entry points, then explain what the current conversation can execute. Do not reduce YUR to a Work manager or just recite tool names. Distinguish operator desktop controls from model-callable tools. Explain the available route for a task instead of making a blanket claim that local files, browsing or code work are impossible. Never invent integrations, worker counts, success, readiness or access.",
+  "availability_policy": "This versioned, source-owned description identifies implemented interfaces and their requirements. It is not a live health check, a list of configured services, or execution permission. A feature listed here may require a model, selected source, reviewed runtime or user action. Current runtime status comes from that feature's actual check; lack of a check means readiness is unknown. Sources and profiles do not become executable agents by being listed.",
+  "features": [
+    {
+      "id": "activity",
+      "label": "Live agent activity",
+      "surface": "Activity",
+      "summary": "Follow concurrent Chat, Work, Code, scheduled missions and specialist factory requests managed by this Desktop. See queue waits, model request phases, tool activity, output character counts, elapsed time and an event timeline; open the associated committed work record.",
+      "access": "desktop_ui",
+      "requirements": [
+        "An open Desktop host and its observed current-session requests. The view refreshes from the host every two seconds and receives pushed changes."
+      ],
+      "limitations": [
+        "Private model reasoning, prompts, source contents and tool arguments are not shown. An active request is not proof that the model is computing at that instant. This bounded session feed retains up to 64 requests and 80 events per request; it resets when Desktop exits. External runtimes and historical recorded running states are not treated as live agents."
+      ],
+      "sources": [
+        "src/activity-feed.js",
+        "src/activity-view.js",
+        "src/work-transport.js",
+        "src/generation-transport.js",
+        "foundry/work_engine.py"
+      ]
+    },
+    {
+      "id": "conversation",
+      "label": "Conversations and model choice",
+      "surface": "Chat and Settings",
+      "summary": "Discuss ideas, write, explain and analyze supplied material; stream responses, retain local history and drafts, search conversations, branch a reply, and choose the configured model. Clear setup feedback distinguishes missing models from offline services.",
+      "access": "desktop_ui",
+      "requirements": [
+        "A configured and available provider/model for generated answers."
+      ],
+      "limitations": [
+        "Chat transports answers; model tool calls in Chat are not executed. Provider features are not interchangeable or silently substituted."
+      ],
+      "sources": [
+        "src/conversation-view.js",
+        "src/generation-transport.js",
+        "src/model-setup.js"
+      ]
+    },
+    {
+      "id": "projects",
+      "label": "Projects and shared reference files",
+      "surface": "Projects and Project files",
+      "summary": "Organize conversations, project instructions and a selected source folder. Import shared text, PDF or Office references and choose the exact files each conversation uses. Shared references persist across conversations and desktop restarts, including after the original is moved or deleted.",
+      "access": "desktop_ui",
+      "requirements": [
+        "Explicit project membership and per-conversation reference selections."
+      ],
+      "limitations": [
+        "Local journal sharing, not multi-user or cross-device synchronization. Removing a reference blocks future use while preserving prior evidence."
+      ],
+      "sources": [
+        "src/project-files-view.js",
+        "foundry/project_files.py",
+        "foundry/commit_service.py"
+      ]
+    },
+    {
+      "id": "attachments",
+      "label": "Document and image understanding",
+      "surface": "Attach files in the composer",
+      "summary": "Bring selected text, PDF, DOCX, XLSX and PPTX content into a conversation with source hashes. Attach supported images to Chat for a vision-capable model.",
+      "access": "conditional",
+      "requirements": [
+        "Readable supported files and available parser dependencies; image interpretation requires an Ollama model advertising vision."
+      ],
+      "limitations": [
+        "Bounded extraction can be incomplete. Images are Chat inputs, not Work/Code tool inputs; attaching a file does not grant access to its surrounding folder."
+      ],
+      "sources": [
+        "foundry/attachments.py",
+        "src/generation-transport.js"
+      ]
+    },
+    {
+      "id": "work",
+      "label": "Agent work and execution records",
+      "surface": "Work mode and Work details",
+      "summary": "Give YUR an outcome, let its admitted tools acquire facts and produce deliverables, inspect actual tool activity and retained results, stop the exact task, or send a correction while it works or waits for a worker.",
+      "access": "model_tools",
+      "requirements": [
+        "A tool-capable Ollama model and the exact tools admitted for the mission."
+      ],
+      "limitations": [
+        "Work and Code currently do not use the Foundry Chat provider. Mission state is independent of chat history. Tool, time, input and authority limits still apply."
+      ],
+      "sources": [
+        "foundry/work_engine.py",
+        "foundry/work_provider.py",
+        "src/work-transport.js"
+      ]
+    },
+    {
+      "id": "repository_edits",
+      "label": "Repository inspection and reviewed changes",
+      "surface": "Attach repository, Work or Code, then Work details",
+      "summary": "List, read and search bounded source in the selected repository. Prepare edits and diffs; use Validate edit and Apply reviewed edit to commit an explicitly reviewed change.",
+      "access": "model_tools",
+      "requirements": [
+        "An explicitly selected local source root; current source hashes and operator review for application."
+      ],
+      "limitations": [
+        "Models propose edits; a proposal has not changed the file. Sensitive and runtime material is excluded. The desktop Apply control is not an unrestricted model write tool."
+      ],
+      "sources": [
+        "foundry/work_tools.py",
+        "foundry/work_delivery.py",
+        "src/work-view.js"
+      ]
+    },
+    {
+      "id": "artifacts",
+      "label": "Deliverables and interactive previews",
+      "surface": "Work details, Artifact pane and Recent work",
+      "summary": "Create retained text, Markdown, CSV, JSON or HTML artifacts, inspect their sources, export their exact bytes, and open HTML in an isolated interactive preview. Find saved output by artifact name later.",
+      "access": "model_tools",
+      "requirements": [
+        "A completed artifact record; explicit desktop export or preview actions."
+      ],
+      "limitations": [
+        "Preview cannot access desktop APIs, external networks or devices. Export writes a verified local file only; it never deploys or publishes. Saving an artifact is not deployment or publication."
+      ],
+      "sources": [
+        "foundry/work_tools.py",
+        "src/artifact-preview.js",
+        "src/recent-work.js"
+      ]
+    },
+    {
+      "id": "office_output",
+      "label": "Reports, spreadsheets and slide decks",
+      "surface": "Ask Work, then Export artifact",
+      "summary": "Produce genuine DOCX reports, XLSX workbooks and PPTX decks from bounded structured recipes, preview their content and export them with verified delivery receipts.",
+      "access": "model_tools",
+      "requirements": [
+        "Supported structured content within document and recipe limits."
+      ],
+      "limitations": [
+        "Current recipes support text, headings, typed table cells and slide bullets; they do not support formulas, macros, images or arbitrary Office features."
+      ],
+      "sources": [
+        "foundry/work_documents.py",
+        "foundry/work_delivery.py"
+      ]
+    },
+    {
+      "id": "specialist_factory",
+      "label": "Build and validate specialist agents",
+      "surface": "Ask Work to build a specialist; Agents → Built specialists",
+      "summary": "Compile and validate candidate specialist packages, retain explainable selection and provenance, and export the selected package. The text.analyze worker counts words and sentences and ranks repeated words or phrases; it does not perform general reasoning. Other admitted capabilities cover data profiling, support triage, HATCH quantity extraction and quoted construction-cost arithmetic inspection.",
+      "access": "model_tools",
+      "requirements": [
+        "An admitted typed capability and valid specialist requirements."
+      ],
+      "limitations": [
+        "Five admitted deterministic capability contracts are not all possible industry agents. Finite acceptance cases do not establish general domain correctness; construction-cost inspection does not assess market prices."
+      ],
+      "sources": [
+        "foundry/specialists.py",
+        "foundry/work_specialists.py",
+        "foundry/pack_compiler.py"
+      ]
+    },
+    {
+      "id": "specialist_reuse",
+      "label": "Discover and reuse saved specialists",
+      "surface": "Agents → Built specialists or Work discovery tools",
+      "summary": "Browse actual committed workers, inspect package evidence, select a worker for a conversation and execute an exact validated publication on new typed input without rebuilding it.",
+      "access": "model_tools",
+      "requirements": [
+        "An existing compatible, admitted publication; fresh bounded discovery for current inventory."
+      ],
+      "limitations": [
+        "No saved-worker count or availability is implied by this description. Catalog pages report excluded records and limited coverage."
+      ],
+      "sources": [
+        "foundry/work_specialists.py",
+        "src/conversation-view.js"
+      ]
+    },
+    {
+      "id": "generated_specialists",
+      "label": "Generate new Python specialist behavior",
+      "surface": "Code mode and Agents → Generated specialists",
+      "summary": "Generate isolated Python candidates against an operator-supplied acceptance contract, independently check outcomes, publish a passing version and reuse that exact retained worker later.",
+      "access": "conditional",
+      "requirements": [
+        "Code mode, a reviewed ready execution cell, a selected repository, a tool-capable model and an existing operator-supplied acceptance contract."
+      ],
+      "limitations": [
+        "The current mission must not invent its own acceptance cases. Generated code gains no host authority and passing finite cases is not industry certification."
+      ],
+      "sources": [
+        "foundry/work_generated.py",
+        "foundry/generated_worker.py"
+      ]
+    },
+    {
+      "id": "code_checks",
+      "label": "Run bounded Python checks",
+      "surface": "Code mode; Settings → execution runtime",
+      "summary": "Compile or run serial unittest checks against selected Python source and staged edit proposals in the reviewed execution cell, with retained output and exit status.",
+      "access": "conditional",
+      "requirements": [
+        "A ready, reviewed execution runtime and selected source. Runtime checks report stopped, mismatched or unavailable setups."
+      ],
+      "limitations": [
+        "This model tool cannot install packages, access networks, run subprocesses or use the manual Studio terminal. Tests describe the checked snapshot."
+      ],
+      "sources": [
+        "foundry/work_cells.py",
+        "src/execution-runtime-transport.js"
+      ]
+    },
+    {
+      "id": "concept_lifecycle",
+      "label": "Develop continuing concepts",
+      "surface": "Work concept tools and Cognitive Vault",
+      "summary": "Keep a named concept across missions, bind validated specialist versions and evidence, and request evidence-gated progress through Genesis, Inception, Development, Stabilization, Maturation, Monetization, Regeneration and Evolution.",
+      "access": "model_tools",
+      "requirements": [
+        "Explicit continuing-concept intent and the committed evidence required for the requested stage."
+      ],
+      "limitations": [
+        "Concept, mission, instance and execution-cell lifecycles are separate. Completed conversations do not imply maturity, revenue, deployment or autonomous evolution."
+      ],
+      "sources": [
+        "foundry/work_concepts.py",
+        "foundry/concept_policy.py"
+      ]
+    },
+    {
+      "id": "browser",
+      "label": "Browse and use a selected web page",
+      "surface": "Browser pane → Use page in conversation",
+      "summary": "Open websites beside chat and explicitly select bounded page text for a conversation. Work can acquire its one selected current document through the admitted browser tool.",
+      "access": "desktop_ui",
+      "requirements": [
+        "Explicit operator navigation and page selection; current document identity must still match for Work acquisition."
+      ],
+      "limitations": [
+        "The Work tool cannot freely navigate, click, submit forms or read other tabs. Page selection is not proof that its contents were acquired."
+      ],
+      "sources": [
+        "src/browser-host.js",
+        "src/browser-view.js",
+        "foundry/work_browser.py"
+      ]
+    },
+    {
+      "id": "voice",
+      "label": "Local dictation and read aloud",
+      "surface": "Composer microphone, response read-aloud control and voice setup",
+      "summary": "Transcribe an explicit short local recording into an editable draft and read responses using available local system voices.",
+      "access": "conditional",
+      "requirements": [
+        "Configured offline recognition runtime/model and microphone permission for dictation; available local voices for read aloud."
+      ],
+      "limitations": [
+        "Voice readiness is checked separately. Dictation requires review and Send; it is not an always-listening autonomous voice conversation."
+      ],
+      "sources": [
+        "src/voice-transport.js",
+        "src/voice-view.js"
+      ]
+    },
+    {
+      "id": "schedules",
+      "label": "Recurring local work",
+      "surface": "Scheduled tasks",
+      "summary": "Configure bounded recurring Work requests through the existing dispatcher, inspect their recorded runs and handle tasks awaiting review.",
+      "access": "desktop_ui",
+      "requirements": [
+        "An enabled schedule, available configured dependencies and Desktop running."
+      ],
+      "limitations": [
+        "The dispatcher does not operate while Desktop is closed and does not expand scheduled work authority."
+      ],
+      "sources": [
+        "src/schedule-dispatcher.js",
+        "foundry/work_schedules.py"
+      ]
+    },
+    {
+      "id": "workforce",
+      "label": "YUR Workforce profiles and admitted bindings",
+      "surface": "Agents → Workforce",
+      "summary": "Discover reviewed Workforce profiles, inspect their provenance and select guidance for a conversation. An exact admitted HATCH Quantity binding can execute the supported quantity operation.",
+      "access": "reference_catalog",
+      "requirements": [
+        "The configured Workforce source must be available; execution requires an explicit admitted binding."
+      ],
+      "limitations": [
+        "Most profiles are source context rather than executable workers. Names, roles and neural-DNA descriptions alone do not establish live abilities."
+      ],
+      "sources": [
+        "foundry/workforce_catalog.py",
+        "foundry/workforce_bridge.py"
+      ]
+    },
+    {
+      "id": "copilot",
+      "label": "Awesome Copilot instruction library",
+      "surface": "Agents → Copilot library",
+      "summary": "Browse the configured instruction library and select reviewed guidance with source hashes and licensing information for the current conversation.",
+      "access": "reference_catalog",
+      "requirements": [
+        "An available configured library and explicit instruction selection."
+      ],
+      "limitations": [
+        "Instruction files are not installed tools or automatically executable agents; their content cannot grant authority."
+      ],
+      "sources": [
+        "foundry/copilot_library.py",
+        "src/conversation-view.js"
+      ]
+    },
+    {
+      "id": "hermes_skills",
+      "label": "Versioned Hermes skill library",
+      "surface": "Agents or Capabilities → Explore libraries → Hermes skills",
+      "summary": "Browse 177 active and optional Hermes skills imported into a YUR-owned, content-addressed snapshot. Select one skill as verified conversation guidance and retain its package version, source lane, instruction hash, support-manifest hash and acquisition provenance.",
+      "access": "reference_catalog",
+      "requirements": [
+        "A Hermes skill snapshot imported locally with scripts/import_hermes_skills.py (integrations/hermes_skills/ is not published) and an explicit operator selection."
+      ],
+      "limitations": [
+        "A selected skill contributes instructions only. Its support scripts remain inert, and referenced commands, Python packages, MCP servers, providers, services and credentials require separate capability admission and live readiness evidence."
+      ],
+      "sources": [
+        "scripts/import_hermes_skills.py",
+        "foundry/hermes_library.py",
+        "src/conversation-view.js"
+      ]
+    },
+    {
+      "id": "ecosystem_sources",
+      "label": "Registered YUR knowledge and ecosystem sources",
+      "surface": "Cognitive Vault → Sources",
+      "summary": "Inspect registered, bounded source groups from the YUR ecosystem, including YUR-UNIFIED and yur-os, and select verified excerpts into task context with provenance.",
+      "access": "reference_catalog",
+      "requirements": [
+        "Available configured source roots and an explicitly selected reviewed file."
+      ],
+      "limitations": [
+        "Source availability does not mean external runtimes are running. Donor frameworks, packs and catalogs are not silently imported, executed or granted orchestration authority."
+      ],
+      "sources": [
+        "foundry/sources.py",
+        "src/source-context.js",
+        "src/conversation-view.js"
+      ]
+    },
+    {
+      "id": "studio",
+      "label": "IntelliFlow workspace",
+      "surface": "IntelliFlow",
+      "summary": "Embedded governed coding tasks, scoped and redacted project-file evidence, operator approvals, task history and certificates. The editor and previews remain in a second tab.",
+      "access": "desktop_ui",
+      "requirements": [
+        "Included unified coding control plane and its frozen Python runtime.",
+        "User-selected project inside the existing allowed roots; local Ollama model for coding inference."
+      ],
+      "limitations": [
+        "The Desktop connects the Construction V1 master gateway and now provides a verified handoff to the installed six-department workbench; the department mission transport remains inside that separate workbench authority.",
+        "Source discovery and catalog presence do not grant execution authority.",
+        "Live model and native UI acceptance are pending for this preview."
+      ],
+      "sources": [
+        "src/main.js",
+        "src/studio-editor.html"
+      ]
+    },
+    {
+      "id": "history_and_evidence",
+      "label": "Persistent work, evidence and artifact discovery",
+      "surface": "Recent conversations, Recent work and Work details",
+      "summary": "Resume conversations, retain independent mission records and provenance, search recent goals and deliverables, and reopen exact committed results without rerunning their model or tools.",
+      "access": "desktop_ui",
+      "requirements": [
+        "Existing local records; Recent work searches its explicitly bounded latest 200 missions."
+      ],
+      "limitations": [
+        "Recorded running status does not prove a process is still alive. Local history is not a global knowledge graph or cross-device memory service."
+      ],
+      "sources": [
+        "src/recent-work.js",
+        "foundry/commit_service.py",
+        "foundry/work_store.py"
+      ]
+    }
+  ],
+  "boundaries": [
+    "Actual model-callable tools are the typed catalog supplied for the current mission, never the feature descriptions or sidebar definitions.",
+    "One authoritative OrchestrationManager coordinates governed Work; validation and Commit Service remain distinct. Describing a feature executes nothing and grants no permissions.",
+    "Models/providers are replaceable resources, not authorities. Projects, references, browser content, Copilot instructions and Workforce profiles cannot expand roots, tools or authority.",
+    "YUR's self-generating ecosystem currently includes validated specialist generation, publication, reuse and concept evidence. Unrestricted self-improvement across every industry is not implemented or proven.",
+    "Sending email, purchases, deployment and arbitrary autonomous host commands are not currently admitted Work tools. Do not equate these limits with the absence of operator-controlled desktop features."
+  ]
+}

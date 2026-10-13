@@ -1,0 +1,41 @@
+{
+  "format": "yur.edition-allowlist.v1",
+  "editions": {
+    "athletics": [
+      "editions/athletics.json",
+      "Start YUR AI Athletics.cmd",
+      "src/athletics-launch.html",
+      "src/athletics-launch.js",
+      "src/athletics-launch.css",
+      "src/athletics-play-art.js",
+      "src/athletics-brand/athletics.css",
+      "src/athletics-brand/gridiron-embed.css",
+      "src/athletics-brand/brand/lockup.svg",
+      "src/athletics-brand/brand/lockup-light.svg",
+      "src/athletics-brand/brand/y-mark.svg",
+      "src/athletics-brand/brand/y-mark-figure.svg",
+      "src/athletics-brand/brand/mark-flat.svg",
+      "src/athletics-brand/brand/icon.ico",
+      "src/athletics-brand/brand/icon-512.png",
+      "src/athletics-brand/brand/apple-touch-icon.png",
+      "src/athletics-brand/brand/favicon-32.png",
+      "src/athletics-brand/brand/yur-athletics-master.webp",
+      "src/athletics-brand/fonts/fonts.css",
+      "src/athletics-brand/fonts/OFL-orbitron.md",
+      "src/athletics-brand/fonts/OFL-jetbrains-mono.md",
+      "src/athletics-brand/fonts/orbitron-latin-400-normal.woff2",
+      "src/athletics-brand/fonts/orbitron-latin-700-normal.woff2",
+      "src/athletics-brand/fonts/orbitron-latin-900-normal.woff2",
+      "src/athletics-brand/fonts/jetbrains-mono-latin-400-normal.woff2",
+      "src/athletics-brand/fonts/jetbrains-mono-latin-500-normal.woff2",
+      "src/franklin-gridiron.js",
+      "tests/edition.test.js",
+      "tests/edition-shell.test.js",
+      "tests/athletics-brand.test.js",
+      "tests/franklin-gridiron.test.js",
+      "tests/fixtures/gridiron-mcp-fake.cjs",
+      "tests/fixtures/athletics.sample.json",
+      "tests/test_franklin_gridiron.py"
+    ]
+  }
+}

@@ -1,0 +1,424 @@
+/* Home-shell finish: a restrained desktop frame around the existing YUR surfaces. */
+#yur-conversation {
+  --yc-paper: var(--dt-bg);
+  --yc-sidebar: var(--dt-panel);
+  --yc-surface: var(--dt-surface);
+  --yc-ink: var(--dt-text);
+  --yc-secondary: var(--dt-secondary);
+  --yc-muted: var(--dt-muted);
+  --yc-line: var(--dt-border);
+  --yc-accent: var(--dt-silver);
+  --yc-accent-hover: var(--dt-silver-hover);
+  --yc-accent-soft: var(--dt-active);
+  grid-template: 42px minmax(0, 1fr) / 276px minmax(0, 1fr);
+  color-scheme: dark;
+  background: var(--dt-bg);
+}
+
+#yur-conversation .yc-titlebar {
+  min-height: 42px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-bg);
+}
+#yur-conversation .yc-desktop-menu {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  color: var(--dt-secondary);
+  font-size: 13px;
+  user-select: none;
+}
+#yur-conversation .yc-desktop-mark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 2px;
+  border: 1px solid var(--dt-border);
+  border-radius: 6px;
+  color: var(--dt-secondary);
+  font-size: 10px;
+  font-weight: 700;
+}
+#yur-conversation .yc-titlebar-caption {
+  margin-left: auto;
+  margin-right: 18px;
+  color: var(--dt-secondary);
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+#yur-conversation .yc-window-controls button {
+  width: 46px;
+  height: 41px;
+  color: var(--dt-secondary);
+}
+#yur-conversation .yc-window-controls button:hover { background: var(--dt-active); }
+
+#yur-conversation .yc-sidebar {
+  padding: 34px 16px 14px;
+  border-right-color: var(--dt-border);
+  background: var(--dt-panel);
+}
+#yur-conversation .yc-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  margin: 0 0 13px;
+  padding: 0 4px;
+  color: var(--dt-secondary);
+  font-size: 15px;
+}
+#yur-conversation .yc-sidebar-brand strong { font-weight: 650; }
+#yur-conversation .yc-sidebar-brand span { color: var(--dt-secondary); font-size: 13px; }
+#yur-conversation .yc-new-chat,
+#yur-conversation[data-theme="dark"] .yc-new-chat {
+  min-height: 34px;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--dt-secondary);
+  font-size: 13px;
+  font-weight: 450;
+}
+#yur-conversation .yc-new-chat:hover,
+#yur-conversation[data-theme="dark"] .yc-new-chat:hover {
+  border-color: transparent;
+  background: var(--dt-active);
+  color: var(--dt-text);
+}
+#yur-conversation .yc-new-chat :is(svg, i) { color: var(--dt-secondary); }
+#yur-conversation .yc-nav { gap: 1px; margin: 2px 0 25px; }
+#yur-conversation .yc-nav-item {
+  min-height: 31px;
+  gap: 11px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: var(--dt-secondary);
+  font-size: 13px;
+}
+#yur-conversation .yc-nav-item svg { width: 16px; height: 16px; }
+#yur-conversation .yc-nav-item:hover,
+#yur-conversation .yc-nav-item.active,
+#yur-conversation[data-theme="dark"] :is(.yc-nav-item:hover,.yc-nav-item.active) {
+  background: var(--dt-active);
+  color: var(--dt-text);
+  font-weight: 500;
+}
+#yur-conversation .yc-history-heading {
+  margin: 0 8px 7px;
+  color: var(--dt-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+#yur-conversation .yc-sidebar-projects { margin-bottom: 15px; }
+#yur-conversation #yc-sidebar-projects-list { max-height: 170px; }
+#yur-conversation .yc-sidebar-project,
+#yur-conversation .yc-history-item {
+  min-height: 31px;
+  margin: 1px 0;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: var(--dt-secondary);
+  font-size: 12px;
+}
+#yur-conversation .yc-sidebar-project:hover,
+#yur-conversation .yc-sidebar-project[aria-current="page"],
+#yur-conversation .yc-history-item:hover,
+#yur-conversation .yc-history-item.active,
+#yur-conversation[data-theme="dark"] .yc-history-item:hover,
+#yur-conversation[data-theme="dark"] .yc-history-item.active {
+  background: var(--dt-active);
+  color: var(--dt-text);
+}
+#yur-conversation .yc-history-empty,
+#yur-conversation .yc-projects-empty { color: var(--dt-secondary); }
+#yur-conversation .yc-profile,
+#yur-conversation[data-theme="dark"] .yc-profile {
+  min-height: 48px;
+  padding: 11px 7px 0;
+  border-top-color: var(--dt-border);
+  background: transparent;
+}
+#yur-conversation .yc-profile-avatar {
+  width: 25px;
+  height: 25px;
+  background: var(--dt-surface);
+  color: var(--dt-secondary);
+  font-size: 10px;
+}
+#yur-conversation .yc-profile strong { color: var(--dt-text); font-size: 12px; }
+#yur-conversation .yc-connection-label { color: var(--dt-secondary); font-size: 10px; }
+
+#yur-conversation .yc-main,
+#yur-conversation[data-theme="dark"] .yc-main { background: var(--dt-bg); }
+#yur-conversation .yc-main::before { display: none; }
+#yur-conversation .yc-topbar {
+  flex-basis: 56px;
+  gap: 8px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-bg);
+}
+#yur-conversation .yc-topbar .yc-thread-title { color: var(--dt-secondary); font-size: 12px; }
+#yur-conversation .yc-topbar .yc-mode-switch { display: none; }
+#yur-conversation :is(.yc-sidebar-toggle, .yc-context-toggle, .yc-attach) {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 6px;
+  color: var(--dt-secondary);
+}
+#yur-conversation :is(.yc-sidebar-toggle, .yc-context-toggle, .yc-attach):hover {
+  background: var(--dt-active);
+  color: var(--dt-text);
+}
+#yur-conversation .yc-context-toggle { font-size: 11px; }
+
+#yur-conversation .yc-scroll {
+  flex: 1 1 0;
+  justify-content: flex-start;
+  margin-top: 0;
+  padding-top: 0;
+}
+#yur-conversation .yc-welcome {
+  width: min(780px, 100%);
+  margin: 21vh auto 0;
+  padding: 20px 24px;
+}
+#yur-conversation .yc-orbit {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 27px;
+  border-color: var(--dt-border);
+  color: var(--dt-secondary);
+  font-size: 15px;
+}
+#yur-conversation .yc-orbit::before { border-color: var(--dt-border); }
+#yur-conversation .yc-orbit::after { background: var(--dt-active); box-shadow: 0 0 0 3px #0c0c0e; }
+#yur-conversation .yc-heading {
+  color: var(--dt-text);
+  font-size: clamp(25px, 2.35vw, 33px);
+  font-weight: 450;
+  letter-spacing: -.75px;
+}
+#yur-conversation .yc-heading span {
+  border-bottom: 1px dotted var(--dt-border);
+  padding-bottom: 2px;
+}
+#yur-conversation .yc-subtitle {
+  margin-top: 12px;
+  color: var(--dt-secondary);
+  font-size: 12px;
+}
+
+#yur-conversation .yc-composer-area {
+  width: min(722px, calc(100% - 64px));
+  margin: 0 auto 16px;
+  padding-bottom: 0;
+}
+#yur-conversation .yc-composer {
+  padding: 0 13px 9px;
+  overflow: hidden;
+  border: 1px solid var(--dt-border);
+  border-radius: 18px;
+  background: var(--dt-surface);
+  box-shadow: 0 14px 42px #0004;
+}
+#yur-conversation .yc-composer:focus-within {
+  border-color: var(--dt-focus);
+  box-shadow: 0 14px 42px #0005;
+}
+#yur-conversation .yc-composer-context {
+  gap: 8px;
+  margin: 0 -13px 7px;
+  padding: 10px 13px;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-panel);
+}
+#yur-conversation .yc-composer-context select {
+  padding: 2px 22px 2px 3px;
+  border: 0;
+  background-color: transparent;
+  color: var(--dt-secondary);
+  font-size: 11px;
+}
+#yur-conversation #yc-input {
+  min-height: 52px;
+  padding: 5px 0 7px;
+  color: var(--dt-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+#yur-conversation #yc-input::placeholder { color: var(--dt-muted); }
+#yur-conversation .yc-model-select {
+  max-width: min(250px, 54%);
+  min-height: 30px;
+  padding-block: 4px;
+  color: var(--dt-secondary);
+  font-size: 11px;
+}
+#yur-conversation .yc-model-select:hover { background: var(--dt-active); }
+#yur-conversation .yc-send {
+  flex-basis: 31px;
+  width: 31px;
+  height: 31px;
+  background: var(--dt-silver);
+  color: var(--dt-on-accent);
+}
+#yur-conversation .yc-send:hover:not(:disabled) { background: var(--dt-active); }
+#yur-conversation .yc-send:disabled { background: var(--dt-surface); color: var(--dt-secondary); }
+#yur-conversation .yc-suggestions { display: none; }
+#yur-conversation .yc-footnote {
+  margin-top: 10px;
+  color: var(--dt-secondary);
+  font-size: 10px;
+}
+
+/* Connection setup remains actionable, but no longer overwhelms the home canvas. */
+#yur-conversation #yc-model-setup-host {
+  max-height: 112px;
+  margin: 0 0 8px;
+  overflow: auto;
+}
+#yur-conversation #yc-model-setup-host .yc-model-setup {
+  display: grid;
+  grid-template-columns: minmax(130px, auto) minmax(180px, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 9px;
+  border-color: var(--dt-border);
+  border-radius: 10px;
+  background: var(--dt-panel);
+}
+#yur-conversation #yc-model-setup-host .yc-model-setup h3 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--dt-secondary);
+  font-size: 11px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#yur-conversation #yc-model-setup-host :is(.yc-model-setup-status,.yc-model-setup-services,.yc-model-setup-label,.yc-model-setup-default-label) { display: none; }
+#yur-conversation #yc-model-setup-host .yc-model-setup-select {
+  min-height: 30px;
+  padding: 4px 8px;
+  border-color: var(--dt-border);
+  background: var(--dt-panel);
+  color: var(--dt-secondary);
+  font-size: 10px;
+}
+#yur-conversation #yc-model-setup-host .yc-model-setup-actions { flex-wrap: nowrap; gap: 4px; }
+#yur-conversation #yc-model-setup-host .yc-model-setup-actions button {
+  min-height: 30px;
+  padding: 4px 8px;
+  border-color: var(--dt-border);
+  background: var(--dt-panel);
+  color: var(--dt-secondary);
+  font-size: 10px;
+  white-space: nowrap;
+}
+#yur-conversation #yc-model-setup-host .yc-model-setup-actions .yc-model-setup-use {
+  border-color: var(--dt-border);
+  background: var(--dt-surface);
+  color: var(--dt-text);
+}
+
+#yur-conversation .yc-main.has-messages .yc-scroll { padding-top: 0; }
+#yur-conversation .yc-main.has-messages .yc-composer-area { margin-bottom: 12px; padding-top: 7px; }
+#yur-conversation :is(.yc-scroll, .yc-history, .yc-detail-body) { scrollbar-color: var(--dt-border) transparent; }
+
+@media (max-width: 850px) {
+  #yur-conversation { grid-template-columns: 0 minmax(0, 1fr); }
+  #yur-conversation .yc-sidebar { inset: 42px auto 0 0; width: 276px; }
+  #yur-conversation .yc-composer-area { width: min(722px, calc(100% - 36px)); }
+  #yur-conversation .yc-titlebar-caption { display: none; }
+}
+@media (max-width: 650px) {
+  #yur-conversation .yc-desktop-menu { gap: 13px; }
+  #yur-conversation .yc-desktop-menu span:not(.yc-desktop-mark):nth-last-child(-n+2) { display: none; }
+  #yur-conversation #yc-model-setup-host { max-height: 180px; }
+  #yur-conversation #yc-model-setup-host .yc-model-setup { grid-template-columns: 1fr; }
+  #yur-conversation #yc-model-setup-host .yc-model-setup-actions { flex-wrap: wrap; }
+}
+@media (max-height: 700px) {
+  #yur-conversation .yc-welcome { margin-top: 12vh; }
+  #yur-conversation .yc-subtitle { display: none; }
+}
+
+
+/* Black YUR branding: shared glass surfaces, silver edges, readable labels.
+   Keep product identity and existing builder/runtime controls intact. */
+#yur-conversation {
+  --yc-paper: var(--dt-bg);
+  --yc-sidebar: var(--dt-panel);
+  --yc-surface: var(--dt-surface);
+  --yc-ink: var(--dt-text);
+  --yc-secondary: var(--dt-secondary);
+  --yc-muted: var(--dt-muted);
+  --yc-line: var(--dt-border);
+  --yc-accent: var(--dt-silver);
+  --yc-accent-hover: var(--dt-silver-hover);
+  --yc-accent-soft: var(--dt-active);
+  background: radial-gradient(ellipse at 70% 0, var(--dt-panel) 0, var(--dt-bg) 65%);
+}
+#yur-conversation :is(.yc-titlebar, .yc-sidebar) {
+  background: color-mix(in srgb, var(--dt-bg) 94.0%, transparent);
+  border-color: var(--dt-border);
+}
+#yur-conversation :is(.yc-composer, .yu-card, .sf-starter, .sf-preview, .sf-result) {
+  background: color-mix(in srgb, var(--dt-panel) 94.0%, transparent);
+  border: 1px solid var(--dt-border);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 12px 32px rgba(0, 0, 0, .3);
+}
+#yur-conversation :is(.yc-subtitle, .yc-sidebar-brand span, .yu-hint, .sf-help) {
+  color: var(--yc-muted);
+}
+#yur-conversation :is(.yc-preferences-panel, .sf-forge) :is(input, textarea, select) {
+  background: var(--dt-panel);
+  color: var(--yc-ink);
+  border-color: var(--dt-border);
+}
+#yur-conversation :is(button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--dt-focus);
+  outline-offset: 3px;
+}
+#yur-conversation .yc-composer:focus-within { border-color: var(--dt-focus); }
+#yur-conversation .yu-ok { color: var(--dt-secondary); border-color: var(--dt-border); }
+#yur-conversation .yu-warn { color: var(--dt-warning); border-color: var(--dt-warning-border); background: var(--dt-warning-bg); }
+@supports (backdrop-filter: blur(12px)) {
+  #yur-conversation :is(.yc-titlebar, .yc-sidebar, .yc-composer, .yu-card, .sf-starter) {
+    backdrop-filter: blur(12px);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  #yur-conversation :is(.yc-titlebar, .yc-sidebar, .yc-composer, .yu-card, .sf-starter) {
+    background: var(--dt-panel);
+    backdrop-filter: none;
+  }
+}
+@media (forced-colors: active) {
+  #yur-conversation :is(.yc-composer, .yu-card, .sf-starter, input, textarea, select) {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+}
+
+#yur-conversation .yc-launch-routing { justify-content: center; flex-wrap: wrap; }
+#yur-conversation #yc-intelliflow-workspace-host { overflow: auto; min-height: 0; padding: 0 20px 20px; }
+#yur-conversation .yc-studio-panel > [hidden] { display: none !important; }
+#yur-conversation .yu-file-content { max-height: 360px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+#yur-conversation .yc-studio-panel:has(#yc-intelliflow-workspace-host:not([hidden])) { display: block; overflow: auto; }
+
+/* Visible composition controls on the black shared workspace. */
+#yur-conversation .yc-launch-routing { gap: 10px; margin-top: 18px; }
+#yur-conversation :is(.yc-launch-routing, #yc-intelliflow-workspace-host, .yc-studio-panel > .yu-tabs) button { min-height: 36px; padding: 8px 12px; border: 1px solid var(--dt-border); border-radius: 8px; background: var(--dt-panel); color: var(--dt-text); }
+#yur-conversation :is(.yc-launch-routing, #yc-intelliflow-workspace-host) button:hover { border-color: var(--dt-border); background: var(--dt-active); }
+#yur-conversation #yc-intelliflow-workspace-host .yc-primary { background: var(--dt-silver); color: var(--dt-on-accent); }
+#yur-conversation #yc-intelliflow-open { display: none; }

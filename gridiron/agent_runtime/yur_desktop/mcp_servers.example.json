@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "gridiron-scout": {
+      "command": "C:\\Python314\\python.exe",
+      "args": [
+        "-P",
+        "C:\\YUR-ATHLETICS\\gridiron\\agent_runtime\\gridiron_mcp.py"
+      ],
+      "enabled": true,
+      "timeout": 180,
+      "connect_timeout": 30
+    }
+  }
+}
